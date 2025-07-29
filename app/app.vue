@@ -21,7 +21,7 @@ onMounted(async () => {
 
 <template>
   <template v-if="!is_loaded">
-    <div class="h-screen flex items-center justify-center">
+    <div class="h-screen z-[99999] flex items-center justify-center">
       <div class="text-center">
         <Loader2 class="animate-spin inline size-12 mb-3 text-primary" />
       </div>

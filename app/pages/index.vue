@@ -1,5 +1,13 @@
 <template>
-  Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet veniam harum
-  illum totam quis. Aliquid asperiores sapiente fuga doloremque tenetur,
-  dignissimos culpa, a id distinctio iusto delectus similique explicabo facere.
+  <div class="flex items-stretch min-h-screen gap-4">
+    <div class="w-1/3">
+      <Card class="h-full" />
+    </div>
+    <div class="w-1/3">
+      <Card class="h-full" />
+    </div>
+    <div class="w-1/3">
+      <Card class="h-full" />
+    </div>
+  </div>
 </template>
