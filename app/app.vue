@@ -1,0 +1,34 @@
+<script lang="ts" setup>
+import { Loader2 } from "lucide-vue-next";
+import { AuthService } from "./services/auth/auth.service";
+
+const is_loaded = ref(false);
+const route = useRoute();
+
+onMounted(async () => {
+  const user = await AuthService.profile();
+  if (!user && route.path != "/login") {
+    return navigateTo("/login");
+  } else if (user && route.path == "/login") {
+    // return navigateTo("/");
+  }
+
+  setTimeout(() => {
+    is_loaded.value = true;
+  }, 500);
+});
+</script>
+
+<template>
+  <template v-if="!is_loaded">
+    <div class="h-screen flex items-center justify-center">
+      <div class="text-center">
+        <Loader2 class="animate-spin inline size-12 mb-3 text-primary" />
+      </div>
+    </div>
+  </template>
+
+  <NuxtLayout>
+    <NuxtPage></NuxtPage>
+  </NuxtLayout>
+</template>
