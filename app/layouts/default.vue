@@ -1,11 +1,12 @@
 <script lang="ts">
 export const iframeHeight = "800px";
-export const description =
-  "A simple sidebar with navigation grouped by section.";
 </script>
 
 <script setup lang="ts">
-import { Home, LogOut } from "lucide-vue-next";
+import { Home } from "lucide-vue-next";
+import { letterName } from "~/services/auth/dto/profile.dto";
+
+const authStore = useAuthStore();
 </script>
 
 <template>
@@ -30,11 +31,21 @@ import { Home, LogOut } from "lucide-vue-next";
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        <!-- <div class="ml-auto flex items-center"> -->
-        <!--   <button type="button" class="cursor-pointer"> -->
-        <!--     <LogOut class="size-4"></LogOut> -->
-        <!--   </button> -->
-        <!-- </div> -->
+        <div class="ml-auto flex items-center mr-3">
+          <button
+            type="button"
+            class="cursor-pointer flex space-x-3 items-center"
+          >
+            <Avatar>
+              <AvatarFallback>{{
+                letterName(authStore.user?.name)
+              }}</AvatarFallback>
+            </Avatar>
+            <span class="hidden md:block text-sm">
+              {{ authStore.user?.name }}
+            </span>
+          </button>
+        </div>
       </header>
       <main class="p-4">
         <slot></slot>

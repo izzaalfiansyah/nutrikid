@@ -142,8 +142,8 @@ function handleLogout() {
                 <span class="text-gray-800">Profil</span>
               </DropdownMenuItem>
               <AlertDialog>
-                <AlertDialogTrigger class="w-full cursor-pointer">
-                  <DropdownMenuItem disabled>
+                <AlertDialogTrigger class="w-full cursor-pointer" as-child>
+                  <DropdownMenuItem @select="(e) => e.preventDefault()">
                     <span class="text-gray-800">Logout</span>
                   </DropdownMenuItem>
                 </AlertDialogTrigger>

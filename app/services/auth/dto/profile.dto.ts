@@ -23,3 +23,14 @@ export function profileFromJson(data: any): Profile {
     deleted_at: data.deleted_at ? moment(data.deleted_at).toDate() : undefined,
   } as Profile;
 }
+
+export function letterName(name?: string) {
+  name = name || "NK";
+  const names = name.split(" ");
+
+  if (names.length > 1) {
+    return ((names as any)[0][0] + (names as any)[1][0]).toUpperCase();
+  }
+
+  return name.substring(0, 2).toUpperCase();
+}
