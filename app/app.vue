@@ -5,13 +5,19 @@ import { AuthService } from "./services/auth/auth.service";
 const is_loaded = ref(false);
 const route = useRoute();
 
+async function getProfile() {
+  try {
+    const user = await AuthService.profile();
+    if (!user && route.path != "/login") {
+      return navigateTo("/login");
+    } else if (user && route.path == "/login") {
+      // return navigateTo("/");
+    }
+  } catch (err) {}
+}
+
 onMounted(async () => {
-  const user = await AuthService.profile();
-  if (!user && route.path != "/login") {
-    return navigateTo("/login");
-  } else if (user && route.path == "/login") {
-    // return navigateTo("/");
-  }
+  await getProfile();
 
   setTimeout(() => {
     is_loaded.value = true;
@@ -21,7 +27,9 @@ onMounted(async () => {
 
 <template>
   <template v-if="!is_loaded">
-    <div class="h-screen z-[99999] flex items-center justify-center">
+    <div
+      class="h-screen fixed bg-white top-0 left-0 bottom-0 right-0 z-[99999] flex items-center justify-center"
+    >
       <div class="text-center">
         <Loader2 class="animate-spin inline size-12 mb-3 text-primary" />
       </div>

@@ -30,15 +30,19 @@ async function handleLogin() {
 
   is_submitted.value = false;
 }
+
+definePageMeta({
+  layout: "auth",
+});
 </script>
 
 <template>
   <div class="flex items-stretch justify-center min-h-screen p-5 relative">
     <div class="w-1/2 lg:block hidden">
       <div
-        class="w-full h-full bg-gray-50 rounded-lg flex items-center justify-center"
+        class="w-full h-full bg-gray-100 rounded-lg flex items-center justify-center relative overflow-hidden"
       >
-        <img :src="LoginSvg" class="w-[400px]" alt="" />
+        <img :src="LoginSvg" class="w-[400px] relative" alt="" />
       </div>
     </div>
     <div class="lg:w-1/2 w-full flex justify-center items-center">

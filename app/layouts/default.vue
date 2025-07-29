@@ -30,11 +30,11 @@ import { Home, LogOut } from "lucide-vue-next";
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        <div class="ml-auto flex items-center">
-          <button type="button" class="cursor-pointer">
-            <LogOut class="size-4"></LogOut>
-          </button>
-        </div>
+        <!-- <div class="ml-auto flex items-center"> -->
+        <!--   <button type="button" class="cursor-pointer"> -->
+        <!--     <LogOut class="size-4"></LogOut> -->
+        <!--   </button> -->
+        <!-- </div> -->
       </header>
       <main class="p-4">
         <slot></slot>

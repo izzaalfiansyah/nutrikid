@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import SearchForm from "@/components/SearchForm.vue";
-import VersionSwitcher from "@/components/VersionSwitcher.vue";
-
 import {
   Sidebar,
   SidebarContent,
@@ -27,6 +24,7 @@ import {
 } from "lucide-vue-next";
 
 const props = defineProps<SidebarProps>();
+const authStore = useAuthStore();
 
 // This is sample data.
 const data = {
@@ -83,6 +81,10 @@ const data = {
     },
   ],
 };
+
+function handleLogout() {
+  authStore.logout();
+}
 </script>
 
 <template>
@@ -128,7 +130,7 @@ const data = {
           <DropdownMenu>
             <DropdownMenuTrigger class="cursor-pointer" asChild>
               <SidebarMenuButton>
-                <User2 /> Username
+                <User2 /> {{ authStore.user?.name }}
                 <ChevronUp class="ml-auto" />
               </SidebarMenuButton>
             </DropdownMenuTrigger>
@@ -137,11 +139,34 @@ const data = {
               class="w-[--reka-popper-anchor-width]"
             >
               <DropdownMenuItem>
-                <span>Profil</span>
+                <span class="text-gray-800">Profil</span>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <span>Sign out</span>
-              </DropdownMenuItem>
+              <AlertDialog>
+                <AlertDialogTrigger class="w-full cursor-pointer">
+                  <DropdownMenuItem disabled>
+                    <span class="text-gray-800">Logout</span>
+                  </DropdownMenuItem>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Anda yakin akan logout?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Setelah melakukan aksi ini. Sesi anda akan terhapus dan
+                      anda perlu untuk login kembali.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel class="cursor-pointer"
+                      >Batal</AlertDialogCancel
+                    >
+                    <AlertDialogAction
+                      @click="handleLogout"
+                      class="cursor-pointer"
+                      >Oke</AlertDialogAction
+                    >
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </DropdownMenuContent>
           </DropdownMenu>
         </SidebarMenuItem>
