@@ -24,8 +24,8 @@ async function handleLogin() {
   try {
     await AuthService.login(req.value);
     navigateTo("/");
-  } catch (err) {
-    error.value = "Username atau password salah.";
+  } catch (err: any) {
+    error.value = (err?.message || err).toString();
   }
 
   is_submitted.value = false;
