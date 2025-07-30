@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Eye, EyeOff, Loader2 } from "lucide-vue-next";
+import { CheckCircle2, Eye, EyeOff, Loader2 } from "lucide-vue-next";
 import { AuthService } from "~/services/auth/auth.service";
 import type { LoginParams } from "~/services/auth/dto/login.dto";
 import LoginSvg from "~/assets/login.svg";
@@ -24,9 +24,10 @@ async function handleLogin() {
 
   try {
     await AuthService.login(req.value);
+    const authStore = useAuthStore();
 
     toast("Login berhasil!", {
-      description: "Anda akan diarahkan ke halaman utama.",
+      description: `Selamat datang di Nutrikid, ${authStore.user!.name}.`,
     });
 
     navigateTo("/");

@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { Loader2 } from "lucide-vue-next";
 import { AuthService } from "./services/auth/auth.service";
+import "vue-sonner/style.css";
 
 const is_loaded = ref(false);
 const route = useRoute();
