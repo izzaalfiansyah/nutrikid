@@ -7,6 +7,7 @@ import { Home } from "lucide-vue-next";
 import { letterName } from "~/services/auth/dto/profile.dto";
 
 const authStore = useAuthStore();
+const homeStore = useHomeStore();
 </script>
 
 <template>
@@ -27,7 +28,7 @@ const authStore = useAuthStore();
             </BreadcrumbItem>
             <BreadcrumbSeparator class="hidden md:block" />
             <BreadcrumbItem>
-              <BreadcrumbPage>Home</BreadcrumbPage>
+              <BreadcrumbPage>{{ homeStore.title }}</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
