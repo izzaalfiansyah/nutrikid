@@ -15,9 +15,12 @@ import {
 import {
   BookOpen,
   ChartArea,
-  ChartBar,
   ChevronUp,
+  CloudDownload,
+  Fingerprint,
+  HandHelping,
   Home,
+  LogOut,
   User2,
   Users,
   Users2,
@@ -74,6 +77,27 @@ const data = {
         },
       ],
     },
+    {
+      title: "Lain-lain",
+      url: "#",
+      items: [
+        {
+          title: "Tentang Kami",
+          url: "/about",
+          icon: Fingerprint,
+        },
+        {
+          title: "Bantuan",
+          url: "/help",
+          icon: HandHelping,
+        },
+        {
+          title: "Download Aplikasi",
+          url: "/download-apps",
+          icon: CloudDownload,
+        },
+      ],
+    },
   ],
 };
 
@@ -109,7 +133,13 @@ function handleLogout() {
                 }"
               >
                 <NuxtLink :to="childItem.url">
-                  <component :is="childItem.icon" class="mr-2 size-4" />
+                  <component
+                    :is="childItem.icon"
+                    :class="{
+                      'text-primary': $route.path != childItem.url,
+                      'mr-2 size-4': true,
+                    }"
+                  />
                   {{ childItem.title }}
                 </NuxtLink>
               </SidebarMenuButton>
@@ -133,12 +163,17 @@ function handleLogout() {
               side="top"
               class="w-[--reka-popper-anchor-width]"
             >
-              <DropdownMenuItem>
+              <DropdownMenuItem class="flex items-center gap-2">
+                <User2 class="size-4"></User2>
                 <span class="text-gray-800">Profil</span>
               </DropdownMenuItem>
               <AlertDialog>
                 <AlertDialogTrigger class="w-full cursor-pointer" as-child>
-                  <DropdownMenuItem @select="(e) => e.preventDefault()">
+                  <DropdownMenuItem
+                    @select="(e) => e.preventDefault()"
+                    class="flex items-center gap-2"
+                  >
+                    <LogOut class="size-4"></LogOut>
                     <span class="text-gray-800">Logout</span>
                   </DropdownMenuItem>
                 </AlertDialogTrigger>
