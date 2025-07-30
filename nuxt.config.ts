@@ -5,12 +5,7 @@ export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
   css: ["./app/app.css"],
-  modules: [
-    "@nuxt/image",
-    "shadcn-nuxt",
-    "nuxt-lucide-icons",
-    "@pinia/nuxt",
-  ],
+  modules: ["@nuxt/image", "shadcn-nuxt", "nuxt-lucide-icons", "@pinia/nuxt"],
   vite: {
     plugins: [tailwindcss()],
   },
@@ -22,6 +17,8 @@ export default defineNuxtConfig({
     public: {
       SUPABASE_URL: process.env.SUPABASE_URL,
       SUPABASE_KEY: process.env.SUPABASE_KEY,
+      ANDROID_DOWNLOAD_URL: process.env.ANDROID_DOWNLOAD_URL,
+      IOS_DOWNLOAD_URL: process.env.IOS_DOWNLOAD_URL,
     },
   },
 });
