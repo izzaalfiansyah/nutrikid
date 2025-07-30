@@ -31,28 +31,31 @@ export class UserService {
       throw new Error("Terjadi kesalahan saat mengambil data pengguna");
     }
 
-    const { data: list } = await supabase().auth.admin.listUsers();
-
-    if (error) {
-      throw new Error("Terjadi kesalahan saat mengambil data pengguna");
-    }
-
     const profiles = data.map((profile) => {
-      const filteredUser = list.users.find(
-        (user) => user.id === profile.user_id,
-      );
-
       profile.uuid = profile.user_id;
-      profile.email = filteredUser?.email || "";
 
       return profileFromJson({
         ...profile,
         uuid: profile.user_id,
-        email: filteredUser?.email || "",
       });
     });
 
     return profiles;
+  }
+
+  static async show(params: Profile) {
+    const { data, error } = await supabase().auth.admin.getUserById(
+      params.uuid,
+    );
+
+    if (error) {
+      throw new Error("Gagal mengambil data pengguna");
+    }
+
+    return profileFromJson({
+      ...params,
+      email: data.user.email,
+    });
   }
 
   static async store(params: RegisterUser) {
