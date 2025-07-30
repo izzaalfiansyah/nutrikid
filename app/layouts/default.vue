@@ -16,12 +16,12 @@ const authStore = useAuthStore();
       <header
         class="flex h-16 bg-white shrink-0 items-center gap-2 border-b px-4"
       >
-        <SidebarTrigger class="-ml-1" />
+        <SidebarTrigger class="-ml-1 cursor-pointer" />
         <Separator orientation="vertical" class="mr-2 h-4" />
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem class="hidden md:block">
-              <BreadcrumbLink href="/" class="cursor-pointer" as="nuxt-link">
+              <BreadcrumbLink to="/" class="cursor-pointer" as="nuxt-link">
                 <Home class="size-4" />
               </BreadcrumbLink>
             </BreadcrumbItem>
@@ -31,10 +31,10 @@ const authStore = useAuthStore();
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        <div class="ml-auto flex items-center mr-3">
+        <div class="ml-auto flex items-center mr-2">
           <button
             type="button"
-            class="cursor-pointer flex space-x-3 items-center"
+            class="cursor-pointer flex md:space-x-3 items-center"
           >
             <Avatar>
               <AvatarFallback>{{

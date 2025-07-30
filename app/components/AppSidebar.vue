@@ -56,11 +56,6 @@ const data = {
           url: "/students",
           icon: Users,
         },
-        {
-          title: "Template Saran",
-          url: "/templates",
-          icon: BookOpen,
-        },
       ],
     },
     {
@@ -68,14 +63,14 @@ const data = {
       url: "#",
       items: [
         {
-          title: "Laporan Harian",
-          url: "/daily-report",
+          title: "Pengukuran Gizi",
+          url: "/measurements",
           icon: ChartArea,
         },
         {
-          title: "Laporan Bulanan",
-          url: "/monthly-report",
-          icon: ChartBar,
+          title: "Template Saran",
+          url: "/templates",
+          icon: BookOpen,
         },
       ],
     },

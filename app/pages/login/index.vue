@@ -45,10 +45,10 @@ definePageMeta({
         <img :src="LoginSvg" class="w-[400px] relative" alt="" />
       </div>
     </div>
-    <div class="lg:w-1/2 w-full flex justify-center items-center">
+    <div class="lg:w-1/2 w-full flex justify-center items-center lg:bg-white">
       <form
         @submit.prevent="handleLogin"
-        class="max-w-full space-y-5 relative w-[400px]"
+        class="max-w-full space-y-5 relative w-[400px] bg-white lg:shadow-none lg:bg-transparent rounded shadow px-5 py-20"
       >
         <div>
           <div class="text-2xl font-semibold">Selamat Datang 👋</div>
