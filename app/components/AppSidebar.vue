@@ -24,7 +24,12 @@ import {
   User2,
   Users,
   Users2,
+  LockKeyholeOpen,
 } from "lucide-vue-next";
+import { AuthService } from "~/services/auth/auth.service";
+import { UserService } from "~/services/user/user.service";
+import UserStoreDialog from "./app/users/UserStoreDialog.vue";
+import UserResetPasswordDialog from "./app/users/UserResetPasswordDialog.vue";
 
 const props = defineProps<SidebarProps>();
 const authStore = useAuthStore();
@@ -155,7 +160,10 @@ function handleLogout() {
           <DropdownMenu>
             <DropdownMenuTrigger class="cursor-pointer" asChild>
               <SidebarMenuButton>
-                <User2 /> {{ authStore.user?.name }}
+                <User2 />
+                <div class="truncate">
+                  {{ authStore.user?.name }}
+                </div>
                 <ChevronUp class="ml-auto" />
               </SidebarMenuButton>
             </DropdownMenuTrigger>
@@ -163,10 +171,28 @@ function handleLogout() {
               side="top"
               class="w-[--reka-popper-anchor-width]"
             >
-              <DropdownMenuItem class="flex items-center gap-2">
-                <User2 class="size-4"></User2>
-                <span class="text-gray-800">Profil</span>
-              </DropdownMenuItem>
+              <UserStoreDialog
+                :callback="AuthService.profile"
+                :user="authStore.user!"
+                caption="Profil Saya"
+              >
+                <DropdownMenuItem
+                  @select="(e) => e.preventDefault()"
+                  class="flex items-center gap-2"
+                >
+                  <User2 class="size-4"></User2>
+                  <span class="text-gray-800">Profil</span>
+                </DropdownMenuItem>
+              </UserStoreDialog>
+              <UserResetPasswordDialog :uuid="authStore.user!.user_id">
+                <DropdownMenuItem
+                  @select="(e) => e.preventDefault()"
+                  class="flex items-center gap-2"
+                >
+                  <LockKeyholeOpen class="size-4" />
+                  <span>Reset Password</span>
+                </DropdownMenuItem>
+              </UserResetPasswordDialog>
               <AlertDialog>
                 <AlertDialogTrigger class="w-full cursor-pointer" as-child>
                   <DropdownMenuItem

@@ -1,6 +1,6 @@
 export interface UsersParams {
   limit?: number;
-  offset?: number;
+  page?: number;
   search?: string;
   role?: string;
 }

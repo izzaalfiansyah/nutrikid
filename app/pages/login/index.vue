@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { CheckCircle2, Eye, EyeOff, Loader2 } from "lucide-vue-next";
+import { Eye, EyeOff, Loader2 } from "lucide-vue-next";
 import { AuthService } from "~/services/auth/auth.service";
 import type { LoginParams } from "~/services/auth/dto/login.dto";
 import LoginSvg from "~/assets/login.svg";
-import { toast } from "vue-sonner";
+import { handleSuccess } from "~/lib/handle-success";
 
 const req = ref<LoginParams>({
   email: "",
@@ -26,9 +26,7 @@ async function handleLogin() {
     await AuthService.login(req.value);
     const authStore = useAuthStore();
 
-    toast("Login berhasil!", {
-      description: `Selamat datang di Nutrikid, ${authStore.user!.name}.`,
-    });
+    handleSuccess(`Selamat datang di Nutrikid, ${authStore.user!.name}.`);
 
     navigateTo("/");
   } catch (err: any) {

@@ -8,14 +8,17 @@ import moment from "moment";
 export class UserService {
   static async findAll(params?: UsersParams) {
     const limit = params?.limit || 20;
-    const offset = params?.offset || 1;
-    const to = offset + limit - 1;
+    const from = params?.page ? (params?.page - 1) * limit : 0;
+    const to = from + limit;
 
     let query = supabase()
       .from("profiles")
       .select("*")
-      .range(offset, to)
-      .neq("deleted_at", null);
+
+      .order("name", {
+        ascending: true,
+      })
+      .is("deleted_at", null);
 
     if (params?.search) {
       query = query.ilike("name", `%${params.search}%`);
@@ -25,27 +28,28 @@ export class UserService {
       query = query.eq("role", params.role);
     }
 
-    const { data, error } = await query;
+    const total = (await query).count;
+    const { data, error } = await query.range(from, to);
 
     if (error) {
       throw new Error("Terjadi kesalahan saat mengambil data pengguna");
     }
 
     const profiles = data.map((profile) => {
-      profile.uuid = profile.user_id;
-
       return profileFromJson({
         ...profile,
-        uuid: profile.user_id,
       });
     });
 
-    return profiles;
+    return {
+      total,
+      profiles,
+    };
   }
 
   static async show(params: Profile) {
     const { data, error } = await supabase().auth.admin.getUserById(
-      params.uuid,
+      params.user_id,
     );
 
     if (error) {
@@ -62,6 +66,7 @@ export class UserService {
     const { data, error } = await supabase().auth.admin.createUser({
       email: params.email,
       password: params.password,
+      email_confirm: true,
     });
 
     if (error) {
@@ -81,7 +86,7 @@ export class UserService {
 
     return {
       success: true,
-      messagee: "Pengguna baru berhasil ditambahkan",
+      message: "Pengguna baru berhasil ditambahkan",
     };
   }
 
@@ -101,7 +106,7 @@ export class UserService {
 
     return {
       success: true,
-      messagee: "Pengguna berhasil diedit",
+      message: "Pengguna berhasil diedit",
     };
   }
 
