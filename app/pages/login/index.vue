@@ -3,6 +3,7 @@ import { Eye, EyeOff, Loader2 } from "lucide-vue-next";
 import { AuthService } from "~/services/auth/auth.service";
 import type { LoginParams } from "~/services/auth/dto/login.dto";
 import LoginSvg from "~/assets/login.svg";
+import { toast } from "vue-sonner";
 
 const req = ref<LoginParams>({
   email: "",
@@ -23,6 +24,11 @@ async function handleLogin() {
 
   try {
     await AuthService.login(req.value);
+
+    toast("Login berhasil!", {
+      description: "Anda akan diarahkan ke halaman utama.",
+    });
+
     navigateTo("/");
   } catch (err: any) {
     error.value = (err?.message || err).toString();

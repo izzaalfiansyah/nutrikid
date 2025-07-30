@@ -39,4 +39,8 @@ onMounted(async () => {
   <NuxtLayout>
     <NuxtPage></NuxtPage>
   </NuxtLayout>
+
+  <ClientOnly>
+    <Toaster position="bottom-right"></Toaster>
+  </ClientOnly>
 </template>
