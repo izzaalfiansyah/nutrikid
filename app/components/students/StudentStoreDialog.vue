@@ -9,6 +9,7 @@ import StudentParentSelect from "./StudentParentSelect.vue";
 import { handleError } from "~/lib/handle-error";
 import { StudentService } from "~/services/student/student.service";
 import { parseDate } from "@internationalized/date";
+import { handleSuccess } from "~/lib/handle-success";
 
 const props = defineProps<{
   student?: Student;
@@ -38,7 +39,6 @@ async function handleSubmit() {
   try {
     let message = "";
     if (props.student) {
-      console.log(params.value);
       const data = await StudentService.update(params.value);
       message = data.message;
     } else {
@@ -47,6 +47,7 @@ async function handleSubmit() {
     }
 
     open.value = false;
+    handleSuccess(message);
 
     if (props.callback) {
       props.callback();
@@ -128,7 +129,7 @@ onMounted(() => {
             <Label for=""> Umur </Label>
             <div class="relative col-span-3">
               <Input
-                :default-value="calculateAge(params.birth_date)"
+                :model-value="calculateAge(params.birth_date)"
                 placeholder="Umur"
                 disabled
               />
