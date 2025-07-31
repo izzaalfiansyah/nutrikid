@@ -36,3 +36,14 @@ export function letterName(name?: string) {
 
   return name.substring(0, 2).toUpperCase();
 }
+
+export function mappedRole(role: ProfileRole) {
+  switch (role) {
+    case "admin":
+      return "Admin";
+    case "user":
+      return "User";
+    case "parent":
+      return "Orang Tua";
+  }
+}

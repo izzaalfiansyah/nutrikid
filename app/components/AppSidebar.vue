@@ -28,8 +28,8 @@ import {
 } from "lucide-vue-next";
 import { AuthService } from "~/services/auth/auth.service";
 import { UserService } from "~/services/user/user.service";
-import UserStoreDialog from "./app/users/UserStoreDialog.vue";
-import UserResetPasswordDialog from "./app/users/UserResetPasswordDialog.vue";
+import UserStoreDialog from "./users/UserStoreDialog.vue";
+import UserResetPasswordDialog from "./users/UserResetPasswordDialog.vue";
 
 const props = defineProps<SidebarProps>();
 const authStore = useAuthStore();

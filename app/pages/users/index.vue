@@ -5,11 +5,15 @@ import {
   Search,
   SquareArrowOutUpRight,
 } from "lucide-vue-next";
-import UserDeleteDialog from "~/components/app/users/UserDeleteDialog.vue";
-import UserResetPasswordDialog from "~/components/app/users/UserResetPasswordDialog.vue";
-import UserStoreDialog from "~/components/app/users/UserStoreDialog.vue";
+import UserDeleteDialog from "~/components/users/UserDeleteDialog.vue";
+import UserResetPasswordDialog from "~/components/users/UserResetPasswordDialog.vue";
+import UserStoreDialog from "~/components/users/UserStoreDialog.vue";
 import { roleIcon } from "~/lib/role-icon";
-import { letterName, type Profile } from "~/services/auth/dto/profile.dto";
+import {
+  letterName,
+  mappedRole,
+  type Profile,
+} from "~/services/auth/dto/profile.dto";
 import type { UsersParams } from "~/services/user/dto/users-params.dto";
 import { UserService } from "~/services/user/user.service";
 
@@ -22,7 +26,6 @@ const params = ref<UsersParams>({
   page: 1,
   limit: 20,
   search: "",
-  role: "",
 });
 
 async function getProfiles(reset = true) {
@@ -31,7 +34,7 @@ async function getProfiles(reset = true) {
   if ((reset = true)) {
     params.value.page = 1;
     params.value.search = "";
-    params.value.role = "";
+    params.value.role = undefined;
   }
 
   const data = await UserService.findAll(params.value);
@@ -125,7 +128,7 @@ onMounted(async () => {
                     :is="roleIcon(profile.role)"
                     class="size-3 mr-2 inline"
                   ></component>
-                  {{ profile.role.toUpperCase() }}
+                  {{ mappedRole(profile.role) }}
                 </TableCell>
                 <TableCell>
                   <div class="flex items-center">

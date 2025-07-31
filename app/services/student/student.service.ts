@@ -43,6 +43,10 @@ export class StudentService {
   }
 
   static async store(params: Student) {
+    if (params.parent) {
+      params.parent_id = params.parent.id;
+    }
+
     const { error } = await supabase().from("students").insert(params);
 
     if (error) {
@@ -56,6 +60,10 @@ export class StudentService {
   }
 
   static async update(params: Student) {
+    if (params.parent) {
+      params.parent_id = params.parent.id;
+    }
+
     const { error } = await supabase()
       .from("students")
       .update(params)

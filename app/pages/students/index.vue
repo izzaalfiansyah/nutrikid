@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { MoreHorizontal, Plus, Search } from "lucide-vue-next";
-import UserStoreDialog from "~/components/app/users/UserStoreDialog.vue";
+import StudentStoreDialog from "~/components/students/StudentStoreDialog.vue";
 import { calculateAge } from "~/lib/calculate-age";
 import { formatDate } from "~/lib/format-date";
 import { genderIcon } from "~/lib/gender-icon";
@@ -8,6 +8,7 @@ import { letterName } from "~/services/auth/dto/profile.dto";
 import { mappedGender, type Student } from "~/services/student/dto/student.dto";
 import type { StudentsParams } from "~/services/student/dto/students-params.dto";
 import { StudentService } from "~/services/student/student.service";
+import { useHomeStore } from "~/stores/home.store";
 
 const students = ref<Array<Student>>([]);
 const total = ref(0);
@@ -81,12 +82,12 @@ onMounted(async () => {
           </div>
         </div>
       </div>
-      <UserStoreDialog :callback="getStudents" caption="Tambah Pengguna">
+      <StudentStoreDialog :callback="getStudents">
         <Button type="button" class="cursor-pointer">
           <Plus />
-          Tambah Pengguna
+          Tambah Siswa
         </Button>
-      </UserStoreDialog>
+      </StudentStoreDialog>
     </div>
     <Card>
       <CardContent>
@@ -99,9 +100,9 @@ onMounted(async () => {
               <TableRow>
                 <TableHead>#</TableHead>
                 <TableHead>Nama</TableHead>
+                <TableHead>Gender</TableHead>
                 <TableHead>Tanggal Lahir</TableHead>
                 <TableHead>Umur</TableHead>
-                <TableHead>Gender</TableHead>
                 <TableHead>Opsi</TableHead>
               </TableRow>
             </TableHeader>
@@ -121,17 +122,17 @@ onMounted(async () => {
                   </div>
                 </TableCell>
                 <TableCell>
-                  {{ formatDate(student.birth_date) }}
-                </TableCell>
-                <TableCell>
-                  {{ calculateAge(student.birth_date) }}
-                </TableCell>
-                <TableCell>
                   <component
                     :is="genderIcon(student.gender)"
                     :class="`size-3 inline mr-1 ${student.gender == 'l' ? 'text-sky-500' : 'text-pink-500'}`"
                   ></component>
                   {{ mappedGender(student.gender) }}
+                </TableCell>
+                <TableCell>
+                  {{ formatDate(student.birth_date) }}
+                </TableCell>
+                <TableCell>
+                  {{ calculateAge(student.birth_date) }}
                 </TableCell>
                 <TableCell class="align-middle">
                   <DropdownMenu>
@@ -140,7 +141,16 @@ onMounted(async () => {
                         <MoreHorizontal class="size-4"></MoreHorizontal>
                       </button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent> </DropdownMenuContent>
+                    <DropdownMenuContent>
+                      <StudentStoreDialog
+                        :callback="getStudents"
+                        :student="student"
+                      >
+                        <DropdownMenuItem @select="(e) => e.preventDefault()">
+                          Edit
+                        </DropdownMenuItem>
+                      </StudentStoreDialog>
+                    </DropdownMenuContent>
                   </DropdownMenu>
                 </TableCell>
               </TableRow>

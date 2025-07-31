@@ -10,5 +10,10 @@ export const supabase = () => {
     throw new Error("Missing Supabase credentials");
   }
 
-  return createClient(supabaseUrl, supabaseKey);
+  return createClient(supabaseUrl, supabaseKey, {
+    auth: {
+      autoRefreshToken: true,
+      persistSession: true,
+    },
+  });
 };
