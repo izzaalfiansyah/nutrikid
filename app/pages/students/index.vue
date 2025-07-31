@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { MoreHorizontal, Plus, Search } from "lucide-vue-next";
+import StudentDeleteDialog from "~/components/students/StudentDeleteDialog.vue";
 import StudentStoreDialog from "~/components/students/StudentStoreDialog.vue";
 import { calculateAge } from "~/lib/calculate-age";
 import { formatDate } from "~/lib/format-date";
@@ -150,6 +151,14 @@ onMounted(async () => {
                           Edit
                         </DropdownMenuItem>
                       </StudentStoreDialog>
+                      <StudentDeleteDialog
+                        :callback="getStudents"
+                        :student="student"
+                      >
+                        <DropdownMenuItem @select="(e) => e.preventDefault()">
+                          Hapus
+                        </DropdownMenuItem>
+                      </StudentDeleteDialog>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </TableCell>

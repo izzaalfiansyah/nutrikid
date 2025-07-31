@@ -111,13 +111,13 @@ export class UserService {
     };
   }
 
-  static async destroy(profile_id: number) {
+  static async destroy(params: Profile) {
     const { error } = await supabase()
       .from("profiles")
       .update({
         deleted_at: moment().utc().toDate(),
       })
-      .eq("id", profile_id);
+      .eq("id", params.id);
 
     if (error) {
       throw new Error("Terjadi kesalahan saat menghapus pengguna");
