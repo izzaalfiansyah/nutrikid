@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Eye, EyeOff, Loader2 } from "lucide-vue-next";
+import { Eye, EyeOff, Loader2, SquareArrowOutUpRight } from "lucide-vue-next";
 import { AuthService } from "~/services/auth/auth.service";
 import type { LoginParams } from "~/services/auth/dto/login.dto";
 import LoginSvg from "~/assets/login.svg";
@@ -104,6 +104,15 @@ definePageMeta({
         </Button>
         <div class="text-center text-sm text-gray-500">
           Jika anda lupa password, silahkan hubungi admin.
+          <NuxtLink
+            to="/about"
+            class="text-center text-sm underline text-primary mt-1"
+          >
+            Tentang Kami
+            <SquareArrowOutUpRight
+              class="size-3 ml-1 inline"
+            ></SquareArrowOutUpRight>
+          </NuxtLink>
         </div>
       </form>
     </div>
