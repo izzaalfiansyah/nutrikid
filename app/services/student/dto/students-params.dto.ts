@@ -1,6 +1,6 @@
 export interface StudentsParams {
   limit?: number;
-  offset?: number;
+  page?: number;
   search?: string;
-  male?: boolean;
+  gender?: string;
 }

@@ -7,24 +7,26 @@ import { measurementFromJson } from "../measurement/dto/measurement.dto";
 export class StudentService {
   static async findAll(params?: StudentsParams) {
     const limit = params?.limit || 20;
-    const offset = params?.offset || 1;
-    const to = offset + limit - 1;
+    const page = params?.page || 1;
+    const from = (page - 1) * limit;
+    const to = from + limit;
 
     let query = supabase()
       .from("students")
       .select("*")
-      .range(offset, to)
-      .neq("deleted_at", null);
+
+      .is("deleted_at", null);
 
     if (params?.search) {
       query = query.ilike("name", `%${params.search}%`);
     }
 
-    if (params?.male) {
-      query = query.eq("male", params.male);
+    if (params?.gender && params.gender != "all") {
+      query = query.eq("gender", params.gender);
     }
 
-    const { data, error } = await query;
+    const total = (await query).count;
+    const { data, error } = await query.range(from, to);
 
     if (error) {
       throw new Error("Terjadi kesalahan saat mengambil data siswa.");
@@ -34,7 +36,10 @@ export class StudentService {
       return studentFromJson(student);
     });
 
-    return students;
+    return {
+      total,
+      students,
+    };
   }
 
   static async store(params: Student) {

@@ -8,7 +8,8 @@ import moment from "moment";
 export class UserService {
   static async findAll(params?: UsersParams) {
     const limit = params?.limit || 20;
-    const from = params?.page ? (params?.page - 1) * limit : 0;
+    const page = params?.page || 1;
+    const from = (page - 1) * limit;
     const to = from + limit;
 
     let query = supabase()
