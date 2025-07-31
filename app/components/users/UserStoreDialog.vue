@@ -88,18 +88,7 @@ onMounted(() => {
           </div>
           <div class="grid grid-cols-4 items-center gap-4">
             <Label for="" class="text-right">Role</Label>
-            <Select v-model="params.role">
-              <SelectTrigger class="col-span-3">
-                <SelectValue required placeholder="Pilih Role" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem value="admin">Admin</SelectItem>
-                  <SelectItem value="user">User</SelectItem>
-                  <SelectItem value="parent">Orang Tua</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+            <RoleSelect v-model="params.role"></RoleSelect>
           </div>
           <div class="grid grid-cols-4 items-center gap-4">
             <Label for="" class="text-right">Phone</Label>

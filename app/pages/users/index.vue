@@ -76,16 +76,7 @@ onMounted(async () => {
             ></Input>
           </div>
           <div class="w-36">
-            <Select v-model="params.role">
-              <SelectTrigger>
-                <SelectValue placeholder="Pilih Role" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="admin">Admin</SelectItem>
-                <SelectItem value="user">User</SelectItem>
-                <SelectItem value="parent">Orang Tua</SelectItem>
-              </SelectContent>
-            </Select>
+            <RoleSelect v-model="params.role"></RoleSelect>
           </div>
         </div>
       </div>

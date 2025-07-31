@@ -25,6 +25,10 @@ export class MeasurementService {
       query = query.lte("created_at", params.end_date);
     }
 
+    if (params?.student_id) {
+      query = query.eq("student_id", params.student_id);
+    }
+
     const total = (await query).count;
     const { data, error } = await query.range(from, to);
 
@@ -68,6 +72,10 @@ export class MeasurementService {
       weight: params.student_weight,
     });
 
+    if (params.student) {
+      params.student_id = params.student.id;
+    }
+
     const authStore = useAuthStore();
 
     const { error } = await supabase().from("measurements").insert({
@@ -98,6 +106,10 @@ export class MeasurementService {
       height: params.student_height,
       weight: params.student_weight,
     });
+
+    if (params.student) {
+      params.student_id = params.student.id;
+    }
 
     const authStore = useAuthStore();
 

@@ -3,4 +3,5 @@ export interface MeasurementParams {
   page?: number;
   start_date?: Date;
   end_date?: Date;
+  student_id?: number;
 }
