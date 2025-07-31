@@ -13,6 +13,8 @@ const props = defineProps<{
   callback?: () => any;
 }>();
 
+const authStore = useAuthStore();
+
 const open = ref(false);
 const params = ref<RegisterUser>({
   id: 0,
@@ -91,12 +93,15 @@ onMounted(() => {
               v-model="params.name"
             ></Input>
           </div>
-          <div class="grid grid-cols-4 items-center gap-4">
+          <div
+            class="grid grid-cols-4 items-center gap-4"
+            v-if="authStore.user?.id != params.id"
+          >
             <Label for="" class="text-right">Role</Label>
             <RoleSelect v-model="params.role"></RoleSelect>
           </div>
           <div class="grid grid-cols-4 items-center gap-4">
-            <Label for="" class="text-right">Phone</Label>
+            <Label for="" class="text-right">Telepon</Label>
             <Input
               class="col-span-3"
               required

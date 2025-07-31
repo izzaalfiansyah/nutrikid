@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { MoreHorizontal, Plus, Search } from "lucide-vue-next";
-import StudentDeleteDialog from "~/components/students/StudentDeleteDialog.vue";
 import StudentStoreDialog from "~/components/students/StudentStoreDialog.vue";
 import { calculateAge } from "~/lib/calculate-age";
 import { formatDate } from "~/lib/format-date";
@@ -134,6 +133,11 @@ onMounted(async () => {
                       </button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
+                      <NuxtLink :to="`/students/${student.id}/statistics`">
+                        <DropdownMenuItem @select="(e) => e.preventDefault()">
+                          Statistik
+                        </DropdownMenuItem>
+                      </NuxtLink>
                       <StudentStoreDialog
                         :callback="getStudents"
                         :student="student"
@@ -142,14 +146,17 @@ onMounted(async () => {
                           Edit
                         </DropdownMenuItem>
                       </StudentStoreDialog>
-                      <StudentDeleteDialog
+                      <DeleteDialog
+                        title="Hapus Siswa"
+                        description="Anda yakin akan menghapus siswa terpilih? Data akan terhapus permanen"
+                        :fn="() => StudentService.destroy(student)"
                         :callback="getStudents"
                         :student="student"
                       >
                         <DropdownMenuItem @select="(e) => e.preventDefault()">
                           Hapus
                         </DropdownMenuItem>
-                      </StudentDeleteDialog>
+                      </DeleteDialog>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </TableCell>

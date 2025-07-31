@@ -1,23 +1,23 @@
 <script lang="ts" setup>
 import { handleError } from "~/lib/handle-error";
 import { handleSuccess } from "~/lib/handle-success";
-import type { Profile } from "~/services/auth/dto/profile.dto";
-import { UserService } from "~/services/user/user.service";
 
 const props = defineProps<{
-  user: Profile;
   callback?: () => any;
+  fn: () => Promise<any>;
+  title: string;
+  description: string;
 }>();
 
 const open = ref(false);
 
 async function handleDelete() {
   try {
-    const data = await UserService.destroy(props.user);
+    const data = await props.fn();
 
     open.value = false;
 
-    handleSuccess(data.message);
+    handleSuccess(data?.message || "Berhasil menghapus data");
 
     if (props.callback) {
       props.callback();
@@ -35,9 +35,9 @@ async function handleDelete() {
     </AlertDialogTrigger>
     <AlertDialogContent>
       <AlertDialogHeader>
-        <AlertDialogTitle>Hapus user?</AlertDialogTitle>
+        <AlertDialogTitle>{{ title }}</AlertDialogTitle>
         <AlertDialogDescription>
-          Anda yakin menghapus user terkait? Aksi tidak dapat dibatalkan.
+          {{ description }}
         </AlertDialogDescription>
       </AlertDialogHeader>
       <AlertDialogFooter>

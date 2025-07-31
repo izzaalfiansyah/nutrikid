@@ -40,3 +40,12 @@ export function measurementFromJson(data: any): Measurement {
     z_score,
   };
 }
+
+export function mappedMeasurementStatus(status: MeasurementStatus) {
+  return {
+    wasted: "Kurus",
+    normal: "Normal",
+    overweight: "Gemuk",
+    obese: "Obesitas",
+  }[status];
+}

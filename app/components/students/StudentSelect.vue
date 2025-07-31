@@ -7,10 +7,12 @@ const students = ref<Array<Student>>([]);
 const props = defineProps<{
   modelValue?: number;
   withAll?: boolean;
+  disabled?: boolean;
 }>();
 
 const emit = defineEmits<{
   (e: "update:modelValue", value: number | null): void;
+  (e: "change", value: Student | null): void;
 }>();
 
 async function getStudents() {
@@ -29,6 +31,10 @@ const value = ref(props.modelValue);
 
 watch(value, () => {
   emit("update:modelValue", value.value || null);
+  emit(
+    "change",
+    students.value.find((student) => student.id == value.value) || null,
+  );
 });
 
 onMounted(() => {
@@ -38,7 +44,7 @@ onMounted(() => {
 
 <template>
   <Select v-model="value" class="w-full">
-    <SelectTrigger class="w-full">
+    <SelectTrigger :disabled="disabled" class="w-full">
       <SelectValue placeholder="Pilih Siswa"></SelectValue>
     </SelectTrigger>
     <SelectContent>

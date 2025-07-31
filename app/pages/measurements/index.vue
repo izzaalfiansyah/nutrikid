@@ -1,11 +1,16 @@
 <script lang="ts" setup>
-import { CalendarIcon, Filter } from "lucide-vue-next";
+import { CalendarIcon, Filter, MoreHorizontal, Plus } from "lucide-vue-next";
 import type { DateValue } from "reka-ui";
 import StudentSelect from "~/components/students/StudentSelect.vue";
 import { formatDate } from "~/lib/format-date";
+import { genderIcon } from "~/lib/gender-icon";
 import type { MeasurementParams } from "~/services/measurement/dto/measurement-params.dto";
-import type { Measurement } from "~/services/measurement/dto/measurement.dto";
+import {
+  mappedMeasurementStatus,
+  type Measurement,
+} from "~/services/measurement/dto/measurement.dto";
 import { MeasurementService } from "~/services/measurement/measurement.service";
+import { mappedGender } from "~/services/student/dto/student.dto";
 import { useHomeStore } from "~/stores/home.store";
 
 const measurements = ref<Array<Measurement>>([]);
@@ -125,18 +130,132 @@ onMounted(async () => {
         </DialogContent>
       </Dialog>
       <UserStoreDialog :callback="getMeasurements" caption="Tambah Pengukuran">
-        <Button type="button" as="nuxt-link" class="cursor-pointer">
+        <Button
+          type="button"
+          @click="() => navigateTo('/measurements/create')"
+          class="cursor-pointer"
+        >
           <Plus />
-          Tambah Pengguna
+          Tambah Pengukuran
         </Button>
       </UserStoreDialog>
     </div>
     <Card>
       <CardContent>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet nisi
-        cumque, explicabo quas dolorum amet quae iste dolore debitis commodi
-        odit dignissimos, soluta vel est at eaque perferendis ipsum rem?
+        <Table>
+          <TableCaption v-if="measurements.length == 0"
+            >Data tidak tersedia</TableCaption
+          >
+          <TableHeader>
+            <TableRow>
+              <TableHead>Tanggal</TableHead>
+              <TableHead>Siswa</TableHead>
+              <TableHead>Tinggi</TableHead>
+              <TableHead>Berat</TableHead>
+              <TableHead>BMI</TableHead>
+              <TableHead>Z Score</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Opsi</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow v-for="measurement in measurements" :key="measurement.id">
+              <TableCell>
+                {{ formatDate(measurement.created_at, { withTime: true }) }}
+              </TableCell>
+              <TableCell class="font-medium">
+                <NuxtLink
+                  :to="`/students/${measurement.student_id}/statistics`"
+                  class="underline"
+                  >{{ measurement.student?.name }}</NuxtLink
+                >
+                <component
+                  :is="genderIcon(measurement.student?.gender || 'l')"
+                  :class="`size-3 ml-2 inline ${measurement.student?.gender == 'l' ? 'text-sky-500' : 'text-pink-500'}`"
+                ></component>
+              </TableCell>
+              <TableCell>
+                {{ measurement.student_height.toFixed(2) }}cm
+              </TableCell>
+              <TableCell>
+                {{ measurement.student_weight.toFixed(2) }}kg
+              </TableCell>
+              <TableCell>
+                {{ measurement.student_bmi.toFixed(2) }}
+              </TableCell>
+              <TableCell>
+                {{ (measurement.z_score || 0).toFixed(2) }}
+              </TableCell>
+              <TableCell>
+                <Badge variant="outline">
+                  {{ mappedMeasurementStatus(measurement.status || "normal") }}
+                </Badge>
+              </TableCell>
+              <TableCell>
+                <DropdownMenu>
+                  <DropdownMenuTrigger as-child>
+                    <button class="cursor-pointer">
+                      <MoreHorizontal class="size-4"></MoreHorizontal>
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuItem
+                      @select="
+                        () => navigateTo('/measurements/' + measurement.id)
+                      "
+                    >
+                      Detail
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      @select="
+                        () =>
+                          navigateTo(
+                            '/measurements/' + measurement.id + '/edit',
+                          )
+                      "
+                    >
+                      Edit
+                    </DropdownMenuItem>
+                    <DeleteDialog
+                      title="Hapus Pengukuran"
+                      description="Anda yakin akan menghapus pengukuran terpilih? Data akan terhapus permanen"
+                      :fn="() => MeasurementService.destroy(measurement)"
+                    >
+                      <DropdownMenuItem @select="(e) => e.preventDefault()">
+                        Hapus
+                      </DropdownMenuItem>
+                    </DeleteDialog>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
       </CardContent>
     </Card>
+    <Pagination
+      v-slot="{ page }"
+      :items-per-page="params.limit || 20"
+      :total="total"
+      v-model:page="params.page"
+    >
+      <PaginationContent v-slot="{ items }">
+        <PaginationPrevious />
+
+        <template v-for="(item, index) in items" :key="index">
+          <PaginationItem
+            v-if="item.type === 'page'"
+            :value="item.value"
+            :is-active="item.value === page"
+          >
+            {{ item.value }}
+          </PaginationItem>
+        </template>
+
+        <PaginationEllipsis :index="4" />
+
+        <PaginationNext />
+      </PaginationContent>
+    </Pagination>
   </div>
 </template>

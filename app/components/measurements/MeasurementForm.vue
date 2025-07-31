@@ -1,0 +1,156 @@
+<script lang="ts" setup>
+import { calculateAge } from "~/lib/calculate-age";
+import { calculateBmi } from "~/lib/calculate-bmi";
+import { date } from "~/lib/format-date";
+import {
+  mappedMeasurementStatus,
+  type Measurement,
+} from "~/services/measurement/dto/measurement.dto";
+import type { Student } from "~/services/student/dto/student.dto";
+import StudentSelect from "../students/StudentSelect.vue";
+
+const props = defineProps<{
+  handleSubmit: () => any;
+  is_edit?: boolean;
+  modelValue: Measurement;
+}>();
+
+const params = ref<Measurement>(props.modelValue);
+
+const emit = defineEmits<{
+  (e: "update:modelValue", value: Measurement): void;
+}>();
+
+function handleChangeStudent(s: Student | null) {
+  params.value.student = s || undefined;
+  params.value.student_age = calculateAge(s?.birth_date ?? date());
+}
+
+watch(
+  () => [params.value.student_weight, params.value.student_height],
+  ([weight, height]) => {
+    height = height || 0;
+    weight = weight || 0;
+
+    const result = calculateBmi(params.value.student_age, {
+      height,
+      weight,
+    });
+
+    params.value.student_bmi = result.bmi;
+    params.value.z_score = result.z_score;
+    params.value.status = result.status;
+  },
+);
+
+watch(
+  params,
+  () => {
+    emit("update:modelValue", params.value);
+  },
+  { deep: true },
+);
+</script>
+
+<template>
+  <form @submit.prevent="handleSubmit">
+    <Card>
+      <CardHeader>
+        <CardTitle> {{ is_edit ? "Edit" : "Tambah" }} Pengukuran </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div class="space-y-5">
+          <div class="space-y-3">
+            <Label>Siswa</Label>
+            <div class="max-w-full w-xl">
+              <StudentSelect
+                v-model="params.student_id"
+                @change="handleChangeStudent"
+                :disabled="is_edit"
+              ></StudentSelect>
+            </div>
+          </div>
+          <div class="space-y-5" v-if="params.student">
+            <div class="border-b"></div>
+            <div class="space-y-5">
+              <CardTitle>Detail Siswa</CardTitle>
+              <div class="space-y-3 grow">
+                <Label>Umur</Label>
+                <Input
+                  v-model="params.student_age"
+                  type="number"
+                  placeholder="Masukkan Umur"
+                  required
+                  class="max-w-full w-xl"
+                  disabled
+                />
+              </div>
+              <div class="flex gap-3 max-w-full w-xl">
+                <div class="space-y-3 grow">
+                  <Label>Tinggi</Label>
+                  <NumberField
+                    v-model="params.student_height"
+                    required
+                    :min="0"
+                    :max="200"
+                  >
+                    <NumberFieldContent>
+                      <NumberFieldDecrement />
+                      <NumberFieldInput />
+                      <NumberFieldIncrement />
+                    </NumberFieldContent>
+                  </NumberField>
+                </div>
+                <div class="space-y-3 grow">
+                  <Label>Berat</Label>
+                  <NumberField
+                    v-model="params.student_weight"
+                    required
+                    :min="0"
+                    :max="200"
+                  >
+                    <NumberFieldContent>
+                      <NumberFieldDecrement />
+                      <NumberFieldInput />
+                      <NumberFieldIncrement />
+                    </NumberFieldContent>
+                  </NumberField>
+                </div>
+              </div>
+              <div class="space-y-3">
+                <Label>BMI</Label>
+                <Input
+                  v-model="params.student_bmi"
+                  type="number"
+                  placeholder="Masukkan BMI"
+                  required
+                  disabled
+                  class="max-w-full w-xl"
+                />
+              </div>
+              <div class="space-y-3">
+                <Label>Z-Score</Label>
+                <Input
+                  v-model="params.z_score"
+                  type="number"
+                  required
+                  disabled
+                  class="max-w-full w-xl"
+                />
+              </div>
+              <div class="space-y-3" v-if="params.status">
+                <Label>Status</Label>
+                <Badge variant="outline">
+                  {{ mappedMeasurementStatus(params.status) }}
+                </Badge>
+              </div>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+      <CardFooter>
+        <Button type="submit" class="cursor-pointer">Simpan Pengukuran</Button>
+      </CardFooter>
+    </Card>
+  </form>
+</template>

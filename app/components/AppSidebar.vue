@@ -16,9 +16,7 @@ import {
   BookOpen,
   ChartArea,
   ChevronUp,
-  CloudDownload,
   Fingerprint,
-  HandHelping,
   Home,
   LogOut,
   User2,
@@ -27,7 +25,6 @@ import {
   LockKeyholeOpen,
 } from "lucide-vue-next";
 import { AuthService } from "~/services/auth/auth.service";
-import { UserService } from "~/services/user/user.service";
 import UserStoreDialog from "./users/UserStoreDialog.vue";
 import UserResetPasswordDialog from "./users/UserResetPasswordDialog.vue";
 
@@ -35,6 +32,21 @@ const props = defineProps<SidebarProps>();
 const authStore = useAuthStore();
 
 // This is sample data.
+
+function isMenuActive(path: string) {
+  const route = useRoute();
+
+  if (path == "/" && route.path != "/") {
+    return false;
+  }
+
+  if (route.path.startsWith(path)) {
+    return true;
+  }
+
+  return false;
+}
+
 const data = {
   versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
   navMain: [
@@ -75,11 +87,11 @@ const data = {
           url: "/measurements",
           icon: ChartArea,
         },
-        {
-          title: "Template Saran",
-          url: "/templates",
-          icon: BookOpen,
-        },
+        // {
+        //   title: "Template Saran",
+        //   url: "/suggestions",
+        //   icon: BookOpen,
+        // },
       ],
     },
     {
@@ -90,16 +102,6 @@ const data = {
           title: "Tentang Kami",
           url: "/about",
           icon: Fingerprint,
-        },
-        {
-          title: "Bantuan",
-          url: "/help",
-          icon: HandHelping,
-        },
-        {
-          title: "Download Aplikasi",
-          url: "/download-apps",
-          icon: CloudDownload,
         },
       ],
     },
@@ -134,14 +136,14 @@ function handleLogout() {
                 as-child
                 :class="{
                   'bg-primary text-white hover:bg-primary hover:text-white':
-                    $route.path == childItem.url,
+                    isMenuActive(childItem.url),
                 }"
               >
                 <NuxtLink :to="childItem.url">
                   <component
                     :is="childItem.icon"
                     :class="{
-                      'text-primary': $route.path != childItem.url,
+                      'text-primary': !isMenuActive(childItem.url),
                       'mr-2 size-4': true,
                     }"
                   />

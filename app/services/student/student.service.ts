@@ -21,7 +21,7 @@ export class StudentService {
       query = query.ilike("name", `%${params.search}%`);
     }
 
-    if (params?.gender && params.gender != "all") {
+    if (params?.gender) {
       query = query.eq("gender", params.gender);
     }
 
@@ -46,6 +46,8 @@ export class StudentService {
     if (params.parent) {
       params.parent_id = params.parent.id;
     }
+
+    params.id = undefined as any;
 
     const { error } = await supabase().from("students").insert(params);
 

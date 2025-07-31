@@ -41,7 +41,7 @@ export class MeasurementService {
       .select("*")
       .in(
         "id",
-        data.map((item) => item.id),
+        data.map((item) => item.student_id),
       );
 
     if (studentsError) {
@@ -62,12 +62,42 @@ export class MeasurementService {
     };
   }
 
+  static async show(id: number) {
+    const { data, error } = await supabase()
+      .from("measurements")
+      .select("*")
+      .eq("id", id)
+      .single();
+
+    if (error) {
+      throw new Error("Data pengukuran tidak ditemukan");
+    }
+
+    const { data: student, error: errorStudent } = await supabase()
+      .from("students")
+      .select("*")
+      .eq("id", data.student_id)
+      .single();
+
+    if (error) {
+      throw new Error("Terjadi kesalahan saat mengambil data pengukuran");
+    }
+
+    data.student = student;
+
+    const measurement = measurementFromJson(data);
+
+    return {
+      measurement,
+    };
+  }
+
   static async store(params: Measurement) {
     const age = calculateAge(
       params.student?.birth_date || moment().utc().toDate(),
     );
 
-    const bmi = calculateBmi(age, {
+    const result = calculateBmi(age, {
       height: params.student_height,
       weight: params.student_weight,
     });
@@ -83,7 +113,7 @@ export class MeasurementService {
       student_weight: params.student_weight,
       student_height: params.student_height,
       student_age: age,
-      student_bmi: bmi,
+      student_bmi: result.bmi,
       creator_id: authStore.user?.id,
     });
 
@@ -102,7 +132,7 @@ export class MeasurementService {
       params.student?.birth_date || moment().utc().toDate(),
     );
 
-    const bmi = calculateBmi(age, {
+    const result = calculateBmi(age, {
       height: params.student_height,
       weight: params.student_weight,
     });
@@ -120,7 +150,7 @@ export class MeasurementService {
         student_weight: params.student_weight,
         student_height: params.student_height,
         student_age: age,
-        student_bmi: bmi,
+        student_bmi: result.bmi,
         creator_id: authStore.user?.id,
       })
       .neq("id", params.id);

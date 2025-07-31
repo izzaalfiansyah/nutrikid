@@ -5,7 +5,6 @@ import {
   Search,
   SquareArrowOutUpRight,
 } from "lucide-vue-next";
-import UserDeleteDialog from "~/components/users/UserDeleteDialog.vue";
 import UserResetPasswordDialog from "~/components/users/UserResetPasswordDialog.vue";
 import UserStoreDialog from "~/components/users/UserStoreDialog.vue";
 import { roleIcon } from "~/lib/role-icon";
@@ -162,14 +161,17 @@ onMounted(async () => {
                         </DropdownMenuItem>
                       </UserResetPasswordDialog>
                       <template v-if="profile.id != authStore.user?.id">
-                        <UserDeleteDialog
+                        <DeleteDialog
+                          title="Hapus Pengguna"
+                          description="Anda yakin akan menghapus pengguna terpilih? Data akan terhapus permanen"
+                          :fn="() => UserService.destroy(profile)"
                           :user="profile"
                           :callback="getProfiles"
                         >
                           <DropdownMenuItem @select="(e) => e.preventDefault()">
                             <span>Hapus</span>
                           </DropdownMenuItem>
-                        </UserDeleteDialog>
+                        </DeleteDialog>
                       </template>
                     </DropdownMenuContent>
                   </DropdownMenu>
