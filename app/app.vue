@@ -2,6 +2,7 @@
 import { Loader2 } from "lucide-vue-next";
 import { AuthService } from "./services/auth/auth.service";
 import "vue-sonner/style.css";
+import { app } from "./lib/app";
 
 const is_loaded = ref(false);
 const route = useRoute();
@@ -27,6 +28,13 @@ onMounted(async () => {
 </script>
 
 <template>
+  <Head>
+    <Title
+      >{{ app().name }} - Aplikasi Digital Monitoring Status Gizi Anak</Title
+    >
+    <Meta name="description" :content="app().description"></Meta>
+  </Head>
+
   <template v-if="!is_loaded">
     <div
       class="h-screen fixed bg-white top-0 left-0 bottom-0 right-0 z-[99999] flex items-center justify-center"

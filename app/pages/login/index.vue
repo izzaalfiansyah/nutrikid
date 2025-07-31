@@ -4,6 +4,7 @@ import { AuthService } from "~/services/auth/auth.service";
 import type { LoginParams } from "~/services/auth/dto/login.dto";
 import LoginSvg from "~/assets/login.svg";
 import { handleSuccess } from "~/lib/handle-success";
+import { app } from "~/lib/app";
 
 const req = ref<LoginParams>({
   email: "",
@@ -26,7 +27,7 @@ async function handleLogin() {
     await AuthService.login(req.value);
     const authStore = useAuthStore();
 
-    handleSuccess(`Selamat datang di Nutrikid, ${authStore.user!.name}.`);
+    handleSuccess(`Selamat datang di ${app().name}, ${authStore.user!.name}.`);
 
     navigateTo("/");
   } catch (err: any) {

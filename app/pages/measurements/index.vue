@@ -10,12 +10,12 @@ import {
   type Measurement,
 } from "~/services/measurement/dto/measurement.dto";
 import { MeasurementService } from "~/services/measurement/measurement.service";
-import { mappedGender } from "~/services/student/dto/student.dto";
 import { useHomeStore } from "~/stores/home.store";
 
 const measurements = ref<Array<Measurement>>([]);
 const total = ref(0);
 const homeStore = useHomeStore();
+const show_filter_dialog = ref(false);
 
 const params = ref<MeasurementParams>({
   page: 1,
@@ -33,6 +33,8 @@ async function getMeasurements(reset = true) {
     params.value.student_id = undefined;
   }
 
+  console.log(params.value);
+
   const data = await MeasurementService.findAll(params.value);
 
   measurements.value = data.measurements;
@@ -42,13 +44,17 @@ async function getMeasurements(reset = true) {
 const start_date = ref<DateValue>();
 const end_date = ref<DateValue>();
 
-watch(
-  params,
-  async () => {
-    await getMeasurements(false);
-  },
-  { deep: true },
-);
+watch(start_date, () => {
+  if (start_date.value) {
+    params.value.start_date = start_date.value.toDate("utc");
+  }
+});
+
+watch(end_date, () => {
+  if (end_date.value) {
+    params.value.end_date = end_date.value.toDate("utc");
+  }
+});
 
 onMounted(async () => {
   await getMeasurements();
@@ -62,7 +68,7 @@ onMounted(async () => {
     <div
       class="flex lg:items-center justify-between lg:flex-row flex-col gap-4"
     >
-      <Dialog>
+      <Dialog v-model:open="show_filter_dialog">
         <DialogTrigger as-child>
           <Button type="button" variant="outline">
             <Filter class="size-3 mr-2"></Filter>
@@ -70,7 +76,15 @@ onMounted(async () => {
           </Button>
         </DialogTrigger>
         <DialogContent>
-          <form @submit.prevent="() => getMeasurements()" class="space-y-5">
+          <form
+            @submit.prevent="
+              () => {
+                show_filter_dialog = false;
+                getMeasurements(false);
+              }
+            "
+            class="space-y-5"
+          >
             <DialogTitle>Filter Data Pengukuran</DialogTitle>
             <div class="w-full space-y-4">
               <div class="space-y-2 w-full">

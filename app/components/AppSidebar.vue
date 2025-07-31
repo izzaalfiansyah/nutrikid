@@ -27,6 +27,7 @@ import {
 import { AuthService } from "~/services/auth/auth.service";
 import UserStoreDialog from "./users/UserStoreDialog.vue";
 import UserResetPasswordDialog from "./users/UserResetPasswordDialog.vue";
+import { app } from "~/lib/app";
 
 const props = defineProps<SidebarProps>();
 const authStore = useAuthStore();
@@ -117,7 +118,9 @@ function handleLogout() {
   <Sidebar v-bind="props">
     <SidebarHeader>
       <div class="mt-3 flex items-center justify-center">
-        <span class="text-2xl font-semibold text-primary"> NutriKid </span>
+        <span class="text-2xl font-semibold text-primary">
+          {{ app().name }}
+        </span>
       </div>
     </SidebarHeader>
     <SidebarContent>

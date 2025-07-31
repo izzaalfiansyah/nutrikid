@@ -43,14 +43,10 @@ async function getMeasurements() {
 const options = {
   responsive: true,
   scales: {
-    yAxes: [
-      {
-        ticks: {
-          beginAtZero: true,
-        },
-      },
-    ],
-  } as any,
+    y: {
+      beginAtZero: true,
+    },
+  },
 };
 
 const chartData = computed((): ChartData => {
@@ -67,7 +63,7 @@ const chartData = computed((): ChartData => {
           (measurement) => measurement.student_weight,
         ),
         fill,
-        hidden: true,
+        hidden: false,
       },
       {
         label: "Tinggi",
@@ -75,7 +71,7 @@ const chartData = computed((): ChartData => {
           (measurement) => measurement.student_height,
         ),
         fill,
-        hidden: true,
+        hidden: false,
       },
       {
         label: "BMI",
