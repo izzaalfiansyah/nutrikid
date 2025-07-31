@@ -1,9 +1,13 @@
 import moment from "moment";
 
-export function formatDate(date: Date, withTime = false) {
+interface FormatDateOptions {
+  withTime?: boolean;
+}
+
+export function formatDate(date: Date, opt?: FormatDateOptions) {
   let format = "YYYY-MM-DD";
 
-  if (withTime) {
+  if (opt?.withTime) {
     format = "YYYY-MM-DD HH:mm";
   }
 
