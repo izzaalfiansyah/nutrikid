@@ -8,14 +8,14 @@ import moment from "moment";
 export class MeasurementService {
   static async findAll(params?: MeasurementParams) {
     const limit = params?.limit || 20;
-    const offset = params?.offset || 1;
-    const to = offset + limit - 1;
+    const page = params?.page || 1;
+    const from = (page - 1) * limit;
+    const to = from + limit - 1;
 
     let query = supabase()
       .from("measurements")
       .select("*")
-      .range(offset, to)
-      .neq("deleted_at", null);
+      .is("deleted_at", null);
 
     if (params?.start_date) {
       query = query.gte("created_at", params.start_date);
@@ -25,13 +25,37 @@ export class MeasurementService {
       query = query.lte("created_at", params.end_date);
     }
 
-    const { data, error } = await query;
+    const total = (await query).count;
+    const { data, error } = await query.range(from, to);
 
     if (error) {
       throw new Error("Terjadi kesalahan saat mengambil data pengukuran");
     }
 
-    return data.map((measurement) => measurementFromJson(measurement));
+    const { data: students, error: studentsError } = await supabase()
+      .from("students")
+      .select("*")
+      .in(
+        "id",
+        data.map((item) => item.id),
+      );
+
+    if (studentsError) {
+      throw new Error("Terjadi kesalahan saat mengambil data relasi siswa");
+    }
+
+    const measurements = data.map((measurement) => {
+      measurement.student = students?.find(
+        (student) => student.id == measurement.student_id,
+      );
+
+      return measurementFromJson(measurement);
+    });
+
+    return {
+      total,
+      measurements,
+    };
   }
 
   static async store(params: Measurement) {

@@ -1,6 +1,6 @@
 export interface MeasurementParams {
   limit?: number;
-  offset?: number;
+  page?: number;
   start_date?: Date;
   end_date?: Date;
 }

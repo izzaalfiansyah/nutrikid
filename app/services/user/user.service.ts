@@ -10,7 +10,7 @@ export class UserService {
     const limit = params?.limit || 20;
     const page = params?.page || 1;
     const from = (page - 1) * limit;
-    const to = from + limit;
+    const to = from + limit - 1;
 
     let query = supabase()
       .from("profiles")
