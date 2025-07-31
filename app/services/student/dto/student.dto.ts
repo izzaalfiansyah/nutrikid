@@ -5,7 +5,7 @@ export interface Student {
   id: number;
   name: string;
   birth_date: Date;
-  male: boolean;
+  gender: string;
   parent_id?: number;
   parent?: Profile;
   deleted_at?: Date;
@@ -16,9 +16,20 @@ export function studentFromJson(data: any): Student {
     id: data.id,
     name: data.name,
     birth_date: moment(data.birth_date).toDate(),
-    male: data.male,
+    gender: data.gender,
     parent_id: data.parent_id,
     parent: data.parent,
     deleted_at: data.deleted_at ? moment(data.deleted_at).toDate() : undefined,
   };
+}
+
+export function mappedGender(gender: string) {
+  switch (gender) {
+    case "l":
+      return "Laki-laki";
+    case "p":
+      return "Perempuan";
+    default:
+      return "Laki-laki";
+  }
 }

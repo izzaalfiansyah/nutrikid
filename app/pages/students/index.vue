@@ -1,22 +1,17 @@
 <script lang="ts" setup>
-import {
-  MoreHorizontal,
-  Plus,
-  Search,
-  SquareArrowOutUpRight,
-} from "lucide-vue-next";
-import UserDeleteDialog from "~/components/app/users/UserDeleteDialog.vue";
-import UserResetPasswordDialog from "~/components/app/users/UserResetPasswordDialog.vue";
+import { MoreHorizontal, Plus, Search } from "lucide-vue-next";
 import UserStoreDialog from "~/components/app/users/UserStoreDialog.vue";
-import { roleIcon } from "~/lib/role-icon";
-import { letterName, type Profile } from "~/services/auth/dto/profile.dto";
+import { calculateAge } from "~/lib/calculate-age";
+import { formatDate } from "~/lib/format-date";
+import { genderIcon } from "~/lib/gender-icon";
+import { letterName } from "~/services/auth/dto/profile.dto";
+import { mappedGender, type Student } from "~/services/student/dto/student.dto";
 import type { StudentsParams } from "~/services/student/dto/students-params.dto";
-import { UserService } from "~/services/user/user.service";
+import { StudentService } from "~/services/student/student.service";
 
-const profiles = ref<Array<Profile>>([]);
+const students = ref<Array<Student>>([]);
 const total = ref(0);
 const homeStore = useHomeStore();
-const authStore = useAuthStore();
 
 const params = ref<StudentsParams>({
   page: 1,
@@ -26,7 +21,7 @@ const params = ref<StudentsParams>({
 });
 
 async function getStudents(reset = true) {
-  profiles.value = [];
+  students.value = [];
 
   if ((reset = true)) {
     params.value.page = 1;
@@ -34,9 +29,9 @@ async function getStudents(reset = true) {
     params.value.gender = "";
   }
 
-  const data = await UserService.findAll(params.value);
+  const data = await StudentService.findAll(params.value);
 
-  profiles.value = data.profiles;
+  students.value = data.students;
   total.value = data.total || 0;
 }
 
@@ -97,52 +92,46 @@ onMounted(async () => {
       <CardContent>
         <div class="overflow-x-auto">
           <Table>
-            <TableCaption v-if="profiles.length == 0"
+            <TableCaption v-if="students.length == 0"
               >Data tidak tersedia</TableCaption
             >
             <TableHeader>
               <TableRow>
+                <TableHead>#</TableHead>
                 <TableHead>Nama</TableHead>
-                <TableHead>Role</TableHead>
-                <TableHead>Nomor Telepon</TableHead>
+                <TableHead>Tanggal Lahir</TableHead>
+                <TableHead>Umur</TableHead>
+                <TableHead>Gender</TableHead>
                 <TableHead>Opsi</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              <TableRow v-for="profile in profiles" :key="profile.id">
+              <TableRow v-for="student in students" :key="student.id">
+                <TableCell class="font-medium">
+                  {{ student.id }}
+                </TableCell>
                 <TableCell class="font-medium">
                   <div class="flex items-center">
                     <Avatar class="mr-3">
                       <AvatarFallback>{{
-                        letterName(profile.name)
+                        letterName(student.name)
                       }}</AvatarFallback>
                     </Avatar>
-                    <span>{{ profile.name }}</span>
+                    <span>{{ student.name }}</span>
                   </div>
+                </TableCell>
+                <TableCell>
+                  {{ formatDate(student.birth_date) }}
+                </TableCell>
+                <TableCell>
+                  {{ calculateAge(student.birth_date) }}
                 </TableCell>
                 <TableCell>
                   <component
-                    :is="roleIcon(profile.role)"
-                    class="size-3 mr-2 inline"
+                    :is="genderIcon(student.gender)"
+                    :class="`size-3 inline mr-1 ${student.gender == 'l' ? 'text-sky-500' : 'text-pink-500'}`"
                   ></component>
-                  {{ profile.role.toUpperCase() }}
-                </TableCell>
-                <TableCell>
-                  <div class="flex items-center">
-                    <span>
-                      {{ profile.phone || "-" }}
-                    </span>
-                    <template v-if="profile.phone">
-                      <a
-                        :href="`tel:${profile.phone}`"
-                        class="ml-3 inline cursor-pointer"
-                      >
-                        <SquareArrowOutUpRight
-                          class="size-3 text-primary inline"
-                        ></SquareArrowOutUpRight>
-                      </a>
-                    </template>
-                  </div>
+                  {{ mappedGender(student.gender) }}
                 </TableCell>
                 <TableCell class="align-middle">
                   <DropdownMenu>
@@ -151,32 +140,7 @@ onMounted(async () => {
                         <MoreHorizontal class="size-4"></MoreHorizontal>
                       </button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                      <UserStoreDialog
-                        :callback="getStudents"
-                        :user="profile"
-                        caption="Edit Pengguna"
-                      >
-                        <DropdownMenuItem @select="(e) => e.preventDefault()">
-                          <span>Edit</span>
-                        </DropdownMenuItem>
-                      </UserStoreDialog>
-                      <UserResetPasswordDialog :uuid="profile.user_id">
-                        <DropdownMenuItem @select="(e) => e.preventDefault()">
-                          <span>Reset Password</span>
-                        </DropdownMenuItem>
-                      </UserResetPasswordDialog>
-                      <template v-if="profile.id != authStore.user?.id">
-                        <UserDeleteDialog
-                          :user="profile"
-                          :callback="getStudents"
-                        >
-                          <DropdownMenuItem @select="(e) => e.preventDefault()">
-                            <span>Hapus</span>
-                          </DropdownMenuItem>
-                        </UserDeleteDialog>
-                      </template>
-                    </DropdownMenuContent>
+                    <DropdownMenuContent> </DropdownMenuContent>
                   </DropdownMenu>
                 </TableCell>
               </TableRow>
