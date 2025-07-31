@@ -2,7 +2,7 @@
 import { CalendarIcon } from "lucide-vue-next";
 import { type DateValue } from "reka-ui";
 import { calculateAge } from "~/lib/calculate-age";
-import { formatDate } from "~/lib/format-date";
+import { date, formatDate } from "~/lib/format-date";
 import type { Student } from "~/services/student/dto/student.dto";
 import { CalendarWithMonthYear } from "../ui/calendar";
 import StudentParentSelect from "./StudentParentSelect.vue";
@@ -29,12 +29,6 @@ const params = ref<Student>(
   },
 );
 
-watch(birth_date, () => {
-  if (birth_date.value) {
-    params.value.birth_date = birth_date.value.toDate("utc");
-  }
-});
-
 async function handleSubmit() {
   try {
     let message = "";
@@ -57,10 +51,32 @@ async function handleSubmit() {
   }
 }
 
-onMounted(() => {
+watch(birth_date, () => {
+  if (birth_date.value) {
+    params.value.birth_date = birth_date.value.toDate("utc");
+  }
+});
+
+watch(open, () => {
+  if (open.value) {
+    handleStudent();
+  }
+});
+
+function handleStudent() {
   if (props.student) {
     birth_date.value = parseDate(formatDate(props.student.birth_date));
   }
+
+  params.value.id = props.student?.id || 0;
+  params.value.name = props.student?.name || "";
+  params.value.gender = props.student?.gender || "l";
+  params.value.parent_id = props.student?.parent_id || undefined;
+  params.value.birth_date = props.student?.birth_date || date();
+}
+
+onMounted(() => {
+  handleStudent();
 });
 </script>
 

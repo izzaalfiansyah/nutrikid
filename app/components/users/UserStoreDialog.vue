@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { toast } from "vue-sonner";
+import { date } from "~/lib/format-date";
 import { handleError } from "~/lib/handle-error";
 import { handleSuccess } from "~/lib/handle-success";
 import type { Profile } from "~/services/auth/dto/profile.dto";
@@ -20,23 +21,27 @@ const params = ref<RegisterUser>({
   email: "",
   phone: "",
   role: "user",
-  created_at: new Date(),
+  created_at: date(),
   password: "12345678",
 });
 
 function handleUser() {
-  if (props.user) {
-    params.value.id = props.user.id;
-    params.value.name = props.user.name;
-    params.value.user_id = props.user.user_id;
-    params.value.email = props.user.email;
-    params.value.role = props.user.role;
-    params.value.phone = props.user.phone;
-    params.value.created_at = props.user.created_at;
-  }
+  params.value.id = props.user?.id || 0;
+  params.value.name = props.user?.name || "";
+  params.value.user_id = props.user?.user_id || "";
+  params.value.email = props.user?.email || "";
+  params.value.role = props.user?.role || "user";
+  params.value.phone = props.user?.phone || "";
+  params.value.created_at = props.user?.created_at || date();
+  params.value.password = "12345678";
 }
 
 watch(() => props.user, handleUser);
+watch(open, () => {
+  if (open.value) {
+    handleUser();
+  }
+});
 
 async function handleSubmit() {
   try {
