@@ -45,7 +45,6 @@ async function getProfiles(reset = true) {
 watch(
   params,
   async () => {
-    console.log(params.value);
     await getProfiles(false);
   },
   { deep: true },

@@ -5,10 +5,10 @@ interface FormatDateOptions {
 }
 
 export function formatDate(date: Date, opt?: FormatDateOptions) {
-  let format = "YYYY-MM-DD";
+  let format = "DD MMM YYYY";
 
   if (opt?.withTime) {
-    format = "YYYY-MM-DD HH:mm";
+    format += " HH:mm";
   }
 
   return moment(date).format(format);

@@ -99,17 +99,63 @@ export class StudentService {
     };
   }
 
-  static async histories(params: Student) {
+  static async lastStatistic(params: Student | number) {
+    const id = typeof params == "object" ? params.id : params;
+
     const { data, error } = await supabase()
       .from("measurements")
       .select("*")
-      .eq("student_id", params.id)
-      .neq("deleted_at", null);
+      .eq("student_id", id)
+      .order("created_at", {
+        ascending: false,
+      })
+      .single();
 
-    if (error) {
+    if (error || !data) {
+      throw new Error("Terjadi kesalahan saat mengambil data");
+    }
+
+    const measurement = measurementFromJson(data);
+
+    return {
+      measurement,
+    };
+  }
+
+  static async statistics(params: Student | number) {
+    const id = typeof params == "object" ? params.id : params;
+
+    const { data, error } = await supabase()
+      .from("measurements")
+      .select("*")
+      .eq("student_id", id)
+      .range(0, 20)
+      .order("created_at", {
+        ascending: false,
+      })
+      .is("deleted_at", null);
+
+    const { data: dataStudent, error: errorStudent } = await supabase()
+      .from("students")
+      .select("*")
+      .eq("id", id)
+      .single();
+
+    if (error || errorStudent) {
       throw new Error("Terjadi kesalahan saat mengambil riwayat data siswa");
     }
 
-    return data.map((measurement) => measurementFromJson(measurement));
+    const student = studentFromJson(dataStudent);
+
+    const measurements = data
+      .map((measurement) => {
+        return measurementFromJson(measurement);
+      })
+      .reverse();
+
+    return {
+      measurements,
+      student,
+    };
   }
 }

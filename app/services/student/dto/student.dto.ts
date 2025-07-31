@@ -1,5 +1,6 @@
 import moment from "moment";
 import type { Profile } from "~/services/auth/dto/profile.dto";
+import type { Measurement } from "~/services/measurement/dto/measurement.dto";
 
 export type Gender = "l" | "p";
 
@@ -11,6 +12,7 @@ export interface Student {
   parent_id?: number;
   parent?: Profile;
   deleted_at?: Date;
+  last_measurement?: Measurement;
 }
 
 export function studentFromJson(data: any): Student {
@@ -22,6 +24,7 @@ export function studentFromJson(data: any): Student {
     parent_id: data.parent_id,
     parent: data.parent,
     deleted_at: data.deleted_at ? moment(data.deleted_at).toDate() : undefined,
+    last_measurement: data.last_measurement,
   };
 }
 

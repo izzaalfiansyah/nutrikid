@@ -8,6 +8,7 @@ import {
 } from "~/services/measurement/dto/measurement.dto";
 import type { Student } from "~/services/student/dto/student.dto";
 import StudentSelect from "../students/StudentSelect.vue";
+import { StudentService } from "~/services/student/student.service";
 
 const props = defineProps<{
   handleSubmit: () => any;
@@ -21,9 +22,19 @@ const emit = defineEmits<{
   (e: "update:modelValue", value: Measurement): void;
 }>();
 
-function handleChangeStudent(s: Student | null) {
+async function handleChangeStudent(s: Student | null) {
   params.value.student = s || undefined;
   params.value.student_age = calculateAge(s?.birth_date ?? date());
+
+  if (s) {
+    try {
+      const { measurement } = await StudentService.lastStatistic(s);
+      params.value.student_height = measurement.student_height;
+      params.value.student_weight = measurement.student_weight;
+    } catch (err) {
+      // do nothing
+    }
+  }
 }
 
 watch(

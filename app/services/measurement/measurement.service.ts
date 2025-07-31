@@ -15,6 +15,9 @@ export class MeasurementService {
     let query = supabase()
       .from("measurements")
       .select("*")
+      .order("created_at", {
+        ascending: false,
+      })
       .is("deleted_at", null);
 
     if (params?.start_date) {

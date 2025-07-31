@@ -10,6 +10,7 @@ import { handleError } from "~/lib/handle-error";
 import { StudentService } from "~/services/student/student.service";
 import { parseDate } from "@internationalized/date";
 import { handleSuccess } from "~/lib/handle-success";
+import moment from "moment";
 
 const props = defineProps<{
   student?: Student;
@@ -23,7 +24,7 @@ const params = ref<Student>(
   props.student || {
     id: 0,
     name: "",
-    birth_date: new Date(),
+    birth_date: date(),
     gender: "l",
     parent_id: undefined,
   },
@@ -65,7 +66,9 @@ watch(open, () => {
 
 function handleStudent() {
   if (props.student) {
-    birth_date.value = parseDate(formatDate(props.student.birth_date));
+    birth_date.value = parseDate(
+      moment(props.student.birth_date).format("YYYY-MM-DD"),
+    );
   }
 
   params.value.id = props.student?.id || 0;
