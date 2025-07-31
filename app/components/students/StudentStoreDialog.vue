@@ -89,15 +89,7 @@ onMounted(() => {
           <div class="grid grid-cols-4 items-center gap-4">
             <Label for=""> Gender </Label>
             <div class="col-span-3">
-              <Select v-model="params.gender">
-                <SelectTrigger>
-                  <SelectValue required placeholder="Pilih Gender" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="l">Laki-laki</SelectItem>
-                  <SelectItem value="p">Perempuan</SelectItem>
-                </SelectContent>
-              </Select>
+              <GenderSelect v-model="params.gender"></GenderSelect>
             </div>
           </div>
           <div class="grid grid-cols-4 items-center gap-4">

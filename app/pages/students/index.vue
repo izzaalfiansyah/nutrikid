@@ -19,16 +19,16 @@ const params = ref<StudentsParams>({
   page: 1,
   limit: 20,
   search: "",
-  gender: "",
+  gender: undefined,
 });
 
 async function getStudents(reset = true) {
   students.value = [];
 
-  if ((reset = true)) {
+  if (reset) {
     params.value.page = 1;
     params.value.search = "";
-    params.value.gender = "";
+    params.value.gender = undefined;
   }
 
   const data = await StudentService.findAll(params.value);
@@ -70,16 +70,7 @@ onMounted(async () => {
             ></Input>
           </div>
           <div class="w-36">
-            <Select v-model="params.gender">
-              <SelectTrigger>
-                <SelectValue placeholder="Pilih Gender" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Semua</SelectItem>
-                <SelectItem value="l">Laki-laki</SelectItem>
-                <SelectItem value="p">Perempuan</SelectItem>
-              </SelectContent>
-            </Select>
+            <GenderSelect with-all v-model="params.gender"></GenderSelect>
           </div>
         </div>
       </div>

@@ -31,7 +31,7 @@ const params = ref<UsersParams>({
 async function getProfiles(reset = true) {
   profiles.value = [];
 
-  if ((reset = true)) {
+  if (reset) {
     params.value.page = 1;
     params.value.search = "";
     params.value.role = undefined;
@@ -46,6 +46,7 @@ async function getProfiles(reset = true) {
 watch(
   params,
   async () => {
+    console.log(params.value);
     await getProfiles(false);
   },
   { deep: true },
@@ -76,7 +77,7 @@ onMounted(async () => {
             ></Input>
           </div>
           <div class="w-36">
-            <RoleSelect v-model="params.role"></RoleSelect>
+            <RoleSelect with-all v-model="params.role"></RoleSelect>
           </div>
         </div>
       </div>

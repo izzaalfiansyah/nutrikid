@@ -1,11 +1,13 @@
 import moment from "moment";
 import type { Profile } from "~/services/auth/dto/profile.dto";
 
+export type Gender = "l" | "p";
+
 export interface Student {
   id: number;
   name: string;
   birth_date: Date;
-  gender: string;
+  gender: Gender;
   parent_id?: number;
   parent?: Profile;
   deleted_at?: Date;

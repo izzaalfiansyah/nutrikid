@@ -1,13 +1,13 @@
 <script lang="ts" setup>
-import type { ProfileRole } from "~/services/auth/dto/profile.dto";
+import type { Gender } from "~/services/student/dto/student.dto";
 
 const props = defineProps<{
-  modelValue?: ProfileRole;
+  modelValue?: Gender;
   withAll?: boolean;
 }>();
 
 const emit = defineEmits<{
-  (e: "update:modelValue", value: ProfileRole | null): void;
+  (e: "update:modelValue", value: Gender | null): void;
 }>();
 const value = ref(props.modelValue);
 
@@ -19,14 +19,13 @@ watch(value, () => {
 <template>
   <Select v-model="value">
     <SelectTrigger class="col-span-3">
-      <SelectValue required placeholder="Pilih Role" />
+      <SelectValue required placeholder="Pilih Gender" />
     </SelectTrigger>
     <SelectContent>
       <SelectGroup>
         <SelectItem v-if="withAll" :value="null">Semua</SelectItem>
-        <SelectItem value="admin">Admin</SelectItem>
-        <SelectItem value="user">User</SelectItem>
-        <SelectItem value="parent">Orang Tua</SelectItem>
+        <SelectItem value="l">Laki-laki</SelectItem>
+        <SelectItem value="p">Perempuan</SelectItem>
       </SelectGroup>
     </SelectContent>
   </Select>

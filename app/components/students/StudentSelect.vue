@@ -6,6 +6,7 @@ const students = ref<Array<Student>>([]);
 
 const props = defineProps<{
   modelValue?: number;
+  withAll?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -41,9 +42,15 @@ onMounted(() => {
       <SelectValue placeholder="Pilih Siswa"></SelectValue>
     </SelectTrigger>
     <SelectContent>
-      <SelectItem v-if="students.length == 0" class="text-center" value="none">
+      <SelectItem
+        v-if="students.length == 0"
+        class="text-center"
+        :value="null"
+        disabled
+      >
         <span class="text-muted-foreground">Data tidak ditemukan.</span>
       </SelectItem>
+      <SelectItem v-if="withAll" :value="null"> Semua </SelectItem>
       <SelectItem
         v-for="student in students"
         :key="student.id"

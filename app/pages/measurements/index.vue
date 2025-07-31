@@ -3,7 +3,6 @@ import { CalendarIcon, Filter } from "lucide-vue-next";
 import type { DateValue } from "reka-ui";
 import StudentSelect from "~/components/students/StudentSelect.vue";
 import { formatDate } from "~/lib/format-date";
-import { cn } from "~/lib/utils";
 import type { MeasurementParams } from "~/services/measurement/dto/measurement-params.dto";
 import type { Measurement } from "~/services/measurement/dto/measurement.dto";
 import { MeasurementService } from "~/services/measurement/measurement.service";
@@ -22,7 +21,7 @@ const params = ref<MeasurementParams>({
 async function getMeasurements(reset = true) {
   measurements.value = [];
 
-  if ((reset = true)) {
+  if (reset) {
     params.value.page = 1;
     params.value.start_date = undefined;
     params.value.end_date = undefined;
@@ -66,9 +65,9 @@ onMounted(async () => {
           </Button>
         </DialogTrigger>
         <DialogContent>
-          <form @submit.prevent="() => getMeasurements()">
+          <form @submit.prevent="() => getMeasurements()" class="space-y-5">
             <DialogTitle>Filter Data Pengukuran</DialogTitle>
-            <div class="w-full space-y-5">
+            <div class="w-full space-y-4">
               <div class="space-y-2 w-full">
                 <Label>Siswa</Label>
                 <StudentSelect v-model="params.student_id"></StudentSelect>
