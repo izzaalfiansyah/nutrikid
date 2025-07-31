@@ -38,10 +38,13 @@ export class MeasurementService {
     const age = calculateAge(
       params.student?.birth_date || moment().utc().toDate(),
     );
+
     const bmi = calculateBmi(age, {
       height: params.student_height,
       weight: params.student_weight,
     });
+
+    const authStore = useAuthStore();
 
     const { error } = await supabase().from("measurements").insert({
       student_id: params.student_id,
@@ -49,6 +52,7 @@ export class MeasurementService {
       student_height: params.student_height,
       student_age: age,
       student_bmi: bmi,
+      creator_id: authStore.user?.id,
     });
 
     if (error) {
@@ -65,10 +69,13 @@ export class MeasurementService {
     const age = calculateAge(
       params.student?.birth_date || moment().utc().toDate(),
     );
+
     const bmi = calculateBmi(age, {
       height: params.student_height,
       weight: params.student_weight,
     });
+
+    const authStore = useAuthStore();
 
     const { error } = await supabase()
       .from("measurements")
@@ -78,6 +85,7 @@ export class MeasurementService {
         student_height: params.student_height,
         student_age: age,
         student_bmi: bmi,
+        creator_id: authStore.user?.id,
       })
       .neq("id", params.id);
 

@@ -1,20 +1,23 @@
 import moment from "moment";
 import { calculateStatus } from "~/lib/calculate-status";
 import { calculateZScore } from "~/lib/calculate-zscore";
+import type { Profile } from "~/services/auth/dto/profile.dto";
 import type { Student } from "~/services/student/dto/student.dto";
 
 export type MeasurementStatus = "wasted" | "normal" | "overweight" | "obese";
 
 export interface Measurement {
   id: number;
-  student_id: number;
+  student_id?: number;
   student?: Student;
   student_age: number;
   student_weight: number;
   student_height: number;
-  student_bmi: string;
+  student_bmi: number;
   status?: MeasurementStatus;
   z_score?: number;
+  creator_id?: number;
+  creator?: Profile;
   created_at: Date;
   deleted_at?: Date;
 }
