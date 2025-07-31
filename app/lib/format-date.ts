@@ -1,7 +1,13 @@
 import moment from "moment";
 
 export function formatDate(date: Date, withTime = false) {
-  return moment(date).format(withTime ? "YYYY-MM-DD HH:mm" : "YYYY-MM-DD");
+  let format = "YYYY-MM-DD";
+
+  if (withTime) {
+    format = "YYYY-MM-DD HH:mm";
+  }
+
+  return moment(date).format(format);
 }
 
 export function date() {
