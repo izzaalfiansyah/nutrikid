@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { CalendarIcon } from "lucide-vue-next";
+import { CalendarIcon, Loader2 } from "lucide-vue-next";
 import { type DateValue } from "reka-ui";
 import { date, formatDate } from "~/lib/format-date";
 import { CalendarWithMonthYear } from "../ui/calendar";
@@ -17,6 +17,7 @@ const props = defineProps<{
 
 const birth_date = ref<DateValue>();
 const open = ref(false);
+const is_submitted = ref(false);
 
 const params = ref<Student>(
   props.student || {
@@ -79,6 +80,12 @@ function handleStudent() {
 onMounted(() => {
   handleStudent();
 });
+
+async function submit() {
+  is_submitted.value = true;
+  await handleSubmit();
+  is_submitted.value = false;
+}
 </script>
 
 <template>
@@ -87,7 +94,7 @@ onMounted(() => {
       <slot></slot>
     </DialogTrigger>
     <DialogContent class="sm:max-w-[425px]">
-      <form @submit.prevent="handleSubmit">
+      <form @submit.prevent="submit">
         <DialogHeader>
           <DialogTitle>{{
             props.student ? "Edit Siswa" : "Tambah Siswa"
@@ -157,7 +164,13 @@ onMounted(() => {
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit"> Simpan Siswa </Button>
+          <Button type="submit" :disabled="is_submitted">
+            <Loader2
+              class="size-4 animate-spin mr-1"
+              v-if="is_submitted"
+            ></Loader2>
+            Simpan Siswa
+          </Button>
         </DialogFooter>
       </form>
     </DialogContent>

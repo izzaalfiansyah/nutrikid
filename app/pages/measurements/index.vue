@@ -183,7 +183,7 @@ onMounted(async () => {
               </TableCell>
               <TableCell class="font-medium">
                 <NuxtLink
-                  :to="`/students/${measurement.student_id}/statistics`"
+                  :to="`/measurements/${measurement.id}`"
                   class="underline"
                   >{{ measurement.student?.name }}</NuxtLink
                 >
@@ -238,6 +238,7 @@ onMounted(async () => {
                       title="Hapus Pengukuran"
                       description="Anda yakin akan menghapus pengukuran terpilih? Data akan terhapus permanen"
                       :fn="() => MeasurementService.destroy(measurement)"
+                      :callback="getMeasurements"
                     >
                       <DropdownMenuItem @select="(e) => e.preventDefault()">
                         Hapus

@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { Loader2 } from "lucide-vue-next";
 import { toast } from "vue-sonner";
 import { date } from "~/lib/format-date";
 import { handleError } from "~/lib/handle-error";
@@ -15,6 +16,7 @@ const props = defineProps<{
 const authStore = useAuthStore();
 
 const open = ref(false);
+const is_submitted = ref(false);
 const params = ref<RegisterUser>({
   id: 0,
   name: "",
@@ -45,6 +47,7 @@ watch(open, () => {
 });
 
 async function handleSubmit() {
+  is_submitted.value = true;
   try {
     let message = "";
 
@@ -65,6 +68,7 @@ async function handleSubmit() {
   } catch (err: any) {
     handleError(err);
   }
+  is_submitted.value = false;
 }
 
 onMounted(() => {
@@ -132,7 +136,13 @@ onMounted(() => {
           </template>
         </div>
         <DialogFooter>
-          <Button type="submit" class="cursor-pointer"> Simpan Profil </Button>
+          <Button :disabled="is_submitted" type="submit" class="cursor-pointer">
+            <Loader2
+              class="size-4 mr-1 animate-spin"
+              v-if="is_submitted"
+            ></Loader2>
+            Simpan Profil
+          </Button>
         </DialogFooter>
       </form>
     </DialogContent>

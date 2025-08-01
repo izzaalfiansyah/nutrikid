@@ -2,6 +2,7 @@
 import { date } from "~/lib/format-date";
 import StudentSelect from "../students/StudentSelect.vue";
 import { StudentService } from "~/services/student/student.service";
+import { Loader2 } from "lucide-vue-next";
 
 const props = defineProps<{
   handleSubmit: () => any;
@@ -9,6 +10,7 @@ const props = defineProps<{
   modelValue: Measurement;
 }>();
 
+const is_submitted = ref(false);
 const params = ref<Measurement>(props.modelValue);
 
 const emit = defineEmits<{
@@ -55,10 +57,16 @@ watch(
   },
   { deep: true },
 );
+
+async function submit() {
+  is_submitted.value = true;
+  await props.handleSubmit();
+  is_submitted.value = false;
+}
 </script>
 
 <template>
-  <form @submit.prevent="handleSubmit">
+  <form @submit.prevent="submit">
     <Card>
       <CardHeader>
         <CardTitle> {{ is_edit ? "Edit" : "Tambah" }} Pengukuran </CardTitle>
@@ -154,7 +162,13 @@ watch(
         </div>
       </CardContent>
       <CardFooter>
-        <Button type="submit" class="cursor-pointer">Simpan Pengukuran</Button>
+        <Button :disabled="is_submitted" type="submit" class="cursor-pointer">
+          <Loader2
+            v-if="is_submitted"
+            class="size-4 animate-spin mr-1 text-white"
+          ></Loader2>
+          Simpan Pengukuran
+        </Button>
       </CardFooter>
     </Card>
   </form>

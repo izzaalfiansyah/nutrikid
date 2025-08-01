@@ -1,10 +1,12 @@
 <script lang="ts" setup>
+import { Loader2 } from "lucide-vue-next";
 import { handleError } from "~/lib/handle-error";
 import { handleSuccess } from "~/lib/handle-success";
 import type { ChangePasswordOtherParams } from "~/services/user/dto/change-password-other.dto";
 import { UserService } from "~/services/user/user.service";
 
 const open = ref(false);
+const is_submitted = ref(false);
 
 const props = defineProps<{
   uuid: string;
@@ -17,6 +19,7 @@ const params = ref<ChangePasswordOtherParams>({
 });
 
 async function handleSubmit() {
+  is_submitted.value = true;
   try {
     const data = await UserService.changePassword(params.value);
 
@@ -26,6 +29,7 @@ async function handleSubmit() {
   } catch (err: any) {
     handleError(err);
   }
+  is_submitted.value = false;
 }
 </script>
 
@@ -52,7 +56,13 @@ async function handleSubmit() {
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit" class="cursor-pointer"> Konfirmasi </Button>
+          <Button :disabled="is_submitted" type="submit" class="cursor-pointer">
+            <Loader2
+              class="animate-spin size-4 mr-1"
+              v-if="is_submitted"
+            ></Loader2>
+            Konfirmasi
+          </Button>
         </DialogFooter>
       </form>
     </DialogContent>
