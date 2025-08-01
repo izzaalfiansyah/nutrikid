@@ -1,4 +1,7 @@
+import { authChecker } from "~~/server/libs/auth-checker";
+
 export default defineEventHandler(async (e) => {
+  authChecker(e);
   const params = await readBody(e);
 
   if (e.context.user.user_id != params.uuid && e.context.user.role != "admin") {

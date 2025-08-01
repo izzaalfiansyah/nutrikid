@@ -1,5 +1,5 @@
-export function authCheker(e: any) {
-  if (!e.context.user) {
+export function authChecker(e: any) {
+  if (!e.context.user?.id || !e.context.user?.uuid) {
     throw new Error("Unauthorized");
   }
 

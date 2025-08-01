@@ -6,7 +6,24 @@ import { throwError } from "~/lib/throw-error";
 export const ACCESSTOKEN = "access_token";
 export const REFRESHTOKEN = "refresh_token";
 
+interface Session {
+  refresh_token: string;
+  access_token: string;
+}
+
 export class AuthService {
+  static setSession(session: Session) {
+    localStorage.setItem(ACCESSTOKEN, session.access_token);
+    localStorage.setItem(REFRESHTOKEN, session.refresh_token);
+  }
+
+  static getSession() {
+    return {
+      refresh_token: localStorage.getItem(REFRESHTOKEN) as string,
+      access_token: localStorage.getItem(ACCESSTOKEN) as string,
+    } as Session;
+  }
+
   static async login(params: LoginParams) {
     try {
       const res = await http().post("/login", params);
@@ -14,8 +31,7 @@ export class AuthService {
       const access_token = res.data.data.access_token;
       const refresh_token = res.data.data.refresh_token;
 
-      localStorage.setItem(ACCESSTOKEN, access_token);
-      localStorage.setItem(REFRESHTOKEN, refresh_token);
+      AuthService.setSession({ access_token, refresh_token });
 
       await this.profile();
 

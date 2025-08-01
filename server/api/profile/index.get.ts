@@ -1,7 +1,7 @@
-import { authCheker } from "~~/server/libs/auth-checker";
+import { authChecker } from "~~/server/libs/auth-checker";
 
 export default defineEventHandler(async (e) => {
-  authCheker(e);
+  authChecker(e);
 
   return {
     success: true,

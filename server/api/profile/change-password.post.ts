@@ -1,4 +1,8 @@
+import { authChecker } from "~~/server/libs/auth-checker";
+
 export default defineEventHandler(async (e) => {
+  authChecker(e);
+
   const params = await readBody(e);
 
   if (params.password != params.password_confirmation) {

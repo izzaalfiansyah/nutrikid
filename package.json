@@ -22,6 +22,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "combobox": "^1.0.1",
+    "jwt-decode": "^4.0.0",
     "lucide-vue-next": "^0.533.0",
     "moment": "^2.30.1",
     "nuxt": "^4.0.1",

@@ -55,4 +55,27 @@ export class MeasurementService {
       throwError(err);
     }
   }
+
+  static async getSuggestions(params: Measurement) {
+    try {
+      const res = await http().get("/measurement/" + params.id + "/suggestion");
+
+      return res.data.data;
+    } catch (err) {
+      throwError(err);
+    }
+  }
+
+  static async storeSuggestion(params: MeasurementSuggestion) {
+    try {
+      const res = await http().post(
+        "/measurement/" + params.measurement_id + "/suggestion",
+        params,
+      );
+
+      return res.data;
+    } catch (err) {
+      throwError(err);
+    }
+  }
 }

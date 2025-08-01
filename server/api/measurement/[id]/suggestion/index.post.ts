@@ -1,10 +1,13 @@
+import { authChecker } from "~~/server/libs/auth-checker";
+
 export default defineEventHandler(async (e) => {
+  authChecker(e);
+
   const id = e.context.params?.id;
 
   const params = await readBody(e);
   const creator_id = e.context.user?.id;
 
-  console.log(creator_id);
   console.log(params);
 
   const { error } = await supabase().from("measurement_suggestions").insert({

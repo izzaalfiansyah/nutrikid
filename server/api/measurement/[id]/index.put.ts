@@ -1,6 +1,9 @@
 import moment from "moment";
+import { authChecker } from "~~/server/libs/auth-checker";
 
 export default defineEventHandler(async (e) => {
+  authChecker(e);
+
   const params = await readBody(e);
   const id = e.context.params?.id;
 
