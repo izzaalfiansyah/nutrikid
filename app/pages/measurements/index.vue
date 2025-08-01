@@ -5,10 +5,6 @@ import StudentSelect from "~/components/students/StudentSelect.vue";
 import { formatDate } from "~/lib/format-date";
 import { genderIcon } from "~/lib/gender-icon";
 import type { MeasurementParams } from "~/services/measurement/dto/measurement-params.dto";
-import {
-  mappedMeasurementStatus,
-  type Measurement,
-} from "~/services/measurement/dto/measurement.dto";
 import { MeasurementService } from "~/services/measurement/measurement.service";
 import { useHomeStore } from "~/stores/home.store";
 

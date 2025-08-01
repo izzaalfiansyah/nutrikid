@@ -4,8 +4,6 @@ import StudentStoreDialog from "~/components/students/StudentStoreDialog.vue";
 import { calculateAge } from "~/lib/calculate-age";
 import { formatDate } from "~/lib/format-date";
 import { genderIcon } from "~/lib/gender-icon";
-import { letterName } from "~/services/auth/dto/profile.dto";
-import { mappedGender, type Student } from "~/services/student/dto/student.dto";
 import type { StudentsParams } from "~/services/student/dto/students-params.dto";
 import { StudentService } from "~/services/student/student.service";
 import { useHomeStore } from "~/stores/home.store";

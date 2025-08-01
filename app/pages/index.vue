@@ -1,8 +1,4 @@
 <script lang="ts" setup>
-import {
-  mappedMeasurementStatus,
-  type Measurement,
-} from "~/services/measurement/dto/measurement.dto";
 import { MeasurementService } from "~/services/measurement/measurement.service";
 import { SquareUser, Users2, UserPen } from "lucide-vue-next";
 import { UserService } from "~/services/user/user.service";

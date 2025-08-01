@@ -1,19 +1,9 @@
 <script lang="ts" setup>
-import {
-  mappedMeasurementStatus,
-  type Measurement,
-} from "~/services/measurement/dto/measurement.dto";
 import { StudentService } from "~/services/student/student.service";
 import { Line } from "vue-chartjs";
-import {
-  Chart as ChartJS,
-  Colors,
-  registerables,
-  type ChartData,
-} from "chart.js";
+import { Chart as ChartJS, registerables, type ChartData } from "chart.js";
 import { formatDate } from "~/lib/format-date";
 import { Loader2 } from "lucide-vue-next";
-import type { Student } from "~/services/student/dto/student.dto";
 
 ChartJS.register(...registerables);
 

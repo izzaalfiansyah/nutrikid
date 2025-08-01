@@ -3,7 +3,6 @@ import { toast } from "vue-sonner";
 import { date } from "~/lib/format-date";
 import { handleError } from "~/lib/handle-error";
 import { handleSuccess } from "~/lib/handle-success";
-import type { Profile } from "~/services/auth/dto/profile.dto";
 import type { RegisterUser } from "~/services/user/dto/register-user.dto";
 import { UserService } from "~/services/user/user.service";
 
@@ -22,7 +21,7 @@ const params = ref<RegisterUser>({
   user_id: "",
   email: "",
   phone: "",
-  role: "user",
+  role: "teacher",
   created_at: date(),
   password: "12345678",
 });
@@ -32,7 +31,7 @@ function handleUser() {
   params.value.name = props.user?.name || "";
   params.value.user_id = props.user?.user_id || "";
   params.value.email = props.user?.email || "";
-  params.value.role = props.user?.role || "user";
+  params.value.role = props.user?.role || "teacher";
   params.value.phone = props.user?.phone || "";
   params.value.created_at = props.user?.created_at || date();
   params.value.password = "12345678";

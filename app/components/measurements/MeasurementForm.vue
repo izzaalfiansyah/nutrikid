@@ -2,11 +2,6 @@
 import { calculateAge } from "~/lib/calculate-age";
 import { calculateBmi } from "~/lib/calculate-bmi";
 import { date } from "~/lib/format-date";
-import {
-  mappedMeasurementStatus,
-  type Measurement,
-} from "~/services/measurement/dto/measurement.dto";
-import type { Student } from "~/services/student/dto/student.dto";
 import StudentSelect from "../students/StudentSelect.vue";
 import { StudentService } from "~/services/student/student.service";
 

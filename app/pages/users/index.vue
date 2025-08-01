@@ -8,11 +8,6 @@ import {
 import UserResetPasswordDialog from "~/components/users/UserResetPasswordDialog.vue";
 import UserStoreDialog from "~/components/users/UserStoreDialog.vue";
 import { roleIcon } from "~/lib/role-icon";
-import {
-  letterName,
-  mappedRole,
-  type Profile,
-} from "~/services/auth/dto/profile.dto";
 import type { UsersParams } from "~/services/user/dto/users-params.dto";
 import { UserService } from "~/services/user/user.service";
 

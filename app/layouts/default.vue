@@ -4,7 +4,6 @@ export const iframeHeight = "800px";
 
 <script setup lang="ts">
 import { Home } from "lucide-vue-next";
-import { letterName } from "~/services/auth/dto/profile.dto";
 
 const authStore = useAuthStore();
 const homeStore = useHomeStore();

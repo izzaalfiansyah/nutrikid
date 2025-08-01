@@ -3,7 +3,6 @@ import { CalendarIcon } from "lucide-vue-next";
 import { type DateValue } from "reka-ui";
 import { calculateAge } from "~/lib/calculate-age";
 import { date, formatDate } from "~/lib/format-date";
-import type { Student } from "~/services/student/dto/student.dto";
 import { CalendarWithMonthYear } from "../ui/calendar";
 import StudentParentSelect from "./StudentParentSelect.vue";
 import { handleError } from "~/lib/handle-error";
