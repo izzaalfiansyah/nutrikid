@@ -2,79 +2,20 @@ import type { MeasurementParams } from "./dto/measurement-params.dto";
 import { calculateBmi } from "~/lib/calculate-bmi";
 import { calculateAge } from "~/lib/calculate-age";
 import moment from "moment";
+import { throwError } from "~/lib/throw-error";
+import { http } from "~/lib/axios";
 
 export class MeasurementService {
   static async findAll(params?: MeasurementParams) {
-    const limit = params?.limit || 20;
-    const page = params?.page || 1;
-    const from = (page - 1) * limit;
-    const to = from + limit - 1;
+    try {
+      const res = await http().get("/measurement", {
+        params,
+      });
 
-    const query = (props?: { count?: boolean }) => {
-      let q = supabase()
-        .from("measurements")
-        .select(
-          "*",
-          props?.count
-            ? {
-                count: "exact",
-                head: true,
-              }
-            : undefined,
-        )
-        .order("created_at", {
-          ascending: false,
-        })
-        .is("deleted_at", null);
-
-      if (params?.start_date) {
-        q = q.gte("created_at", moment(params.start_date).format("YYYY-MM-DD"));
-      }
-
-      if (params?.end_date) {
-        q = q.lte("created_at", moment(params.end_date).format("YYYY-MM-DD"));
-      }
-
-      if (params?.student_id) {
-        q = q.eq("student_id", params.student_id);
-      }
-
-      return q;
-    };
-
-    const { count: total } = await query({
-      count: true,
-    });
-    const { data, error } = await query().range(from, to);
-
-    if (error) {
-      throw new Error("Terjadi kesalahan saat mengambil data pengukuran");
+      return res.data.data;
+    } catch (err) {
+      throwError(err);
     }
-
-    const { data: students, error: studentsError } = await supabase()
-      .from("students")
-      .select("*")
-      .in(
-        "id",
-        data.map((item) => item.student_id),
-      );
-
-    if (studentsError) {
-      throw new Error("Terjadi kesalahan saat mengambil data relasi siswa");
-    }
-
-    const measurements = data.map((measurement) => {
-      measurement.student = students?.find(
-        (student) => student.id == measurement.student_id,
-      );
-
-      return measurementFromJson(measurement);
-    });
-
-    return {
-      total,
-      measurements,
-    };
   }
 
   static async show(id: number) {

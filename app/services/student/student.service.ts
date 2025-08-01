@@ -59,34 +59,27 @@ export class StudentService {
 
   static async statistics(params: Student | number) {
     const id = typeof params == "object" ? params.id : params;
+    let student: Student | null = null;
+    let measurements: Array<Measurement> = [];
 
-    const { data, error } = await supabase()
-      .from("measurements")
-      .select("*")
-      .eq("student_id", id)
-      .range(0, 20)
-      .order("created_at", {
-        ascending: false,
-      })
-      .is("deleted_at", null);
-
-    const { data: dataStudent, error: errorStudent } = await supabase()
-      .from("students")
-      .select("*")
-      .eq("id", id)
-      .single();
-
-    if (error || errorStudent) {
-      throw new Error("Terjadi kesalahan saat mengambil riwayat data siswa");
+    try {
+      const res = await http().get("/student/" + id);
+      student = res.data.data.student;
+    } catch (err) {
+      new Error("Terjadi kesalahan saat mengambil riwayat data siswa");
     }
 
-    const student = studentFromJson(dataStudent);
+    try {
+      const res = await http().get("/measurement", {
+        params: {
+          student_id: id,
+        },
+      });
 
-    const measurements = data
-      .map((measurement) => {
-        return measurementFromJson(measurement);
-      })
-      .reverse();
+      measurements = res.data.data.measurements;
+    } catch (err) {
+      new Error("Terjadi kesalahan saat mengambil riwayat data pengukuran");
+    }
 
     return {
       measurements,
