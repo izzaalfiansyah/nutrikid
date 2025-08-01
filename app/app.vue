@@ -23,7 +23,7 @@ onMounted(async () => {
 
   setTimeout(() => {
     is_loaded.value = true;
-  }, 500);
+  }, 1500);
 });
 </script>
 
@@ -39,8 +39,11 @@ onMounted(async () => {
     <div
       class="h-screen fixed bg-white top-0 left-0 bottom-0 right-0 z-[99999] flex items-center justify-center"
     >
-      <div class="text-center">
-        <Loader2 class="animate-spin inline size-12 mb-3 text-primary" />
+      <div class="text-center animate-pulse">
+        <Logo class="size-12 inline"></Logo>
+        <div class="text-center text-primary font-semibold mt-2 text-xl">
+          {{ app().name }}
+        </div>
       </div>
     </div>
   </template>

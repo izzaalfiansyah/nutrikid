@@ -30,11 +30,11 @@ export class MeasurementService {
         .is("deleted_at", null);
 
       if (params?.start_date) {
-        q = q.gte("created_at", params.start_date);
+        q = q.gte("created_at", moment(params.start_date).format("YYYY-MM-DD"));
       }
 
       if (params?.end_date) {
-        q = q.lte("created_at", params.end_date);
+        q = q.lte("created_at", moment(params.end_date).format("YYYY-MM-DD"));
       }
 
       if (params?.student_id) {
