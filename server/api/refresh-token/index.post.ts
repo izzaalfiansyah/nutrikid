@@ -2,11 +2,9 @@ export default defineEventHandler(async (e) => {
   const params = await readBody(e);
 
   const refresh_token = params.refresh_token as string;
-  const access_token = params.access_token as string;
 
-  const { data, error } = await supabase().auth.setSession({
+  const { data, error } = await supabase().auth.refreshSession({
     refresh_token,
-    access_token,
   });
 
   if (error) {

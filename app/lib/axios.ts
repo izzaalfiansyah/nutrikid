@@ -36,9 +36,9 @@ export const http = () => {
 
         try {
           const { data } = await instance.post("/refresh-token", {
-            access_token,
             refresh_token,
           });
+
           const {
             access_token: new_access_token,
             refresh_token: new_refresh_token,
