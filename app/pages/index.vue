@@ -42,13 +42,14 @@ async function getAllTotals() {
       role: "expert",
     });
 
+    totalExpert.value = total_expert || 0;
+    totalTeacher.value = total_teacher || 0;
+
     const { total: total_student } = await StudentService.findAll({
       limit: 1,
     });
 
     totalStudent.value = total_student || 0;
-    totalTeacher.value = total_teacher || 0;
-    totalExpert.value = total_expert || 0;
   } catch (e) {
     // do nothing
   }

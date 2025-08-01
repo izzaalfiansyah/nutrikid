@@ -3,156 +3,74 @@ import type { ChangePasswordOtherParams } from "./dto/change-password-other.dto"
 import type { UsersParams } from "./dto/users-params.dto";
 import type { RegisterUser } from "./dto/register-user.dto";
 import moment from "moment";
+import { throwError } from "~/lib/throw-error";
+import { http } from "~/lib/axios";
 
 export class UserService {
   static async findAll(params?: UsersParams) {
-    const limit = params?.limit || 20;
-    const page = params?.page || 1;
-    const from = (page - 1) * limit;
-    const to = from + limit - 1;
-
-    const query = (props?: { count?: boolean }) => {
-      let q = supabase()
-        .from("profiles")
-        .select(
-          "*",
-          props?.count
-            ? {
-                count: "exact",
-                head: true,
-              }
-            : undefined,
-        )
-        .order("name", {
-          ascending: true,
-        })
-        .is("deleted_at", null);
-
-      if (params?.search) {
-        q = q.ilike("name", `%${params.search}%`);
-      }
-
-      if (params?.role) {
-        q = q.eq("role", params.role);
-      }
-
-      return q;
-    };
-
-    const { count: total } = await query({
-      count: true,
-    });
-    const { data, error } = await query().range(from, to);
-
-    if (error) {
-      throw new Error("Terjadi kesalahan saat mengambil data pengguna");
-    }
-
-    const profiles = data.map((profile) => {
-      return profileFromJson({
-        ...profile,
+    try {
+      const res = await http().get("/user", {
+        params: params,
       });
-    });
 
-    return {
-      total,
-      profiles,
-    };
+      return res.data.data;
+    } catch (err) {
+      throwError(err);
+    }
   }
 
-  static async show(params: Profile) {
-    const { data, error } = await supabase().auth.admin.getUserById(
-      params.user_id,
-    );
+  static async show(params: Profile): Promise<Profile | undefined> {
+    try {
+      const res = await http().get("/user/" + params.id);
 
-    if (error) {
-      throw new Error("Gagal mengambil data pengguna");
+      return res.data.data.user;
+    } catch (err) {
+      throwError(err);
     }
-
-    return profileFromJson({
-      ...params,
-      email: data.user.email,
-    });
   }
 
   static async store(params: RegisterUser) {
-    const { data, error } = await supabase().auth.admin.createUser({
-      email: params.email,
-      password: params.password,
-      email_confirm: true,
-    });
+    try {
+      const res = await http().post("/user", params);
 
-    if (error) {
-      throw new Error("Terjadi kesalahan saat membuat pengguna baru");
+      return res.data;
+    } catch (err) {
+      throwError(err);
     }
-
-    const { error: profileError } = await supabase().from("profiles").insert({
-      name: params.name,
-      user_id: data.user?.id,
-      phone: params.phone,
-      role: params.role,
-    });
-
-    if (profileError) {
-      throw new Error("Terjadi kesalahan saat membuat profil pengguna baru");
-    }
-
-    return {
-      success: true,
-      message: "Pengguna baru berhasil ditambahkan",
-    };
   }
 
   static async update(params: Profile) {
-    const { error: profileError } = await supabase()
-      .from("profiles")
-      .update({
-        name: params.name,
-        phone: params.phone,
-        role: params.role,
-      })
-      .eq("id", params.id);
+    try {
+      const res = await http().put("/user/" + params.id, params);
 
-    if (profileError) {
-      throw new Error("Terjadi kesalahan saat mengedit profil pengguna");
+      return res.data;
+    } catch (err) {
+      throwError(err);
     }
-
-    return {
-      success: true,
-      message: "Pengguna berhasil diedit",
-    };
   }
 
   static async destroy(params: Profile) {
-    const { error } = await supabase()
-      .from("profiles")
-      .update({
-        deleted_at: moment().utc().toDate(),
-      })
-      .eq("id", params.id);
+    try {
+      const res = await http().delete("/user/" + params.id);
 
-    if (error) {
-      throw new Error("Terjadi kesalahan saat menghapus pengguna");
+      return res.data;
+    } catch (err) {
+      throwError(err);
     }
-
-    return {
-      success: true,
-      message: "Pengguna berhasil dihapus.",
-    };
   }
 
   static async changePassword(params: ChangePasswordOtherParams) {
-    const { error } = await supabase().auth.admin.updateUserById(params.uuid, {
-      password: params.password,
-    });
+    try {
+      const authStore = useAuthStore();
+      const res = await http().post("/user/change-password", params);
 
-    if (error) {
-      throw new Error("Gagal mengubah password pengguna.");
+      if (params.uuid == authStore.user?.user_id) {
+        navigateTo("/logout");
+      }
+
+      return res.data;
+    } catch (err) {
+      throwError(err);
     }
-
-    return {
-      success: true,
-      message: "Password pengguna berhasil diubah.",
-    };
   }
 }

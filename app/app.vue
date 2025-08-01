@@ -10,9 +10,11 @@ const route = useRoute();
 async function getProfile() {
   try {
     const user = await AuthService.profile();
-    if (!user && route.path != "/login") {
+    const isLoggedIn = user?.user_id;
+
+    if (!isLoggedIn && route.path != "/login") {
       return navigateTo("/login");
-    } else if (user && route.path == "/login") {
+    } else if (isLoggedIn && route.path == "/login") {
       // return navigateTo("/");
     }
   } catch (err) {}

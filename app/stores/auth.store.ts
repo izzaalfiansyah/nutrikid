@@ -14,8 +14,6 @@ export const useAuthStore = defineStore("auth", {
       this.user = user;
     },
     async logout() {
-      const router = useRouter();
-
       this.user = null;
       await AuthService.logout();
 

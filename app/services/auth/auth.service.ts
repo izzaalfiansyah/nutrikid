@@ -25,7 +25,7 @@ export class AuthService {
     }
   }
 
-  static async profile() {
+  static async profile(): Promise<Profile | undefined> {
     try {
       const res = await http().get("/profile");
       const profile = res.data.data.profile;
@@ -40,35 +40,32 @@ export class AuthService {
   }
 
   static async changePassword(params: ChangePassswordParams) {
-    if (params.password != params.password_confirmation) {
-      throw new Error("Password baru tidak sama dengan konfirmasi password.");
-    }
+    try {
+      const res = await http().post("/profile/change-password", params);
 
-    const { data, error } = await supabase().auth.updateUser({
-      password: params.password,
-    });
-
-    if (error) {
-      throw new Error("Gagal mengubah password.");
+      return res.data;
+    } catch (err) {
+      throwError(err);
     }
   }
 
   static async update(params: Profile) {
-    const { error } = await supabase()
-      .from("profiles")
-      .update({
-        name: params.name,
-        phone: params.phone,
-      })
-      .eq("id", params.id);
+    try {
+      const res = await http().put("/profile", params);
 
-    if (error) {
-      throw new Error("Gagal mengubah profil.");
+      return res.data;
+    } catch (err) {
+      throwError(err);
     }
   }
 
   static async logout() {
-    await supabase().auth.signOut();
+    localStorage.removeItem(ACCESSTOKEN);
+    localStorage.removeItem(REFRESHTOKEN);
+
+    const authStore = useAuthStore();
+    authStore.logout();
+
     return true;
   }
 }
