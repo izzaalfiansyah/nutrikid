@@ -29,7 +29,7 @@ export default defineEventHandler(async (e) => {
       student_bmi: result.bmi,
       creator_id,
     })
-    .neq("id", id);
+    .eq("id", id);
 
   if (error) {
     throw new Error("Terjadi kesalahan saat menyimpan data pengukuran");

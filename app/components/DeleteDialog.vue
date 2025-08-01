@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { Loader2 } from "lucide-vue-next";
 import { handleError } from "~/lib/handle-error";
 import { handleSuccess } from "~/lib/handle-success";
 
@@ -9,9 +10,11 @@ const props = defineProps<{
   description: string;
 }>();
 
+const is_submitted = ref(false);
 const open = ref(false);
 
 async function handleDelete() {
+  is_submitted.value = true;
   try {
     const data = await props.fn();
 
@@ -25,6 +28,7 @@ async function handleDelete() {
   } catch (err: any) {
     handleError(err);
   }
+  is_submitted.value = false;
 }
 </script>
 
@@ -42,7 +46,13 @@ async function handleDelete() {
       </AlertDialogHeader>
       <AlertDialogFooter>
         <AlertDialogCancel>Batal</AlertDialogCancel>
-        <AlertDialogAction @click="handleDelete">Hapus</AlertDialogAction>
+        <AlertDialogAction :disabled="is_submitted" @click="handleDelete">
+          <Loader2
+            class="size-4 animate-spin mr-1"
+            v-if="is_submitted"
+          ></Loader2>
+          Hapus
+        </AlertDialogAction>
       </AlertDialogFooter>
     </AlertDialogContent>
   </AlertDialog>
