@@ -1,10 +1,8 @@
 import { createClient } from "@supabase/supabase-js";
 
 export const supabase = () => {
-  const config = useRuntimeConfig();
-
-  const supabaseUrl: any = config.public.SUPABASE_URL || "";
-  const supabaseKey: any = config.public.SUPABASE_KEY || "";
+  let supabaseUrl: any = process.env.SUPABASE_URL || "";
+  let supabaseKey: any = process.env.SUPABASE_KEY || "";
 
   if (!supabaseUrl || !supabaseKey) {
     throw new Error("Missing Supabase credentials");

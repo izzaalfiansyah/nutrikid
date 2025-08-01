@@ -1,4 +1,3 @@
-import { supabase } from "~/lib/supabase";
 import { studentFromJson, type Student } from "./dto/student.dto";
 import type { StudentsParams } from "./dto/students-params.dto";
 import moment from "moment";

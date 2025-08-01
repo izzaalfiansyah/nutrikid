@@ -1,4 +1,3 @@
-import { supabase } from "~/lib/supabase";
 import { profileFromJson, type Profile } from "../auth/dto/profile.dto";
 import type { ChangePasswordOtherParams } from "./dto/change-password-other.dto";
 import type { UsersParams } from "./dto/users-params.dto";
