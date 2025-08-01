@@ -2,10 +2,15 @@ import axios, { AxiosError } from "axios";
 import { AuthService } from "~/services/auth/auth.service";
 import { jwtDecode } from "jwt-decode";
 
-function isTokenExpired(token: string) {
-  const payload = jwtDecode(token);
+function isTokenExpired(token?: string) {
+  if (!token) {
+    return false;
+  }
 
-  return payload.exp || 0 * 1000 < Date.now();
+  const payload = jwtDecode(token);
+  const expirationTime = payload.exp || 0;
+
+  return expirationTime * 1000 < Date.now();
 }
 
 export const http = () => {
@@ -26,14 +31,13 @@ export const http = () => {
     (res) => res,
     async (error: any) => {
       const original_request = error.config;
-      if (
-        access_token &&
-        isTokenExpired(access_token) &&
-        refresh_token &&
-        !(original_request as any)._retry
-      ) {
-        (original_request as any)._retry = true;
 
+      if (
+        !!access_token &&
+        !!refresh_token &&
+        isTokenExpired(access_token) &&
+        error.response.status == 401
+      ) {
         try {
           const { data } = await instance.post("/refresh-token", {
             refresh_token,
@@ -59,10 +63,10 @@ export const http = () => {
           AuthService.logout();
         }
       }
+
+      return Promise.reject(error);
     },
   );
-
-  instance.post("/refresh-token", { access_token, refresh_token });
 
   return instance;
 };

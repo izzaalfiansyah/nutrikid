@@ -8,24 +8,22 @@ export default defineEventHandler(async (e) => {
     // do nothing
   }
 
-  const profile = await supabase()
+  const { data: profile } = await supabase()
     .from("profiles")
     .select("*")
     .eq("user_id", data.user?.id)
     .limit(1)
     .single();
 
-  if (!profile.data) {
-    // do nothing
-  }
-
   if (profile) {
     const data_profile = profileFromJson({
       uuid: data.user?.id,
       email: data.user?.email,
-      ...profile.data,
+      ...profile,
     });
 
     e.context.user = data_profile;
+  } else {
+    e.context.user = undefined;
   }
 });
