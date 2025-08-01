@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import type { Gender } from "~/services/student/dto/student.dto";
-
 const props = defineProps<{
   modelValue?: Gender;
   withAll?: boolean;

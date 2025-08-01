@@ -10,6 +10,7 @@ import { useHomeStore } from "~/stores/home.store";
 const students = ref<Array<Student>>([]);
 const total = ref(0);
 const homeStore = useHomeStore();
+const authStore = useAuthStore();
 
 const params = ref<StudentsParams>({
   page: 1,
@@ -70,7 +71,7 @@ onMounted(async () => {
           </div>
         </div>
       </div>
-      <StudentStoreDialog :callback="getStudents">
+      <StudentStoreDialog :callback="getStudents" v-if="authStore.isAdmin">
         <Button type="button" class="cursor-pointer">
           <Plus />
           Tambah Siswa
@@ -138,6 +139,7 @@ onMounted(async () => {
                       <StudentStoreDialog
                         :callback="getStudents"
                         :student="student"
+                        v-if="authStore.isAdmin"
                       >
                         <DropdownMenuItem @select="(e) => e.preventDefault()">
                           Edit
@@ -149,6 +151,7 @@ onMounted(async () => {
                         :fn="() => StudentService.destroy(student)"
                         :callback="getStudents"
                         :student="student"
+                        v-if="authStore.isAdmin"
                       >
                         <DropdownMenuItem @select="(e) => e.preventDefault()">
                           Hapus

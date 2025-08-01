@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import type { Profile } from "~/services/auth/dto/profile.dto";
 import { UserService } from "~/services/user/user.service";
 
 const parents = ref<Array<Profile>>([]);

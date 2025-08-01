@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import type { Student } from "~/services/student/dto/student.dto";
 import { StudentService } from "~/services/student/student.service";
 
 const students = ref<Array<Student>>([]);

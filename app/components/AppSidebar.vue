@@ -13,7 +13,6 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import {
-  BookOpen,
   ChartArea,
   ChevronUp,
   Fingerprint,
@@ -71,6 +70,7 @@ const data = {
           title: "Data Pengguna",
           url: "/users",
           icon: Users2,
+          admin_only: true,
         },
         {
           title: "Data Siswa",
@@ -132,29 +132,30 @@ function handleLogout() {
         }}</SidebarGroupLabel>
         <SidebarGroupContent>
           <SidebarMenu>
-            <SidebarMenuItem
-              v-for="childItem in item.items"
-              :key="childItem.title"
-            >
-              <SidebarMenuButton
-                as-child
-                :class="{
-                  'bg-primary text-white hover:bg-primary hover:text-white':
-                    isMenuActive(childItem.url),
-                }"
+            <template v-for="childItem in item.items" :key="childItem.title">
+              <SidebarMenuItem
+                v-if="!(childItem as any).admin_only || authStore.isAdmin"
               >
-                <NuxtLink :to="childItem.url">
-                  <component
-                    :is="childItem.icon"
-                    :class="{
-                      'text-primary': !isMenuActive(childItem.url),
-                      'mr-2 size-4': true,
-                    }"
-                  />
-                  {{ childItem.title }}
-                </NuxtLink>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
+                <SidebarMenuButton
+                  as-child
+                  :class="{
+                    'bg-primary text-white hover:bg-primary hover:text-white':
+                      isMenuActive(childItem.url),
+                  }"
+                >
+                  <NuxtLink :to="childItem.url">
+                    <component
+                      :is="childItem.icon"
+                      :class="{
+                        'text-primary': !isMenuActive(childItem.url),
+                        'mr-2 size-4': true,
+                      }"
+                    />
+                    {{ childItem.title }}
+                  </NuxtLink>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </template>
           </SidebarMenu>
         </SidebarGroupContent>
       </SidebarGroup>

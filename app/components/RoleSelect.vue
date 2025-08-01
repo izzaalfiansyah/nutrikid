@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import type { ProfileRole } from "~/services/auth/dto/profile.dto";
-
 const props = defineProps<{
   modelValue?: ProfileRole;
   withAll?: boolean;

@@ -11,7 +11,6 @@ import {
   ComboboxList,
 } from "@/components/ui/combobox";
 import { cn } from "~/lib/utils";
-import type { Profile } from "~/services/auth/dto/profile.dto";
 import type { UsersParams } from "~/services/user/dto/users-params.dto";
 import { UserService } from "~/services/user/user.service";
 
