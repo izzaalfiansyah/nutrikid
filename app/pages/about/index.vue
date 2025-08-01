@@ -24,8 +24,11 @@ definePageMeta({
     class="min-h-screen w-[800px] max-w-full flex items-center justify-center mx-auto p-5 relative"
   >
     <div class="text-center space-y-5">
-      <div class="text-5xl text-primary font-semibold">
-        {{ app().name }}
+      <div class="flex items-center justify-center space-x-5">
+        <Logo class="size-10"></Logo>
+        <div class="text-5xl text-primary font-semibold">
+          {{ app().name }}
+        </div>
       </div>
       <div class="text-muted-foreground text-sm">
         {{ app().description }}
