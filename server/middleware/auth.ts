@@ -12,6 +12,7 @@ export default defineEventHandler(async (e) => {
     .from("profiles")
     .select("*")
     .eq("user_id", data.user?.id)
+    .limit(1)
     .single();
 
   if (!profile.data) {

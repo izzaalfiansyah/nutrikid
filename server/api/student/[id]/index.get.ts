@@ -15,6 +15,7 @@ export default defineEventHandler(async (e) => {
     .from("measurements")
     .select("*")
     .eq("student_id", student.id)
+    .limit(1)
     .is("deleted_at", null)
     .order("created_at", {
       ascending: false,
