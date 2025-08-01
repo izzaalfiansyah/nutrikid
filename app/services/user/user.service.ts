@@ -12,25 +12,38 @@ export class UserService {
     const from = (page - 1) * limit;
     const to = from + limit - 1;
 
-    let query = supabase()
-      .from("profiles")
-      .select("*")
+    const query = (props?: { count?: boolean }) => {
+      let q = supabase()
+        .from("profiles")
+        .select(
+          "*",
+          props?.count
+            ? {
+                count: "exact",
+                head: true,
+              }
+            : undefined,
+        )
+        .order("name", {
+          ascending: true,
+        })
+        .is("deleted_at", null);
 
-      .order("name", {
-        ascending: true,
-      })
-      .is("deleted_at", null);
+      if (params?.search) {
+        q = q.ilike("name", `%${params.search}%`);
+      }
 
-    if (params?.search) {
-      query = query.ilike("name", `%${params.search}%`);
-    }
+      if (params?.role) {
+        q = q.eq("role", params.role);
+      }
 
-    if (params?.role) {
-      query = query.eq("role", params.role);
-    }
+      return q;
+    };
 
-    const total = (await query).count;
-    const { data, error } = await query.range(from, to);
+    const { count: total } = await query({
+      count: true,
+    });
+    const { data, error } = await query().range(from, to);
 
     if (error) {
       throw new Error("Terjadi kesalahan saat mengambil data pengguna");

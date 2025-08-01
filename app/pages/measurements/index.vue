@@ -33,8 +33,6 @@ async function getMeasurements(reset = true) {
     params.value.student_id = undefined;
   }
 
-  console.log(params.value);
-
   const data = await MeasurementService.findAll(params.value);
 
   measurements.value = data.measurements;
@@ -55,6 +53,11 @@ watch(end_date, () => {
     params.value.end_date = end_date.value.toDate("utc");
   }
 });
+
+watch(
+  () => params.value.page,
+  () => getMeasurements(false),
+);
 
 onMounted(async () => {
   await getMeasurements();

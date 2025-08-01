@@ -12,28 +12,42 @@ export class MeasurementService {
     const from = (page - 1) * limit;
     const to = from + limit - 1;
 
-    let query = supabase()
-      .from("measurements")
-      .select("*")
-      .order("created_at", {
-        ascending: false,
-      })
-      .is("deleted_at", null);
+    const query = (props?: { count?: boolean }) => {
+      let q = supabase()
+        .from("measurements")
+        .select(
+          "*",
+          props?.count
+            ? {
+                count: "exact",
+                head: true,
+              }
+            : undefined,
+        )
+        .order("created_at", {
+          ascending: false,
+        })
+        .is("deleted_at", null);
 
-    if (params?.start_date) {
-      query = query.gte("created_at", params.start_date);
-    }
+      if (params?.start_date) {
+        q = q.gte("created_at", params.start_date);
+      }
 
-    if (params?.end_date) {
-      query = query.lte("created_at", params.end_date);
-    }
+      if (params?.end_date) {
+        q = q.lte("created_at", params.end_date);
+      }
 
-    if (params?.student_id) {
-      query = query.eq("student_id", params.student_id);
-    }
+      if (params?.student_id) {
+        q = q.eq("student_id", params.student_id);
+      }
 
-    const total = (await query).count;
-    const { data, error } = await query.range(from, to);
+      return q;
+    };
+
+    const { count: total } = await query({
+      count: true,
+    });
+    const { data, error } = await query().range(from, to);
 
     if (error) {
       throw new Error("Terjadi kesalahan saat mengambil data pengukuran");

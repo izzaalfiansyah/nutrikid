@@ -11,22 +11,25 @@ export class StudentService {
     const from = (page - 1) * limit;
     const to = from + limit - 1;
 
-    let query = supabase()
-      .from("students")
-      .select("*")
+    const query = (props?: { count?: boolean }) => {
+      let q = supabase()
+        .from("students")
+        .select("*", props?.count ? { count: "exact", head: true } : undefined)
+        .is("deleted_at", null);
 
-      .is("deleted_at", null);
+      if (params?.search) {
+        q = q.ilike("name", `%${params.search}%`);
+      }
 
-    if (params?.search) {
-      query = query.ilike("name", `%${params.search}%`);
-    }
+      if (params?.gender) {
+        q = q.eq("gender", params.gender);
+      }
 
-    if (params?.gender) {
-      query = query.eq("gender", params.gender);
-    }
+      return q;
+    };
 
-    const total = (await query).count;
-    const { data, error } = await query.range(from, to);
+    const { count: total } = await query({ count: true });
+    const { data, error } = await query().range(from, to);
 
     if (error) {
       throw new Error("Terjadi kesalahan saat mengambil data siswa.");
