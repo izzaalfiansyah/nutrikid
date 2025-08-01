@@ -17,7 +17,9 @@ async function getProfile() {
     } else if (isLoggedIn && route.path == "/login") {
       // return navigateTo("/");
     }
-  } catch (err) {}
+  } catch (err) {
+    return navigateTo("/login");
+  }
 }
 
 onMounted(async () => {
