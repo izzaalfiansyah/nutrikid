@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import { calculateAge } from "~/lib/calculate-age";
-import { calculateBmi } from "~/lib/calculate-bmi";
 import { date } from "~/lib/format-date";
 import StudentSelect from "../students/StudentSelect.vue";
 import { StudentService } from "~/services/student/student.service";
@@ -24,6 +22,7 @@ async function handleChangeStudent(s: Student | null) {
   if (s) {
     try {
       const { measurement } = await StudentService.lastStatistic(s);
+
       params.value.student_height = measurement.student_height;
       params.value.student_weight = measurement.student_weight;
     } catch (err) {

@@ -22,7 +22,7 @@ async function getMeasurements() {
     const data = await StudentService.statistics(id);
 
     measurements.value = data.measurements;
-    student.value = data.student;
+    student.value = data.student as any;
   } catch (err) {
     measurements.value = [];
   }

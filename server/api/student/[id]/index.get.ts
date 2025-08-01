@@ -14,7 +14,7 @@ export default defineEventHandler(async (e) => {
   const { data: measurement, error } = await supabase()
     .from("measurements")
     .select("*")
-    .eq("student_id", 1)
+    .eq("student_id", student.id)
     .is("deleted_at", null)
     .order("created_at", {
       ascending: false,

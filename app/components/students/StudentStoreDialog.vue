@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { CalendarIcon } from "lucide-vue-next";
 import { type DateValue } from "reka-ui";
-import { calculateAge } from "~/lib/calculate-age";
 import { date, formatDate } from "~/lib/format-date";
 import { CalendarWithMonthYear } from "../ui/calendar";
 import StudentParentSelect from "./StudentParentSelect.vue";

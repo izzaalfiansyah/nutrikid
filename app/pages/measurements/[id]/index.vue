@@ -1,14 +1,7 @@
 <script lang="ts" setup>
-import MeasurementForm from "~/components/measurements/MeasurementForm.vue";
 import { date, formatDate } from "~/lib/format-date";
 import { handleError } from "~/lib/handle-error";
-import { handleSuccess } from "~/lib/handle-success";
-import {
-  mappedMeasurementStatus,
-  type Measurement,
-} from "~/services/measurement/dto/measurement.dto";
 import { MeasurementService } from "~/services/measurement/measurement.service";
-import { mappedGender } from "~/services/student/dto/student.dto";
 
 const homeStore = useHomeStore();
 const route = useRoute();

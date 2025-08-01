@@ -3,7 +3,6 @@ import MeasurementForm from "~/components/measurements/MeasurementForm.vue";
 import { date } from "~/lib/format-date";
 import { handleError } from "~/lib/handle-error";
 import { handleSuccess } from "~/lib/handle-success";
-import type { Measurement } from "~/services/measurement/dto/measurement.dto";
 import { MeasurementService } from "~/services/measurement/measurement.service";
 
 const homeStore = useHomeStore();

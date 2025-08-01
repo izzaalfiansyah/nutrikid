@@ -1,4 +1,4 @@
-import type { MeasurementStatus } from "~/services/measurement/dto/measurement.dto";
+import type { MeasurementStatus } from "./measurement";
 
 export function calculateStatus(score: number): MeasurementStatus {
   if (score < -2) {

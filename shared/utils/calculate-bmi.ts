@@ -1,8 +1,6 @@
-import type { MeasurementStatus } from "~/services/measurement/dto/measurement.dto";
-import type { Student } from "~/services/student/dto/student.dto";
-import { calculateAge } from "./calculate-age";
 import { calculateZScore } from "./calculate-zscore";
 import { calculateStatus } from "./calculate-status";
+import type { MeasurementStatus } from "./measurement";
 
 export type BmiResult = {
   status: MeasurementStatus;

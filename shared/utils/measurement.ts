@@ -1,8 +1,8 @@
 import moment from "moment";
-import { calculateStatus } from "~/lib/calculate-status";
-import { calculateZScore } from "~/lib/calculate-zscore";
 import type { Student } from "./student";
 import type { Profile } from "./profile";
+import { calculateZScore } from "./calculate-zscore";
+import { calculateStatus } from "./calculate-status";
 
 export type MeasurementStatus = "wasted" | "normal" | "overweight" | "obese";
 

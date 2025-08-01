@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { MoreHorizontal, Plus, Search } from "lucide-vue-next";
 import StudentStoreDialog from "~/components/students/StudentStoreDialog.vue";
-import { calculateAge } from "~/lib/calculate-age";
 import { formatDate } from "~/lib/format-date";
 import { genderIcon } from "~/lib/gender-icon";
 import type { StudentsParams } from "~/services/student/dto/students-params.dto";
