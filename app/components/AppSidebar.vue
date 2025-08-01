@@ -70,10 +70,10 @@ const data = {
           title: "Data Pengguna",
           url: "/users",
           icon: Users2,
-          admin_only: true,
+          roles: ["admin"],
         },
         {
-          title: "Data Siswa",
+          title: `Data ${authStore.isParent ? "Anak" : "Siswa"}`,
           url: "/students",
           icon: Users,
         },
@@ -134,7 +134,10 @@ function handleLogout() {
           <SidebarMenu>
             <template v-for="childItem in item.items" :key="childItem.title">
               <SidebarMenuItem
-                v-if="!(childItem as any).admin_only || authStore.isAdmin"
+                v-if="
+                  !(childItem as any)?.roles ||
+                  (childItem as any)?.roles.includes(authStore.user?.role)
+                "
               >
                 <SidebarMenuButton
                   as-child

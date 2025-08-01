@@ -11,6 +11,7 @@ import { useHomeStore } from "~/stores/home.store";
 const measurements = ref<Array<Measurement>>([]);
 const total = ref(0);
 const homeStore = useHomeStore();
+const authStore = useAuthStore();
 const show_filter_dialog = ref(false);
 
 const params = ref<MeasurementParams>({
@@ -27,6 +28,10 @@ async function getMeasurements(reset = true) {
     params.value.start_date = undefined;
     params.value.end_date = undefined;
     params.value.student_id = undefined;
+  }
+
+  if (authStore.isParent) {
+    params.value.parent_id = authStore.user?.id;
   }
 
   const data = await MeasurementService.findAll(params.value);

@@ -16,8 +16,11 @@ const emit = defineEmits<{
 
 async function getStudents() {
   try {
+    const authStore = useAuthStore();
+
     const data = await StudentService.findAll({
       limit: 200,
+      parent_id: authStore.isParent ? authStore.user?.id : undefined,
     });
 
     students.value = data.students;

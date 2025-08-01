@@ -5,20 +5,22 @@ export const useAuthStore = defineStore("auth", {
   state(): {
     user: Profile | null;
     isAdmin: boolean;
+    isParent: boolean;
   } {
     return {
       user: null,
       isAdmin: false,
+      isParent: false,
     };
   },
   actions: {
     setUser(user: Profile | null) {
       this.user = user;
       this.isAdmin = user?.role == "admin";
+      this.isParent = user?.role == "parent";
     },
     async logout() {
-      this.user = null;
-      this.isAdmin = false;
+      this.setUser(null);
       await AuthService.logout();
 
       navigateTo("/login");

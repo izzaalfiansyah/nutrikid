@@ -50,11 +50,13 @@ onMounted(async () => {
     </div>
   </template>
 
-  <NuxtLayout>
-    <NuxtPage></NuxtPage>
-  </NuxtLayout>
+  <template v-else>
+    <NuxtLayout>
+      <NuxtPage></NuxtPage>
+    </NuxtLayout>
 
-  <ClientOnly>
-    <Toaster position="bottom-right"></Toaster>
-  </ClientOnly>
+    <ClientOnly>
+      <Toaster position="bottom-right"></Toaster>
+    </ClientOnly>
+  </template>
 </template>

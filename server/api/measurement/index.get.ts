@@ -7,6 +7,22 @@ export default defineEventHandler(async (e) => {
   const page = (params?.page || 1) as number;
   const from = (page - 1) * limit;
   const to = from + limit - 1;
+  let student_ids = [];
+
+  if (e.context.user?.role == "parent") {
+    params.parent_id = e.context.user?.id;
+  }
+
+  if (params.parent_id) {
+    const { data: students } = await supabase()
+      .from("students")
+      .select("id")
+      .eq("parent_id", params.parent_id);
+
+    student_ids = students?.map((student) => student.id) || [];
+  }
+
+  console.log(params.parent_id, student_ids);
 
   const query = (props?: { count?: boolean }) => {
     let q = supabase()
@@ -41,6 +57,10 @@ export default defineEventHandler(async (e) => {
 
     if (params?.student_id) {
       q = q.eq("student_id", params.student_id);
+    }
+
+    if (params?.parent_id) {
+      q = q.in("student_id", student_ids);
     }
 
     return q;

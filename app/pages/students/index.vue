@@ -28,6 +28,10 @@ async function getStudents(reset = true) {
     params.value.gender = undefined;
   }
 
+  if (authStore.isParent) {
+    params.value.parent_id = authStore.user?.id;
+  }
+
   const data = await StudentService.findAll(params.value);
 
   students.value = data.students;
@@ -42,10 +46,12 @@ watch(
   { deep: true },
 );
 
+const title = authStore.isParent ? "Anak" : "Siswa";
+
 onMounted(async () => {
   await getStudents();
 
-  homeStore.setTitle("Data Siswa");
+  homeStore.setTitle("Data " + title);
 });
 </script>
 
@@ -61,7 +67,7 @@ onMounted(async () => {
               <Search class="size-4"></Search>
             </div>
             <Input
-              placeholder="Cari Siswa"
+              :placeholder="`Cari ${title}`"
               @change="(e: any) => (params.search = e.currentTarget.value)"
               class="pl-10"
             ></Input>
@@ -74,7 +80,7 @@ onMounted(async () => {
       <StudentStoreDialog :callback="getStudents" v-if="authStore.isAdmin">
         <Button type="button" class="cursor-pointer">
           <Plus />
-          Tambah Siswa
+          Tambah {{ title }}
         </Button>
       </StudentStoreDialog>
     </div>

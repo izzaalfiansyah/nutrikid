@@ -1,6 +1,6 @@
 import moment from "moment";
-import type { Measurement } from "~/services/measurement/dto/measurement.dto";
 import type { Profile } from "./profile";
+import type { Measurement } from "./measurement";
 
 export type Gender = "l" | "p";
 

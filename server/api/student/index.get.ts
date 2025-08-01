@@ -20,6 +20,14 @@ export default defineEventHandler(async (e) => {
       q = q.eq("gender", params.gender);
     }
 
+    if (e.context.user?.role == "parent") {
+      params.parent_id = e.context.user?.id;
+    }
+
+    if (params?.parent_id) {
+      q = q.eq("parent_id", params.parent_id);
+    }
+
     return q;
   };
 
