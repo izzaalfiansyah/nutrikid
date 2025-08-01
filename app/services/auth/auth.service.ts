@@ -1,6 +1,7 @@
 import type { LoginParams } from "./dto/login.dto";
 import type { ChangePassswordParams } from "./dto/change-password.dto";
 import { http } from "~/lib/axios";
+import { throwError } from "~/lib/throw-error";
 
 export const ACCESSTOKEN = "access_token";
 export const REFRESHTOKEN = "refresh_token";
@@ -20,7 +21,7 @@ export class AuthService {
 
       return access_token;
     } catch (err: any) {
-      throw new Error("Username atau password salah");
+      throwError(err);
     }
   }
 
@@ -34,7 +35,7 @@ export class AuthService {
 
       return profile;
     } catch (err: any) {
-      throw new Error(err.message);
+      throwError(err);
     }
   }
 
