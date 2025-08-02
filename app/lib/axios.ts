@@ -15,8 +15,14 @@ function isTokenExpired(token?: string) {
 
 export const http = () => {
   const headers: Record<any, any> = {};
+  const config = useRuntimeConfig();
 
   const { access_token, refresh_token } = AuthService.getSession();
+  const app_key = config.public.APP_KEY;
+
+  if (app_key) {
+    headers["x-app-key"] = app_key;
+  }
 
   if (access_token) {
     headers["Authorization"] = `Bearer ${access_token}`;

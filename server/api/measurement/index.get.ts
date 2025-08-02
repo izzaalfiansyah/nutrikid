@@ -22,8 +22,6 @@ export default defineEventHandler(async (e) => {
     student_ids = students?.map((student) => student.id) || [];
   }
 
-  console.log(params.parent_id, student_ids);
-
   const query = (props?: { count?: boolean }) => {
     let q = supabase()
       .from("measurements")

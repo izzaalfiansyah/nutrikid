@@ -8,8 +8,6 @@ export default defineEventHandler(async (e) => {
   const params = await readBody(e);
   const creator_id = e.context.user?.id;
 
-  console.log(params);
-
   const { error } = await supabase().from("measurement_suggestions").insert({
     measurement_id: id,
     creator_id,
