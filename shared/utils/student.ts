@@ -14,7 +14,7 @@ export interface Student {
   parent?: Profile;
   deleted_at?: Date;
   age: number;
-  last_measurement?: Measurement;
+  measurement?: Measurement;
 }
 
 export function studentFromJson(data: any): Student {
@@ -28,7 +28,7 @@ export function studentFromJson(data: any): Student {
     parent_id: data.parent_id,
     parent: data.parent,
     deleted_at: data.deleted_at ? moment(data.deleted_at).toDate() : undefined,
-    last_measurement: data.last_measurement,
+    measurement: data.last_measurement,
     age: age || 0,
   };
 }
