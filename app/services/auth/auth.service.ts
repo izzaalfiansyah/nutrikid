@@ -41,6 +41,28 @@ export class AuthService {
     }
   }
 
+  static async refreshToken(
+    refresh_token: string,
+  ): Promise<string | undefined> {
+    try {
+      const res = await http().post("/refresh-token", { refresh_token });
+
+      const {
+        access_token: new_access_token,
+        refresh_token: new_refresh_token,
+      } = res.data.data;
+
+      AuthService.setSession({
+        access_token: new_access_token,
+        refresh_token: new_refresh_token,
+      });
+
+      return new_access_token;
+    } catch (err) {
+      throwError(err);
+    }
+  }
+
   static async profile(): Promise<Profile | undefined> {
     try {
       const res = await http().get("/profile");

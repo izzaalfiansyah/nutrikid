@@ -33,46 +33,19 @@ export const http = () => {
     headers: headers,
   });
 
-  instance.interceptors.response.use(
-    (res) => res,
-    async (error: any) => {
-      const original_request = error.config;
+  instance.interceptors.request.use(async (config) => {
+    if (!!access_token && !!refresh_token && isTokenExpired(access_token)) {
+      try {
+        const new_access_token = await AuthService.refreshToken(refresh_token);
 
-      if (
-        !!access_token &&
-        !!refresh_token &&
-        isTokenExpired(access_token) &&
-        error.response.status == 401
-      ) {
-        try {
-          const { data } = await instance.post("/refresh-token", {
-            refresh_token,
-          });
-
-          const {
-            access_token: new_access_token,
-            refresh_token: new_refresh_token,
-          } = data.data;
-
-          AuthService.setSession({
-            access_token: new_access_token,
-            refresh_token: new_refresh_token,
-          });
-
-          const bearer = `Bearer ${new_access_token}`;
-
-          instance.defaults.headers.common["Authorization"] = bearer;
-          original_request.headers["Authorization"] = bearer;
-
-          return instance(original_request);
-        } catch (e) {
-          AuthService.logout();
-        }
+        config.headers["Authorization"] = `Bearer ${new_access_token}`;
+      } catch (e) {
+        AuthService.logout();
       }
+    }
 
-      return Promise.reject(error);
-    },
-  );
+    return config;
+  });
 
   return instance;
 };
