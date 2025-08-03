@@ -1,6 +1,7 @@
 import moment from "moment";
 import type { Profile } from "./profile";
 import type { Measurement } from "./measurement";
+import { calculateAge } from "./calculate-age";
 
 export type Gender = "l" | "p";
 
@@ -12,10 +13,13 @@ export interface Student {
   parent_id?: number;
   parent?: Profile;
   deleted_at?: Date;
+  age: number;
   last_measurement?: Measurement;
 }
 
 export function studentFromJson(data: any): Student {
+  const age = calculateAge(data.birth_date);
+
   return {
     id: data.id,
     name: data.name,
@@ -25,6 +29,7 @@ export function studentFromJson(data: any): Student {
     parent: data.parent,
     deleted_at: data.deleted_at ? moment(data.deleted_at).toDate() : undefined,
     last_measurement: data.last_measurement,
+    age: age || 0,
   };
 }
 
