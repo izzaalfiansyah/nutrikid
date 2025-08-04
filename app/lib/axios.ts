@@ -36,6 +36,10 @@ export const http = () => {
   instance.interceptors.request.use(async (config) => {
     const { access_token, refresh_token } = AuthService.getSession();
 
+    if (config.url?.includes("/refresh-token")) {
+      return config;
+    }
+
     if (!!access_token && !!refresh_token && isTokenExpired(access_token)) {
       try {
         const new_access_token = await AuthService.refreshToken(refresh_token);
