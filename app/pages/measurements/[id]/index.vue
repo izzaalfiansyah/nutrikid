@@ -33,8 +33,6 @@ async function getMeasurement() {
   }
 }
 
-async function storeSuggestion() {}
-
 onMounted(() => {
   homeStore.setTitle(`Detail Pengukuran`);
   getMeasurement();
