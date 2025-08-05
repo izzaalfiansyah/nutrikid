@@ -11,7 +11,7 @@ export default defineEventHandler(async (e) => {
     throw new Error("Terjadi kesalahan saat mengambil data");
   }
 
-  const { data: measurement, error } = await supabase()
+  const { data: measurement } = await supabase()
     .from("measurements")
     .select("*")
     .eq("student_id", student.id)
@@ -22,8 +22,16 @@ export default defineEventHandler(async (e) => {
     })
     .single();
 
+  const { data: parent } = await supabase()
+    .from("profiles")
+    .select("*")
+    .eq("id", student.parent_id)
+    .limit(1)
+    .single();
+
   if (measurement) {
     student.measurement = measurementFromJson(measurement);
+    student.parent = profileFromJson(parent);
   }
 
   return {

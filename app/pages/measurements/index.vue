@@ -224,26 +224,28 @@ onMounted(async () => {
                     >
                       Detail
                     </DropdownMenuItem>
-                    <DropdownMenuItem
-                      @select="
-                        () =>
-                          navigateTo(
-                            '/measurements/' + measurement.id + '/edit',
-                          )
-                      "
-                    >
-                      Edit
-                    </DropdownMenuItem>
-                    <DeleteDialog
-                      title="Hapus Pengukuran"
-                      description="Anda yakin akan menghapus pengukuran terpilih? Data akan terhapus permanen"
-                      :fn="() => MeasurementService.destroy(measurement)"
-                      :callback="getMeasurements"
-                    >
-                      <DropdownMenuItem @select="(e) => e.preventDefault()">
-                        Hapus
+                    <template v-if="!authStore.isParent">
+                      <DropdownMenuItem
+                        @select="
+                          () =>
+                            navigateTo(
+                              '/measurements/' + measurement.id + '/edit',
+                            )
+                        "
+                      >
+                        Edit
                       </DropdownMenuItem>
-                    </DeleteDialog>
+                      <DeleteDialog
+                        title="Hapus Pengukuran"
+                        description="Anda yakin akan menghapus pengukuran terpilih? Data akan terhapus permanen"
+                        :fn="() => MeasurementService.destroy(measurement)"
+                        :callback="getMeasurements"
+                      >
+                        <DropdownMenuItem @select="(e) => e.preventDefault()">
+                          Hapus
+                        </DropdownMenuItem>
+                      </DeleteDialog>
+                    </template>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </TableCell>

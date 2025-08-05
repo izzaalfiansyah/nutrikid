@@ -15,14 +15,14 @@ export interface Profile {
 
 export function profileFromJson(data: any): Profile {
   return {
-    id: data.id,
-    name: data.name,
-    user_id: data.user_id,
-    email: data.email,
-    phone: data.phone,
-    role: data.role,
-    created_at: moment(data.created_at).toDate(),
-    deleted_at: data.deleted_at ? moment(data.deleted_at).toDate() : undefined,
+    id: data?.id,
+    name: data?.name,
+    user_id: data?.user_id,
+    email: data?.email,
+    phone: data?.phone,
+    role: data?.role,
+    created_at: moment(data?.created_at).toDate(),
+    deleted_at: data?.deleted_at ? moment(data.deleted_at).toDate() : undefined,
   } as Profile;
 }
 
