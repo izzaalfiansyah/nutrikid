@@ -7,11 +7,15 @@ export default defineEventHandler(async (e) => {
   const params = await readBody(e);
   const id = e.context.params?.id;
 
-  const age = calculateAge(
-    params?.student?.birth_date || moment().utc().toDate(),
-  );
+  if (params?.student) {
+    params.student_age = calculateAge(
+      params?.student?.birth_date || moment().utc().toDate(),
+    );
+  } else {
+    params.student_age = parseInt(params?.student_age);
+  }
 
-  const result = calculateBmi(age, {
+  const result = calculateBmi(params.student_age, {
     height: params?.student_height,
     weight: params?.student_weight,
   });
@@ -28,7 +32,7 @@ export default defineEventHandler(async (e) => {
       student_id: params?.student_id,
       student_weight: params?.student_weight,
       student_height: params?.student_height,
-      student_age: age,
+      student_age: params?.student_age,
       student_bmi: result.bmi,
       creator_id,
     })
