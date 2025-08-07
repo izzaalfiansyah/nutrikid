@@ -112,17 +112,18 @@ onMounted(() => {
               v-model="params.phone"
             ></Input>
           </div>
+          <div class="grid grid-cols-4 items-center gap-4">
+            <Label for="" class="text-right">Email</Label>
+            <Input
+              type="email"
+              class="col-span-3"
+              required
+              placeholder="Masukkan Email"
+              v-model="params.email"
+              :disabled="!!user"
+            ></Input>
+          </div>
           <template v-if="!user">
-            <div class="grid grid-cols-4 items-center gap-4">
-              <Label for="" class="text-right">Email</Label>
-              <Input
-                type="email"
-                class="col-span-3"
-                required
-                placeholder="Masukkan Email"
-                v-model="params.email"
-              ></Input>
-            </div>
             <div class="grid grid-cols-4 items-center gap-4">
               <Label for="" class="text-right">Password</Label>
               <Input
