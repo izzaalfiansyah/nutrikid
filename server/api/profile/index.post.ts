@@ -7,7 +7,7 @@ export default defineEventHandler(async (e) => {
       name: params.name,
       phone: params.phone,
     })
-    .eq("id", params.id);
+    .eq("id", e.context.user.id);
 
   if (error) {
     throw new Error("Gagal mengubah profil.");
