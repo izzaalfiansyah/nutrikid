@@ -89,7 +89,7 @@ export class AuthService {
 
   static async update(params: Profile) {
     try {
-      const res = await http().put("/profile", params);
+      const res = await http().post("/profile", params);
 
       return res.data;
     } catch (err) {
