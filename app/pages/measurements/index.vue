@@ -147,16 +147,21 @@ onMounted(async () => {
           </form>
         </DialogContent>
       </Dialog>
-      <UserStoreDialog :callback="getMeasurements" caption="Tambah Pengukuran">
-        <Button
-          type="button"
-          @click="() => navigateTo('/measurements/create')"
-          class="cursor-pointer"
+      <template v-if="!authStore.isParent">
+        <UserStoreDialog
+          :callback="getMeasurements"
+          caption="Tambah Pengukuran"
         >
-          <Plus />
-          Tambah Pengukuran
-        </Button>
-      </UserStoreDialog>
+          <Button
+            type="button"
+            @click="() => navigateTo('/measurements/create')"
+            class="cursor-pointer"
+          >
+            <Plus />
+            Tambah Pengukuran
+          </Button>
+        </UserStoreDialog>
+      </template>
     </div>
     <Card>
       <CardContent>
