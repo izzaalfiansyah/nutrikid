@@ -1,4 +1,4 @@
 export interface ChangePasswordOtherParams {
-  uuid: string;
+  id: number;
   password: string;
 }

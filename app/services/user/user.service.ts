@@ -60,11 +60,10 @@ export class UserService {
   static async changePassword(params: ChangePasswordOtherParams) {
     try {
       const authStore = useAuthStore();
-      const res = await http().post("/user/change-password", params);
-
-      if (params.uuid == authStore.user?.user_id) {
-        navigateTo("/logout");
-      }
+      const res = await http().post(
+        "/user/" + params.id + "/change-password",
+        params,
+      );
 
       return res.data;
     } catch (err) {

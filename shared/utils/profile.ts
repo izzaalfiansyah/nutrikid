@@ -1,14 +1,15 @@
 import moment from "moment";
 
-export type ProfileRole = "admin" | "teacher" | "parent" | "expert";
+export type ProfileRole = "admin" | "teacher" | "expert";
 
 export interface Profile {
   id: number;
   name: string;
-  user_id: string;
-  email: string;
+  username: string;
   phone: string;
   role: ProfileRole;
+  school_id?: number;
+  school?: School;
   created_at: Date;
   deleted_at?: Date;
 }
@@ -17,8 +18,7 @@ export function profileFromJson(data: any): Profile {
   return {
     id: data?.id,
     name: data?.name,
-    user_id: data?.user_id,
-    email: data?.email,
+    username: data?.username,
     phone: data?.phone,
     role: data?.role,
     created_at: moment(data?.created_at).toDate(),

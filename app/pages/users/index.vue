@@ -33,7 +33,7 @@ async function getProfiles(reset = true) {
 
   const data = await UserService.findAll(params.value);
 
-  profiles.value = data.profiles;
+  profiles.value = data.users;
   total.value = data.total || 0;
 }
 
@@ -91,6 +91,8 @@ onMounted(async () => {
             <TableHeader>
               <TableRow>
                 <TableHead>Nama</TableHead>
+                <TableHead>Akses Sekolah</TableHead>
+                <TableHead>Username</TableHead>
                 <TableHead>Role</TableHead>
                 <TableHead>Nomor Telepon</TableHead>
                 <TableHead>Opsi</TableHead>
@@ -108,6 +110,10 @@ onMounted(async () => {
                     <span>{{ profile.name }}</span>
                   </div>
                 </TableCell>
+                <TableCell>{{
+                  profile.school?.name ?? "Semua Sekolah"
+                }}</TableCell>
+                <TableCell>{{ profile.username }}</TableCell>
                 <TableCell>
                   <component
                     :is="roleIcon(profile.role)"
@@ -149,7 +155,7 @@ onMounted(async () => {
                           <span>Edit</span>
                         </DropdownMenuItem>
                       </UserStoreDialog>
-                      <UserResetPasswordDialog :uuid="profile.user_id">
+                      <UserResetPasswordDialog :id="profile.id">
                         <DropdownMenuItem @select="(e) => e.preventDefault()">
                           <span>Reset Password</span>
                         </DropdownMenuItem>

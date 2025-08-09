@@ -91,7 +91,7 @@ onMounted(() => {
         </div>
       </CardContent>
       <CardFooter class="mt-3 gap-3">
-        <NuxtLink :to="`/students/${params.student_id}/statistics`">
+        <NuxtLink :to="`/students/${params.student?.id}/statistics`">
           <Button type="button">Lihat Statistik</Button>
         </NuxtLink>
         <Button variant="outline" @click="$router.back"

@@ -7,7 +7,7 @@ import { handleSuccess } from "~/lib/handle-success";
 import { app } from "~/lib/app";
 
 const req = ref<LoginParams>({
-  email: "",
+  username: "",
   password: "",
 });
 
@@ -63,7 +63,7 @@ definePageMeta({
           </p>
         </div>
         <div class="space-y-4">
-          <Input placeholder="Email" v-model="req.email" type="email"></Input>
+          <Input placeholder="Username" v-model="req.username"></Input>
           <div class="relative">
             <Input
               placeholder="Password"

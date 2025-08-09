@@ -93,8 +93,9 @@ onMounted(async () => {
             >
             <TableHeader>
               <TableRow>
-                <TableHead>#</TableHead>
+                <TableHead>NISN</TableHead>
                 <TableHead>Nama</TableHead>
+                <TableHead>Sekolah</TableHead>
                 <TableHead>Gender</TableHead>
                 <TableHead>Tanggal Lahir</TableHead>
                 <TableHead>Umur</TableHead>
@@ -104,7 +105,7 @@ onMounted(async () => {
             <TableBody>
               <TableRow v-for="student in students" :key="student.id">
                 <TableCell class="font-medium">
-                  {{ student.id }}
+                  {{ student.nisn }}
                 </TableCell>
                 <TableCell class="font-medium">
                   <div class="flex items-center">
@@ -115,6 +116,9 @@ onMounted(async () => {
                     </Avatar>
                     <span>{{ student.name }}</span>
                   </div>
+                </TableCell>
+                <TableCell>
+                  {{ student.school?.name }}
                 </TableCell>
                 <TableCell>
                   <component

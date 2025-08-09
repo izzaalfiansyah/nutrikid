@@ -17,7 +17,7 @@ export const http = () => {
   const headers: Record<any, any> = {};
   const config = useRuntimeConfig();
 
-  const { access_token, refresh_token } = AuthService.getSession();
+  const { access_token } = AuthService.getSession();
   const app_key = config.public.APP_KEY;
 
   if (app_key) {
@@ -29,7 +29,7 @@ export const http = () => {
   }
 
   const instance = axios.create({
-    baseURL: "/api",
+    baseURL: config.public.APP_API_URL,
     headers: headers,
   });
 

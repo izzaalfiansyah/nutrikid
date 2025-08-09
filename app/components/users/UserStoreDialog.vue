@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { Loader2 } from "lucide-vue-next";
-import { toast } from "vue-sonner";
 import { date } from "~/lib/format-date";
 import { handleError } from "~/lib/handle-error";
 import { handleSuccess } from "~/lib/handle-success";
@@ -20,23 +19,24 @@ const is_submitted = ref(false);
 const params = ref<RegisterUser>({
   id: 0,
   name: "",
-  user_id: "",
-  email: "",
+  username: "",
   phone: "",
   role: "teacher",
   created_at: date(),
+  school_id: undefined,
   password: "12345678",
 });
 
 function handleUser() {
   params.value.id = props.user?.id || 0;
   params.value.name = props.user?.name || "";
-  params.value.user_id = props.user?.user_id || "";
-  params.value.email = props.user?.email || "";
+  params.value.username = props.user?.username || "";
   params.value.role = props.user?.role || "teacher";
   params.value.phone = props.user?.phone || "";
   params.value.created_at = props.user?.created_at || date();
   params.value.password = "12345678";
+  params.value.school_id =
+    props.user?.school?.id || props.user?.school_id || undefined;
 }
 
 watch(() => props.user, handleUser);
@@ -112,14 +112,18 @@ onMounted(() => {
               v-model="params.phone"
             ></Input>
           </div>
+          <div class="grid grid-cols-4 items-center gap-4" v-if="!props.user">
+            <Label for="" class="text-right">Sekolah</Label>
+            <SchoolSelect with-all v-model="params.school_id"></SchoolSelect>
+          </div>
           <div class="grid grid-cols-4 items-center gap-4">
-            <Label for="" class="text-right">Email</Label>
+            <Label for="" class="text-right">Username</Label>
             <Input
-              type="email"
+              type="text"
               class="col-span-3"
               required
-              placeholder="Masukkan Email"
-              v-model="params.email"
+              placeholder="Masukkan Username"
+              v-model="params.username"
               :disabled="!!user"
             ></Input>
           </div>

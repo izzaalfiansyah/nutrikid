@@ -22,6 +22,7 @@ import {
   Users,
   Users2,
   LockKeyholeOpen,
+  Building,
 } from "lucide-vue-next";
 import { AuthService } from "~/services/auth/auth.service";
 import UserStoreDialog from "./users/UserStoreDialog.vue";
@@ -67,13 +68,19 @@ const data = {
       url: "#",
       items: [
         {
+          title: "Data Sekolah",
+          url: "/schools",
+          icon: Building,
+          roles: ["admin"],
+        },
+        {
           title: "Data Pengguna",
           url: "/users",
           icon: Users2,
           roles: ["admin"],
         },
         {
-          title: `Data ${authStore.isParent ? "Anak" : "Siswa"}`,
+          title: `Data Siswa`,
           url: "/students",
           icon: Users,
         },
@@ -194,7 +201,7 @@ function handleLogout() {
                   <span class="text-gray-800">Profil</span>
                 </DropdownMenuItem>
               </UserStoreDialog>
-              <UserResetPasswordDialog :uuid="authStore.user!.user_id">
+              <UserResetPasswordDialog :id="authStore.user!.id">
                 <DropdownMenuItem
                   @select="(e) => e.preventDefault()"
                   class="flex items-center gap-2"

@@ -18,6 +18,7 @@ export default defineNuxtConfig({
       APP_NAME: process.env.APP_NAME,
       APP_DESCRIPTION: process.env.APP_DESCRIPTION,
       APP_KEY: process.env.APP_KEY,
+      APP_API_URL: process.env.APP_API_URL,
       SUPABASE_URL: process.env.SUPABASE_URL,
       SUPABASE_KEY: process.env.SUPABASE_KEY,
       ANDROID_DOWNLOAD_URL: process.env.ANDROID_DOWNLOAD_URL,

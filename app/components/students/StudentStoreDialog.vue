@@ -3,7 +3,6 @@ import { CalendarIcon, Loader2 } from "lucide-vue-next";
 import { type DateValue } from "reka-ui";
 import { date, formatDate } from "~/lib/format-date";
 import { CalendarWithMonthYear } from "../ui/calendar";
-import StudentParentSelect from "./StudentParentSelect.vue";
 import { handleError } from "~/lib/handle-error";
 import { StudentService } from "~/services/student/student.service";
 import { parseDate } from "@internationalized/date";
@@ -22,10 +21,12 @@ const is_submitted = ref(false);
 const params = ref<Student>(
   props.student || {
     id: 0,
+    nisn: "",
     name: "",
     birth_date: date(),
     gender: "l",
-    parent_id: undefined,
+    age: 0,
+    school_id: undefined,
   },
 );
 
@@ -73,8 +74,9 @@ function handleStudent() {
   params.value.id = props.student?.id || 0;
   params.value.name = props.student?.name || "";
   params.value.gender = props.student?.gender || "l";
-  params.value.parent_id = props.student?.parent_id || undefined;
   params.value.birth_date = props.student?.birth_date || date();
+  params.value.school_id =
+    props.student?.school?.id || props.student?.school_id || undefined;
 }
 
 onMounted(() => {
@@ -101,6 +103,15 @@ async function submit() {
           }}</DialogTitle>
         </DialogHeader>
         <div class="grid gap-4 py-4">
+          <div class="grid grid-cols-4 items-center gap-4">
+            <Label for=""> NISN </Label>
+            <Input
+              v-model="params.nisn"
+              class="col-span-3"
+              placeholder="Masukkan NISN"
+              required
+            />
+          </div>
           <div class="grid grid-cols-4 items-center gap-4">
             <Label for=""> Nama </Label>
             <Input
@@ -156,11 +167,12 @@ async function submit() {
               </div>
             </div>
           </div>
-          <div class="grid grid-cols-4 items-center gap-4">
-            <Label for=""> Orang Tua </Label>
-            <div class="col-span-3">
-              <StudentParentSelect v-model="params.parent_id" />
-            </div>
+          <div
+            v-if="!props.student"
+            class="grid grid-cols-4 items-center gap-4"
+          >
+            <Label for=""> Asal Sekolah </Label>
+            <SchoolSelect v-model="params.school_id"></SchoolSelect>
           </div>
         </div>
         <DialogFooter>

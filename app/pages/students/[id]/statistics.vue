@@ -47,34 +47,34 @@ const chartData = computed((): ChartData => {
       formatDate(measurement.created_at),
     ),
     datasets: [
-      {
-        label: "Berat",
-        data: measurements.value.map(
-          (measurement) => measurement.student_weight,
-        ),
-        fill,
-        hidden: false,
-      },
-      {
-        label: "Tinggi",
-        data: measurements.value.map(
-          (measurement) => measurement.student_height,
-        ),
-        fill,
-        hidden: false,
-      },
+      // {
+      //   label: "Berat",
+      //   data: measurements.value.map(
+      //     (measurement) => measurement.student_weight,
+      //   ),
+      //   fill,
+      //   hidden: false,
+      // },
+      // {
+      //   label: "Tinggi",
+      //   data: measurements.value.map(
+      //     (measurement) => measurement.student_height,
+      //   ),
+      //   fill,
+      //   hidden: false,
+      // },
       {
         label: "BMI",
         data: measurements.value.map((measurement) => measurement.student_bmi),
         fill,
         hidden: false,
       },
-      {
-        label: "Z Score",
-        data: measurements.value.map((measurement) => measurement.z_score || 0),
-        fill,
-        hidden: false,
-      },
+      // {
+      //   label: "Z Score",
+      //   data: measurements.value.map((measurement) => measurement.z_score || 0),
+      //   fill,
+      //   hidden: false,
+      // },
     ],
   };
 });
