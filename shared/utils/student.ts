@@ -1,6 +1,5 @@
 import moment from "moment";
 import type { Measurement } from "./measurement";
-import { calculateAge } from "./calculate-age";
 
 export type Gender = "l" | "p";
 
@@ -18,8 +17,6 @@ export interface Student {
 }
 
 export function studentFromJson(data: any): Student {
-  const age = calculateAge(data.birth_date);
-
   return {
     id: data.id,
     nisn: data.nisn,
@@ -28,7 +25,7 @@ export function studentFromJson(data: any): Student {
     gender: data.gender,
     deleted_at: data.deleted_at ? moment(data.deleted_at).toDate() : undefined,
     measurement: data.last_measurement,
-    age: age || 0,
+    age: data.age || 0,
   };
 }
 

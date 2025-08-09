@@ -32,19 +32,21 @@ const homeStore = useHomeStore();
           </BreadcrumbList>
         </Breadcrumb>
         <div class="ml-auto flex items-center mr-2">
-          <button
-            type="button"
-            class="cursor-pointer flex md:space-x-3 items-center"
-          >
-            <Avatar>
-              <AvatarFallback>{{
-                letterName(authStore.user?.name)
-              }}</AvatarFallback>
-            </Avatar>
-            <span class="hidden md:block text-sm">
-              {{ authStore.user?.name }}
-            </span>
-          </button>
+          <ProfileDropdown>
+            <button
+              type="button"
+              class="cursor-pointer flex md:space-x-3 items-center"
+            >
+              <Avatar>
+                <AvatarFallback>{{
+                  letterName(authStore.user?.name)
+                }}</AvatarFallback>
+              </Avatar>
+              <span class="hidden md:block text-sm">
+                {{ authStore.user?.name }}
+              </span>
+            </button>
+          </ProfileDropdown>
         </div>
       </header>
       <main class="p-4">

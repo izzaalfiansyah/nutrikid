@@ -1,10 +1,8 @@
 import moment from "moment";
 import type { Student } from "./student";
 import type { Profile } from "./profile";
-import { calculateZScore } from "./calculate-zscore";
-import { calculateStatus } from "./calculate-status";
 
-export type MeasurementStatus = "wasted" | "normal" | "overweight" | "obese";
+export type MeasurementStatus = "thinnes" | "normal" | "overweight" | "obese";
 
 export interface Measurement {
   id: number;
@@ -23,9 +21,6 @@ export interface Measurement {
 }
 
 export function measurementFromJson(data: any): Measurement {
-  const z_score = calculateZScore(data.student_bmi, data.student_age);
-  const status = calculateStatus(z_score);
-
   return {
     id: data.id,
     student_id: data.student_id,
@@ -36,16 +31,16 @@ export function measurementFromJson(data: any): Measurement {
     student_bmi: data.student_bmi,
     created_at: moment(data.created_at).toDate(),
     deleted_at: data.deleted_at ? moment(data.deleted_at).toDate() : undefined,
-    status,
-    z_score,
+    status: data.status,
+    z_score: data.z_score,
   };
 }
 
 export function mappedMeasurementStatus(status: MeasurementStatus) {
   return {
-    wasted: "Kurus",
-    normal: "Normal",
-    overweight: "Gemuk",
+    thinnes: "Gizi Kurang",
+    normal: "Gizi Baik",
+    overweight: "Gizi Lebih",
     obese: "Obesitas",
   }[status];
 }

@@ -131,7 +131,7 @@ onMounted(async () => {
                   {{ formatDate(student.birth_date) }}
                 </TableCell>
                 <TableCell>
-                  {{ calculateAge(student.birth_date) }}
+                  {{ student.age }}
                 </TableCell>
                 <TableCell class="align-middle">
                   <DropdownMenu>

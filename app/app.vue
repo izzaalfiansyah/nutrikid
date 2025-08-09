@@ -27,7 +27,7 @@ onMounted(async () => {
 
   setTimeout(() => {
     is_loaded.value = true;
-  }, 1500);
+  }, 400);
 });
 </script>
 

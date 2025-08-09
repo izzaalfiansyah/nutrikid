@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { date } from "~/lib/format-date";
 import StudentSelect from "../students/StudentSelect.vue";
 import { StudentService } from "~/services/student/student.service";
 import { Loader2 } from "lucide-vue-next";
+import { http } from "~/lib/axios";
 
 const props = defineProps<{
   handleSubmit: () => any;
@@ -12,6 +12,11 @@ const props = defineProps<{
 
 const is_submitted = ref(false);
 const params = ref<Measurement>(props.modelValue);
+const student = ref<Student>();
+
+if (params.value.student) {
+  params.value.student_id = params.value.student.id;
+}
 
 const emit = defineEmits<{
   (e: "update:modelValue", value: Measurement): void;
@@ -19,7 +24,8 @@ const emit = defineEmits<{
 
 async function handleChangeStudent(s: Student | null) {
   params.value.student = s || undefined;
-  params.value.student_age = calculateAge(s?.birth_date ?? date());
+  params.value.student_age = s!.age || 0;
+  student.value = s!;
 
   if (s) {
     try {
@@ -33,20 +39,27 @@ async function handleChangeStudent(s: Student | null) {
   }
 }
 
+const abortController = ref<AbortController>(new AbortController());
+
 watch(
   () => [params.value.student_weight, params.value.student_height],
-  ([weight, height]) => {
+  async ([weight, height]) => {
     height = height || 0;
     weight = weight || 0;
 
-    const result = calculateBmi(params.value.student_age, {
-      height,
-      weight,
+    abortController.value.abort();
+    const result = await http().post("/calculate", {
+      height: height,
+      weight: weight,
+      age: student.value?.age,
+      gender: student.value?.gender,
     });
 
-    params.value.student_bmi = result.bmi;
-    params.value.z_score = result.z_score;
-    params.value.status = result.status;
+    const { bmi, z_score, status } = result.data.data;
+
+    params.value.student_bmi = bmi;
+    params.value.z_score = z_score;
+    params.value.status = status;
   },
 );
 

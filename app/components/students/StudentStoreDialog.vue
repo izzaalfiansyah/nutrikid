@@ -152,21 +152,21 @@ async function submit() {
               </Popover>
             </div>
           </div>
-          <div class="grid grid-cols-4 items-center gap-4">
-            <Label for=""> Umur </Label>
-            <div class="relative col-span-3">
-              <Input
-                :model-value="calculateAge(params.birth_date)"
-                placeholder="Umur"
-                disabled
-              />
-              <div
-                class="absolute top-0 bottom-0 right-0 flex items-center justify-center px-2 text-sm text-muted-foreground"
-              >
-                Tahun
-              </div>
-            </div>
-          </div>
+          <!-- <div class="grid grid-cols-4 items-center gap-4"> -->
+          <!--   <Label for=""> Umur </Label> -->
+          <!--   <div class="relative col-span-3"> -->
+          <!--     <Input -->
+          <!--       :model-value="calculateAge(params.birth_date)" -->
+          <!--       placeholder="Umur" -->
+          <!--       disabled -->
+          <!--     /> -->
+          <!--     <div -->
+          <!--       class="absolute top-0 bottom-0 right-0 flex items-center justify-center px-2 text-sm text-muted-foreground" -->
+          <!--     > -->
+          <!--       Tahun -->
+          <!--     </div> -->
+          <!--   </div> -->
+          <!-- </div> -->
           <div
             v-if="!props.student"
             class="grid grid-cols-4 items-center gap-4"
