@@ -17,6 +17,7 @@ export interface Measurement {
   creator_id?: number;
   creator?: Profile;
   created_at: Date;
+  suggestion_advices: Array<string>;
   deleted_at?: Date;
 }
 
@@ -32,6 +33,7 @@ export function measurementFromJson(data: any): Measurement {
     created_at: moment(data.created_at).toDate(),
     deleted_at: data.deleted_at ? moment(data.deleted_at).toDate() : undefined,
     status: data.status,
+    suggestion_advices: data.suggestion_advices || [],
     z_score: data.z_score,
   };
 }

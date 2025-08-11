@@ -17,6 +17,7 @@ const params = ref<Measurement>({
   student_weight: 0,
   student_bmi: 0,
   created_at: date(),
+  suggestion_advices: [],
 });
 
 async function getMeasurement() {

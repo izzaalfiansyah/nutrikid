@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { SendHorizontal } from "lucide-vue-next";
+import { MessageSquareQuote, SendHorizontal } from "lucide-vue-next";
 import { formatDate } from "~/lib/format-date";
 import { handleError } from "~/lib/handle-error";
 import { handleSuccess } from "~/lib/handle-success";
@@ -41,6 +41,10 @@ async function handleStore() {
     handleError(err);
   }
   is_submitted.value = false;
+}
+
+function handleSuggestionAdvice(advice: string) {
+  params.value.advice = advice;
 }
 
 onMounted(() => {
@@ -86,7 +90,9 @@ onMounted(() => {
         </div>
       </template>
     </CardContent>
-    <CardFooter v-if="['admin', 'expert'].includes(authStore.user?.role || '')">
+    <CardFooter
+      v-if="['admin', 'expert', 'teacher'].includes(authStore.user?.role || '')"
+    >
       <form @submit.prevent="handleStore" class="w-full">
         <div class="flex items-center w-full gap-3">
           <div class="grow">
@@ -96,6 +102,21 @@ onMounted(() => {
               placeholder="Tulis Saran..."
             ></Input>
           </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger as-child>
+              <Button :disabled="is_submitted" title="Template">
+                <MessageSquareQuote class="size-4"></MessageSquareQuote>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <template v-for="advice in measurement.suggestion_advices">
+                <DropdownMenuItem
+                  @select="(e) => handleSuggestionAdvice(advice)"
+                  >{{ advice }}</DropdownMenuItem
+                >
+              </template>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <Button :disabled="is_submitted" type="submit">
             <SendHorizontal class="size-4"></SendHorizontal>
           </Button>
