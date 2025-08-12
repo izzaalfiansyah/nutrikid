@@ -102,22 +102,36 @@ onMounted(() => {
               placeholder="Tulis Saran..."
             ></Input>
           </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger as-child>
-              <Button :disabled="is_submitted" title="Template">
-                <MessageSquareQuote class="size-4"></MessageSquareQuote>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <template v-for="advice in measurement.suggestion_advices">
-                <DropdownMenuItem
-                  @select="(e) => handleSuggestionAdvice(advice)"
-                  >{{ advice }}</DropdownMenuItem
-                >
-              </template>
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <Button :disabled="is_submitted" type="submit">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <DropdownMenu>
+                  <DropdownMenuTrigger as-child>
+                    <Button
+                      :disabled="is_submitted"
+                      variant="secondary"
+                      title="Template"
+                      type="button"
+                      class="cursor-pointer"
+                    >
+                      <MessageSquareQuote class="size-4"></MessageSquareQuote>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent class="max-w-screen">
+                    <template v-for="advice in measurement.suggestion_advices">
+                      <DropdownMenuItem
+                        @select="(e: any) => handleSuggestionAdvice(advice)"
+                      >
+                        {{ advice }}
+                      </DropdownMenuItem>
+                    </template>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </TooltipTrigger>
+              <TooltipContent>Template Saran</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <Button :disabled="is_submitted" type="submit" class="cursor-pointer">
             <SendHorizontal class="size-4"></SendHorizontal>
           </Button>
         </div>
