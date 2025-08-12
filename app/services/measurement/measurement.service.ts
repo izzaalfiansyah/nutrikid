@@ -1,7 +1,9 @@
 import type { MeasurementParams } from "./dto/measurement-params.dto";
-import moment from "moment";
 import { throwError } from "~/lib/throw-error";
 import { http } from "~/lib/axios";
+
+const male_default_zscores = "male_default_zscores";
+const female_default_zscores = "female_default_zscores";
 
 export class MeasurementService {
   static async findAll(params?: MeasurementParams) {
@@ -77,5 +79,32 @@ export class MeasurementService {
     } catch (err) {
       throwError(err);
     }
+  }
+
+  static async getDefaultZScore(gender: Gender): Promise<Array<ZScore>> {
+    const key = gender == "l" ? male_default_zscores : female_default_zscores;
+    const encodedData = localStorage.getItem(key);
+
+    if (!!encodedData) {
+      return JSON.parse(encodedData);
+    }
+
+    try {
+      const res = await http().get("/default-zscore", {
+        params: { gender },
+      });
+
+      const zscores = res.data.data.z_scores;
+
+      if (zscores) {
+        localStorage.setItem(key, JSON.stringify(zscores));
+      }
+
+      return zscores;
+    } catch (err) {
+      throwError(err);
+    }
+
+    return [];
   }
 }

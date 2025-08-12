@@ -4,6 +4,7 @@ import { Line } from "vue-chartjs";
 import { Chart as ChartJS, registerables, type ChartData } from "chart.js";
 import { formatDate } from "~/lib/format-date";
 import { Loader2 } from "lucide-vue-next";
+import { MeasurementService } from "~/services/measurement/measurement.service";
 
 ChartJS.register(...registerables);
 
@@ -12,6 +13,7 @@ const measurements = ref<Array<Measurement>>([]);
 const student = ref<Student>();
 const id: any = useRoute().params.id;
 const is_loaded = ref(false);
+const default_z_scores = ref<Array<ZScore>>([]);
 
 const last_measurement = computed(() => {
   return measurements.value[measurements.value.length - 1];
@@ -79,10 +81,19 @@ const chartData = computed((): ChartData => {
   };
 });
 
-onMounted(() => {
+async function getDefaultZScores() {
+  const zscores = await MeasurementService.getDefaultZScore(
+    student.value!.gender,
+  );
+
+  default_z_scores.value = zscores;
+}
+
+onMounted(async () => {
   homeStore.setTitle("Riwayat Pengukuran");
 
-  getMeasurements();
+  await getMeasurements();
+  await getDefaultZScores();
 });
 </script>
 <template>
