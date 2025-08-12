@@ -2,7 +2,12 @@ import moment from "moment";
 import type { Student } from "./student";
 import type { Profile } from "./profile";
 
-export type MeasurementStatus = "thinnes" | "normal" | "overweight" | "obese";
+export type MeasurementStatus =
+  | "emaciated"
+  | "thinnes"
+  | "normal"
+  | "overweight"
+  | "obese";
 
 export interface Measurement {
   id: number;
@@ -40,6 +45,7 @@ export function measurementFromJson(data: any): Measurement {
 
 export function mappedMeasurementStatus(status: MeasurementStatus) {
   return {
+    emaciated: "Gizi Buruk",
     thinnes: "Gizi Kurang",
     normal: "Gizi Baik",
     overweight: "Gizi Lebih",
