@@ -5,6 +5,6 @@ export interface ZScoresRange {
 }
 
 export interface ZScore {
-  month: string;
+  month: number;
   z_scores_range: Array<ZScoresRange>;
 }

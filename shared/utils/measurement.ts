@@ -14,6 +14,8 @@ export interface Measurement {
   student_id?: number;
   student?: Student;
   student_age: number;
+  student_age_month: number;
+  student_age_month_total: number;
   student_weight: number;
   student_height: number;
   student_bmi: number;
@@ -32,6 +34,8 @@ export function measurementFromJson(data: any): Measurement {
     student_id: data.student_id,
     student: data.student,
     student_age: data.student_age,
+    student_age_month: data.student_age_month,
+    student_age_month_total: data.student_age_month_total,
     student_weight: data.student_weight,
     student_height: data.student_height,
     student_bmi: data.student_bmi,

@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@internationalized/date": "^3.8.2",
+    "@kurkle/color": "^0.4.0",
     "@nuxt/image": "1.10.0",
     "@pinia/nuxt": "0.11.2",
     "@tailwindcss/vite": "^4.1.11",
