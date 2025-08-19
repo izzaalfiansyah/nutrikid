@@ -131,7 +131,7 @@ onMounted(async () => {
                   {{ formatDate(student.birth_date) }}
                 </TableCell>
                 <TableCell>
-                  {{ student.age }}
+                  {{ student.age }} Tahun {{ student.age_month }} Bulan
                 </TableCell>
                 <TableCell class="align-middle">
                   <DropdownMenu>

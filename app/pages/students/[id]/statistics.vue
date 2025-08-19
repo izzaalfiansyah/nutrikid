@@ -104,11 +104,13 @@ const chartData = computed((): ChartData => {
             return m.student_age_month_total == z.month;
           });
 
+          console.log(measurement);
+
           return measurement?.student_bmi || null;
         }),
         pointStyle: "circle",
-        pointRadius: 10,
-        pointHoverRadius: 12,
+        pointRadius: 5,
+        pointHoverRadius: 7,
         borderColor: ChartColors.blue,
         pointBorderWidth: 4,
         pointHoverBorderWidth: 3,
@@ -150,34 +152,6 @@ const chartData = computed((): ChartData => {
           hoverRadius: 0,
         };
       }),
-      // {
-      //   label: "Berat",
-      //   data: measurements.value.map(
-      //     (measurement) => measurement.student_weight,
-      //   ),
-      //   fill,
-      //   hidden: false,
-      // },
-      // {
-      //   label: "Tinggi",
-      //   data: measurements.value.map(
-      //     (measurement) => measurement.student_height,
-      //   ),
-      //   fill,
-      //   hidden: false,
-      // },
-      // {
-      //   label: "IMT/U",
-      //   data: measurements.value.map((measurement) => measurement.student_bmi),
-      //   fill,
-      //   hidden: false,
-      // },
-      // {
-      //   label: "Z Score",
-      //   data: measurements.value.map((measurement) => measurement.z_score || 0),
-      //   fill,
-      //   hidden: false,
-      // },
     ],
   };
 });

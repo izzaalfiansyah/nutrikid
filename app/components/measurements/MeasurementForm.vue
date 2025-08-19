@@ -1,8 +1,10 @@
 <script lang="ts" setup>
 import StudentSelect from "../students/StudentSelect.vue";
 import { StudentService } from "~/services/student/student.service";
-import { Loader2 } from "lucide-vue-next";
+import { CalendarIcon, Loader2 } from "lucide-vue-next";
 import { http } from "~/lib/axios";
+import type { DateValue } from "reka-ui";
+import { date, formatDate } from "~/lib/format-date";
 
 const props = defineProps<{
   handleSubmit: () => any;
@@ -13,6 +15,7 @@ const props = defineProps<{
 const is_submitted = ref(false);
 const params = ref<Measurement>(props.modelValue);
 const student = ref<Student>();
+const created_at = ref<DateValue>();
 
 if (params.value.student) {
   params.value.student_id = params.value.student.id;
@@ -41,26 +44,38 @@ async function handleChangeStudent(s: Student | null) {
 
 const abortController = ref<AbortController>(new AbortController());
 
+watch(created_at, () => {
+  if (created_at.value) {
+    params.value.created_at = created_at.value.toDate("utc");
+  }
+});
+
+async function getCalculation() {
+  abortController.value.abort();
+  const result = await http().post("/calculate", {
+    height: params.value?.student_height || 0,
+    weight: params.value?.student_weight || 0,
+    birth_date: student.value?.birth_date,
+    gender: student.value?.gender,
+    created_at: params.value.created_at,
+  });
+
+  const { bmi, z_score, status, age, age_month } = result.data.data;
+
+  params.value.student_age = age;
+  params.value.student_age_month = age_month;
+  params.value.student_bmi = bmi;
+  params.value.z_score = z_score;
+  params.value.status = status;
+}
+
 watch(
-  () => [params.value.student_weight, params.value.student_height],
-  async ([weight, height]) => {
-    height = height || 0;
-    weight = weight || 0;
-
-    abortController.value.abort();
-    const result = await http().post("/calculate", {
-      height: height,
-      weight: weight,
-      age: student.value?.age,
-      gender: student.value?.gender,
-    });
-
-    const { bmi, z_score, status } = result.data.data;
-
-    params.value.student_bmi = bmi;
-    params.value.z_score = z_score;
-    params.value.status = status;
-  },
+  () => [
+    params.value.student_weight,
+    params.value.student_height,
+    params.value.created_at,
+  ],
+  getCalculation,
 );
 
 watch(
@@ -76,6 +91,12 @@ async function submit() {
   await props.handleSubmit();
   is_submitted.value = false;
 }
+
+onMounted(() => {
+  if (!props.is_edit) {
+    getCalculation();
+  }
+});
 </script>
 
 <template>
@@ -99,48 +120,57 @@ async function submit() {
           <div class="space-y-5" v-if="params.student">
             <div class="border-b"></div>
             <div class="space-y-5">
-              <CardTitle>Detail Siswa</CardTitle>
+              <CardTitle>Detail Pengukuran</CardTitle>
+              <div class="space-y-8 grow">
+                <Label>Tanggal Pengukuran</Label>
+                <Popover>
+                  <PopoverTrigger as-child>
+                    <Button
+                      variant="outline"
+                      :disabled="is_edit"
+                      :class="`max-w-full w-xl cursor-pointer items-center justify-start`"
+                    >
+                      <CalendarIcon class="mr-2 h-4 w-4" />
+                      {{
+                        formatDate(
+                          modelValue?.created_at ||
+                            created_at?.toDate("utc") ||
+                            date(),
+                        )
+                      }}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent class="w-auto p-0">
+                    <Calendar v-model="created_at" initial-focus />
+                  </PopoverContent>
+                </Popover>
+              </div>
               <div class="space-y-3 grow">
                 <Label>Umur</Label>
-                <Input
-                  v-model="params.student_age"
-                  type="number"
-                  placeholder="Masukkan Umur"
-                  required
-                  class="max-w-full w-xl"
+                <Button
+                  variant="outline"
+                  class="max-w-full w-xl justify-start"
                   disabled
-                />
+                >
+                  {{ params.student_age || student?.age || 0 }} Tahun
+                  {{ params.student_age_month || student?.age_month || 0 }}
+                  Bulan
+                </Button>
               </div>
               <div class="flex gap-3 max-w-full w-xl">
                 <div class="space-y-3 grow">
                   <Label>Tinggi</Label>
-                  <NumberField
-                    v-model="params.student_height"
-                    required
-                    :min="0"
-                    :max="200"
-                  >
-                    <NumberFieldContent>
-                      <NumberFieldDecrement />
-                      <NumberFieldInput />
-                      <NumberFieldIncrement />
-                    </NumberFieldContent>
-                  </NumberField>
+                  <Input
+                    type="text"
+                    v-model.number="params.student_height"
+                  ></Input>
                 </div>
                 <div class="space-y-3 grow">
                   <Label>Berat</Label>
-                  <NumberField
-                    v-model="params.student_weight"
-                    required
-                    :min="0"
-                    :max="200"
-                  >
-                    <NumberFieldContent>
-                      <NumberFieldDecrement />
-                      <NumberFieldInput />
-                      <NumberFieldIncrement />
-                    </NumberFieldContent>
-                  </NumberField>
+                  <Input
+                    type="text"
+                    v-model.number="params.student_weight"
+                  ></Input>
                 </div>
               </div>
               <div class="space-y-3">

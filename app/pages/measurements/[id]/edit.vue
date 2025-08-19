@@ -13,10 +13,13 @@ const params = ref<Measurement>({
   id: 0,
   student_id: undefined,
   student_age: 0,
+  student_age_month: 0,
+  student_age_month_total: 0,
   student_height: 0,
   student_weight: 0,
   student_bmi: 0,
   created_at: date(),
+  suggestion_advices: [],
 });
 
 async function handleSubmit() {

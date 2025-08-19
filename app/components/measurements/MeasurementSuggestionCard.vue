@@ -55,87 +55,19 @@ onMounted(() => {
 <template>
   <Card>
     <CardHeader>
-      <CardTitle> Saran Ahli </CardTitle>
+      <CardTitle> Saran Pengukuran </CardTitle>
     </CardHeader>
     <CardContent>
-      <div
-        class="text-left text-muted-foreground text-sm"
-        v-if="suggestions.length == 0"
-      >
-        Belum ada saran ahli
-      </div>
-      <template v-else>
-        <div class="space-y-3">
-          <template v-for="suggestion in suggestions">
-            <div class="shadow-none border p-4 space-y-2 rounded-lg">
-              <div class="flex items-center gap-3">
-                <Avatar>
-                  <AvatarFallback>
-                    {{ letterName(suggestion.creator?.name) }}
-                  </AvatarFallback>
-                </Avatar>
-                <div class="text-sm">
-                  {{ suggestion.creator?.name }}
-                </div>
-              </div>
-              <div class="border-b mt-3 mb-3"></div>
-              <div class="text-sm text-muted-foreground">
-                {{ suggestion.advice }}
-              </div>
-              <div class="mt-4 text-xs flex justify-end">
-                {{ formatDate(suggestion.created_at, { withTime: true }) }}
-              </div>
-            </div>
+      <div class="text-left">
+        <template v-if="measurement.suggestion_advices.length == 0">
+          Belum ada saran ahli
+        </template>
+        <ul class="pl-4">
+          <template v-for="suggestion in measurement.suggestion_advices">
+            <li class="list-decimal mb-1">{{ suggestion }}</li>
           </template>
-        </div>
-      </template>
+        </ul>
+      </div>
     </CardContent>
-    <CardFooter
-      v-if="['admin', 'expert', 'teacher'].includes(authStore.user?.role || '')"
-    >
-      <form @submit.prevent="handleStore" class="w-full">
-        <div class="flex items-center w-full gap-3">
-          <div class="grow">
-            <Input
-              class="grow"
-              v-model="params.advice"
-              placeholder="Tulis Saran..."
-            ></Input>
-          </div>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <DropdownMenu>
-                  <DropdownMenuTrigger as-child>
-                    <Button
-                      :disabled="is_submitted"
-                      variant="secondary"
-                      title="Template"
-                      type="button"
-                      class="cursor-pointer"
-                    >
-                      <MessageSquareQuote class="size-4"></MessageSquareQuote>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent class="max-w-screen">
-                    <template v-for="advice in measurement.suggestion_advices">
-                      <DropdownMenuItem
-                        @select="(e: any) => handleSuggestionAdvice(advice)"
-                      >
-                        {{ advice }}
-                      </DropdownMenuItem>
-                    </template>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </TooltipTrigger>
-              <TooltipContent>Template Saran</TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-          <Button :disabled="is_submitted" type="submit" class="cursor-pointer">
-            <SendHorizontal class="size-4"></SendHorizontal>
-          </Button>
-        </div>
-      </form>
-    </CardFooter>
   </Card>
 </template>
