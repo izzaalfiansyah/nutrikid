@@ -86,11 +86,11 @@ const chartData = computed((): ChartData => {
   const labels = ["-3", "-2", "-1", "0", "+1", "+2", "+3"];
   const colors = [
     ChartColors.red,
-    ChartColors.orange,
+    ChartColors.red,
     ChartColors.yellow,
     ChartColors.green,
+    ChartColors.green,
     ChartColors.yellow,
-    ChartColors.orange,
     ChartColors.red,
   ];
 
@@ -111,9 +111,9 @@ const chartData = computed((): ChartData => {
         pointRadius: 5,
         pointHoverRadius: 7,
         borderColor: ChartColors.blue,
-        pointBackgroundColor: ChartColors.blue,
-        pointBorderWidth: 4,
-        pointHoverBorderWidth: 3,
+        pointBackgroundColor: "#fff",
+        pointBorderWidth: 3,
+        pointHoverBorderWidth: 5,
       },
       ...Array.from({ length: 7 }).map((_, index) => {
         const label = labels[index] + " SD";
@@ -127,12 +127,12 @@ const chartData = computed((): ChartData => {
             }),
           ],
           pointStyle: false,
-          borderColor: color,
           borderWidth: 1.5,
-          fill: index != 0 ? "-1" : false,
+          fill: "-1",
           backgroundColor: colorLib(color as string)
-            .alpha(0.4)
+            .alpha(0.55)
             .rgbString(),
+          borderColor: "transparent",
         };
       }),
     ],
