@@ -86,12 +86,12 @@ const chartData = computed((): ChartData => {
   const labels = ["-3", "-2", "-1", "0", "+1", "+2", "+3"];
   const colors = [
     ChartColors.orange,
-    ChartColors.orange,
     ChartColors.yellow,
     ChartColors.green,
     ChartColors.green,
     ChartColors.yellow,
     ChartColors.orange,
+    ChartColors.red,
   ];
 
   return {
@@ -128,7 +128,7 @@ const chartData = computed((): ChartData => {
           ],
           pointStyle: false,
           borderWidth: 1.5,
-          fill: "-1",
+          fill: "+1",
           backgroundColor: colorLib(color as string)
             .alpha(0.55)
             .rgbString(),
