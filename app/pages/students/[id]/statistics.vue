@@ -85,13 +85,13 @@ Status: ${mappedMeasurementStatus(measurement.status ?? "normal")}
 const chartData = computed((): ChartData => {
   const labels = ["-3", "-2", "-1", "0", "+1", "+2", "+3"];
   const colors = [
-    ChartColors.red,
-    ChartColors.red,
+    ChartColors.orange,
+    ChartColors.orange,
     ChartColors.yellow,
     ChartColors.green,
     ChartColors.green,
     ChartColors.yellow,
-    ChartColors.red,
+    ChartColors.orange,
   ];
 
   return {
