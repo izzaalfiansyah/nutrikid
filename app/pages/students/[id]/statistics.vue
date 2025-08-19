@@ -67,7 +67,7 @@ const options = computed((): ChartOptions => {
 
             return `
 BMI : ${measurement.student_bmi.toFixed(2)},\n
-Z-Score: ${measurement.z_score},\n
+Z-Score: ${measurement.z_score!.toFixed(2)},\n
 Status: ${mappedMeasurementStatus(measurement.status ?? "normal")}
 `;
           },
@@ -76,7 +76,7 @@ Status: ${mappedMeasurementStatus(measurement.status ?? "normal")}
     },
     scales: {
       y: {
-        beginAtZero: true,
+        beginAtZero: false,
       },
     },
   };
@@ -99,12 +99,11 @@ const chartData = computed((): ChartData => {
     datasets: [
       {
         label: "BMI",
+        fill: false,
         data: default_z_scores.value.map((z) => {
           const measurement = measurements.value.find((m) => {
             return m.student_age_month_total == z.month;
           });
-
-          console.log(measurement);
 
           return measurement?.student_bmi || null;
         }),
@@ -112,6 +111,7 @@ const chartData = computed((): ChartData => {
         pointRadius: 5,
         pointHoverRadius: 7,
         borderColor: ChartColors.blue,
+        pointBackgroundColor: ChartColors.blue,
         pointBorderWidth: 4,
         pointHoverBorderWidth: 3,
       },
@@ -129,27 +129,10 @@ const chartData = computed((): ChartData => {
           pointStyle: false,
           borderColor: color,
           borderWidth: 1.5,
-          fill: "+7",
+          fill: index != 0 ? "-1" : false,
           backgroundColor: colorLib(color as string)
             .alpha(0.4)
             .rgbString(),
-        };
-      }),
-      ...Array.from({ length: 7 }).map((_, index) => {
-        const label = labels[index];
-        const color = colors[index];
-
-        return {
-          label,
-          data: [
-            ...default_z_scores.value.map((z) => {
-              return z.z_scores_range[index]!.max;
-            }),
-          ],
-          pointStyle: false,
-          borderColor: color,
-          borderWidth: 1.5,
-          hoverRadius: 0,
         };
       }),
     ],
