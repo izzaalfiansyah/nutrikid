@@ -114,6 +114,7 @@ const chartData = computed((): ChartData => {
         pointBackgroundColor: "#fff",
         pointBorderWidth: 3,
         pointHoverBorderWidth: 5,
+        spanGaps: true,
       },
       ...Array.from({ length: 7 }).map((_, index) => {
         const label = labels[index] + " SD";
@@ -130,7 +131,7 @@ const chartData = computed((): ChartData => {
           borderWidth: 1.5,
           fill: "+1",
           backgroundColor: colorLib(color as string)
-            .alpha(0.55)
+            .alpha(0.5)
             .rgbString(),
           borderColor: "transparent",
         };
