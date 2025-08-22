@@ -97,7 +97,7 @@ const chartData = computed((): ChartData => {
     ChartColors.green,
     ChartColors.green,
     ChartColors.green,
-    ChartColors.yellow,
+    ChartColors.green,
     ChartColors.yellow,
     ChartColors.red,
   ];
