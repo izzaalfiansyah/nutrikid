@@ -78,6 +78,14 @@ Status: ${mappedMeasurementStatus(measurement.status ?? "normal")}
       y: {
         beginAtZero: false,
       },
+      x: {
+        ticks: {
+          display: false,
+        },
+        grid: {
+          display: false,
+        },
+      },
     },
   };
 });
@@ -85,12 +93,21 @@ Status: ${mappedMeasurementStatus(measurement.status ?? "normal")}
 const chartData = computed((): ChartData => {
   const labels = ["-3", "-2", "-1", "0", "+1", "+2", "+3"];
   const colors = [
-    ChartColors.orange,
     ChartColors.yellow,
     ChartColors.green,
     ChartColors.green,
+    ChartColors.green,
     ChartColors.yellow,
-    ChartColors.orange,
+    ChartColors.yellow,
+    ChartColors.red,
+  ];
+  const borderColors = [
+    ChartColors.red,
+    "transparent",
+    "transparent",
+    "transparent",
+    "transparent",
+    "transparent",
     ChartColors.red,
   ];
 
@@ -119,6 +136,7 @@ const chartData = computed((): ChartData => {
       ...Array.from({ length: 7 }).map((_, index) => {
         const label = labels[index] + " SD";
         const color = colors[index];
+        const borderColor = borderColors[index];
 
         return {
           label,
@@ -128,12 +146,12 @@ const chartData = computed((): ChartData => {
             }),
           ],
           pointStyle: false,
-          borderWidth: 1.5,
+          borderWidth: 3,
           fill: "+1",
           backgroundColor: colorLib(color as string)
             .alpha(0.5)
             .rgbString(),
-          borderColor: "transparent",
+          borderColor: borderColor,
         };
       }),
     ],
