@@ -9,7 +9,7 @@ export default defineNuxtConfig({
   vite: {
     plugins: [tailwindcss()],
     server: {
-      allowedHosts: ["*"],
+      allowedHosts: true,
     },
   },
   shadcn: {
