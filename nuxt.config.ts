@@ -8,6 +8,9 @@ export default defineNuxtConfig({
   modules: ["@nuxt/image", "shadcn-nuxt", "nuxt-lucide-icons", "@pinia/nuxt"],
   vite: {
     plugins: [tailwindcss()],
+    server: {
+      allowedHosts: ["*"],
+    },
   },
   shadcn: {
     prefix: "",

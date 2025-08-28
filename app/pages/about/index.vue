@@ -2,6 +2,11 @@
 import { Apple, ArrowLeft, Smartphone } from "lucide-vue-next";
 import { app } from "~/lib/app";
 
+const config = useRuntimeConfig();
+
+const android_download_url = config.public.ANDROID_DOWNLOAD_URL;
+const ios_download_url = config.public.IOS_DOWNLOAD_URL;
+
 definePageMeta({
   layout: "auth",
 });
@@ -25,7 +30,7 @@ definePageMeta({
   >
     <div class="text-center space-y-5">
       <div class="flex items-center justify-center space-x-5">
-        <Logo class="size-10"></Logo>
+        <Logo class="size-14"></Logo>
         <div class="text-5xl text-primary font-semibold">
           {{ app().name }}
         </div>
@@ -36,13 +41,13 @@ definePageMeta({
       <div>
         <div class="mb-3 font-semibold text-sm">Download Segera:</div>
         <div class="flex items-center justify-center gap-4">
-          <a href="https://github.com/izzaalfiansyah" target="_blank">
+          <a :href="android_download_url" target="_blank">
             <Button type="button" class="cursor-pointer">
               <Smartphone class="inline mr-1 size-4"></Smartphone>
               Android
             </Button>
           </a>
-          <a href="https://github.com/izzaalfiansyah" target="_blank">
+          <a :href="ios_download_url" target="_blank">
             <Button type="button" variant="outline" class="cursor-pointer">
               <Apple class="inline mr-1 size-4"></Apple>
               iPhone

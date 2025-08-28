@@ -44,7 +44,7 @@ onMounted(async () => {
       class="h-screen fixed bg-white top-0 left-0 bottom-0 right-0 z-[99999] flex items-center justify-center"
     >
       <div class="text-center animate-pulse">
-        <Logo class="size-12 inline"></Logo>
+        <Logo class="size-14 inline"></Logo>
         <div class="text-center text-primary font-semibold mt-2 text-xl">
           {{ app().name }}
         </div>

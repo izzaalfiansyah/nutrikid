@@ -121,7 +121,7 @@ const data = {
   <Sidebar v-bind="props">
     <SidebarHeader>
       <div class="mt-3 flex items-center justify-center space-x-4">
-        <Logo class="size-5"></Logo>
+        <Logo class="size-7"></Logo>
         <span class="text-2xl font-semibold text-primary">
           {{ app().name }}
         </span>
