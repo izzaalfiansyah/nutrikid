@@ -55,6 +55,14 @@ definePageMeta({
           </a>
         </div>
       </div>
+      <div class="flex items-center justify-center pt-10">
+        <div class="text-center">
+          <div class="text-sm text-muted-foreground mb-2">
+            Dipersembahkan oleh:
+          </div>
+          <img src="/polije-copyright.png" class="h-12 block" alt="" />
+        </div>
+      </div>
     </div>
   </div>
 </template>
