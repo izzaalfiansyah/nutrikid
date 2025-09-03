@@ -12,13 +12,15 @@ async function getProfile() {
     const user = await AuthService.profile();
     const isLoggedIn = user?.id;
 
-    if (!isLoggedIn && route.path != "/login") {
+    if (!isLoggedIn && !["/login", "/about"].includes(route.path)) {
       return navigateTo("/login");
     } else if (isLoggedIn && route.path == "/login") {
       // return navigateTo("/");
     }
   } catch (err) {
-    return navigateTo("/login");
+    if (route.path != "/about") {
+      return navigateTo("/login");
+    }
   }
 }
 
