@@ -18,8 +18,13 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="fixed top-2 left-2">
-    <Button type="button" @click="$router.back" variant="outline">
+  <div class="fixed top-2 left-2 z-10">
+    <Button
+      type="button"
+      @click="$router.back()"
+      variant="outline"
+      class="cursor-pointer"
+    >
       <ArrowLeft class="size-5"></ArrowLeft>
       <span class="md:inline hidden">Kembali</span>
     </Button>
