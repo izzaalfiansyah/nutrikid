@@ -112,7 +112,7 @@ onMounted(() => {
               v-model="params.phone"
             ></Input>
           </div>
-          <div class="grid grid-cols-4 items-center gap-4" v-if="!props.user">
+          <div class="grid grid-cols-4 items-center gap-4">
             <Label for="" class="text-right">Sekolah</Label>
             <SchoolSelect with-all v-model="params.school_id"></SchoolSelect>
           </div>
