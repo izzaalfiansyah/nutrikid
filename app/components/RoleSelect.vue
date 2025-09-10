@@ -25,7 +25,7 @@ watch(value, () => {
         <SelectItem value="admin">Admin</SelectItem>
         <SelectItem value="teacher">Guru</SelectItem>
         <SelectItem value="expert">Ahli Gizi</SelectItem>
-        <!-- <SelectItem value="parent">Orang Tua</SelectItem> -->
+        <SelectItem value="parent">Orang Tua</SelectItem>
       </SelectGroup>
     </SelectContent>
   </Select>
