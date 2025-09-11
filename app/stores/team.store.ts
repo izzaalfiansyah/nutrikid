@@ -4,9 +4,11 @@ import type { Team } from "~/types/team";
 export const useTeamStore = defineStore("team", {
   state(): {
     teams: Team[];
+    leader?: Team;
   } {
     return {
       teams: [] as Team[],
+      leader: undefined,
     };
   },
   actions: {
@@ -16,10 +18,14 @@ export const useTeamStore = defineStore("team", {
       }
 
       const result = await TeamService.findAll();
-      this.setTeams(result);
+      this.setTeams(result.teams, result.leader);
     },
-    setTeams(teams: Team[]) {
+    setTeams(teams: Team[], leader?: Team) {
       this.teams = teams;
+
+      if (leader) {
+        this.leader = leader;
+      }
     },
   },
 });

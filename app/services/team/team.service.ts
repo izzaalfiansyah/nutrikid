@@ -2,13 +2,22 @@ import { http } from "~/lib/axios";
 import type { Team } from "~/types/team";
 
 export class TeamService {
-  static async findAll(): Promise<Team[]> {
+  static async findAll(): Promise<{
+    teams: Team[];
+    leader?: Team;
+  }> {
     try {
       const result = await http().get("/team");
+      const data = result.data.data;
 
-      return result.data.data.teams;
+      return {
+        teams: data.teams,
+        leader: data.leader,
+      };
     } catch (err) {
-      return [];
+      return {
+        teams: [],
+      };
     }
   }
 }

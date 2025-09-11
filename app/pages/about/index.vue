@@ -1,12 +1,17 @@
 <script setup lang="ts">
 import { Apple, ArrowLeft, Smartphone, Users2 } from "lucide-vue-next";
 import { app } from "~/lib/app";
+import type { Team } from "~/types/team";
 
 const config = useRuntimeConfig();
 const teamStore = useTeamStore();
 
 const android_download_url = config.public.ANDROID_DOWNLOAD_URL;
 const ios_download_url = config.public.IOS_DOWNLOAD_URL;
+
+const leader = computed(() => {
+  return teamStore.leader;
+});
 
 definePageMeta({
   layout: "auth",
@@ -87,17 +92,38 @@ onMounted(() => {
             </DialogTrigger>
             <DialogContent>
               <DialogTitle class="mb-2">Tim Kami</DialogTitle>
+              <template v-if="!!leader">
+                <div>Ketua</div>
+                <div class="flex items-center justify-start space-x-3">
+                  <img
+                    :src="leader.image"
+                    :alt="leader.name"
+                    class="size-13 block rounded-full object-cover border"
+                  />
+                  <div class="grow overflow-hidden">
+                    <div class="text-sm">
+                      {{ leader.name }}
+                      <div class="text-xs text-muted-foreground">
+                        Jurusan Kesehatan
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </template>
+              <div>Anggota</div>
               <template v-for="team in teamStore.teams">
                 <div class="flex items-center justify-start space-x-3">
                   <img
                     :src="team.image"
                     :alt="team.name"
-                    class="size-14 rounded-full object-cover border"
+                    class="size-13 block rounded-full object-cover border"
                   />
-                  <div class="text-base">
-                    {{ team.name }}
-                    <div class="text-sm text-muted-foreground">
-                      Jurusan Kesehatan
+                  <div class="grow overflow-hidden">
+                    <div class="text-sm">
+                      {{ team.name }}
+                      <div class="text-xs text-muted-foreground">
+                        Jurusan Kesehatan
+                      </div>
                     </div>
                   </div>
                 </div>
