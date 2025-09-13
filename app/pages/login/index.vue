@@ -46,12 +46,14 @@ definePageMeta({
   <div class="flex items-stretch justify-center min-h-screen p-5 relative">
     <div class="w-1/2 lg:block hidden">
       <div
-        class="w-full h-full bg-gray-100 rounded-lg flex items-center justify-center relative overflow-hidden"
+        class="w-full h-full bg-gray-100 dark:bg-gray-900 rounded-lg flex items-center justify-center relative overflow-hidden"
       >
         <img :src="LoginSvg" class="w-[400px] relative" alt="" />
       </div>
     </div>
-    <div class="lg:w-1/2 w-full flex justify-center items-center lg:bg-white">
+    <div
+      class="lg:w-1/2 w-full flex justify-center items-center lg:bg-white dark:lg:bg-black"
+    >
       <form
         @submit.prevent="handleLogin"
         class="max-w-full space-y-5 relative w-[400px] bg-white lg:shadow-none lg:bg-transparent rounded shadow px-5 py-20"

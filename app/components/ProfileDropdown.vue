@@ -27,7 +27,7 @@ function handleLogout() {
           class="flex items-center gap-2"
         >
           <User2 class="size-4"></User2>
-          <span class="text-gray-800">Profil</span>
+          <span class="text-gray-800 dark:text-white">Profil</span>
         </DropdownMenuItem>
       </UserStoreDialog>
       <UserResetPasswordDialog :id="authStore.user!.id">
@@ -46,7 +46,7 @@ function handleLogout() {
             class="flex items-center gap-2"
           >
             <LogOut class="size-4"></LogOut>
-            <span class="text-gray-800">Logout</span>
+            <span class="text-gray-800 dark:text-white">Logout</span>
           </DropdownMenuItem>
         </AlertDialogTrigger>
         <AlertDialogContent>

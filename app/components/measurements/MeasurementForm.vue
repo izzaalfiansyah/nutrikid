@@ -121,7 +121,7 @@ onMounted(() => {
             <div class="border-b"></div>
             <div class="space-y-5">
               <CardTitle>Detail Pengukuran</CardTitle>
-              <div class="space-y-8 grow">
+              <div class="space-y-3 grow">
                 <Label>Tanggal Pengukuran</Label>
                 <Popover>
                   <PopoverTrigger as-child>
