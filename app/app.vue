@@ -41,7 +41,7 @@ onMounted(async () => {
     <Meta name="description" :content="app().description"></Meta>
   </Head>
 
-  <Body class="dark">
+  <Body>
     <template v-if="!is_loaded">
       <div
         class="h-screen fixed bg-white dark:bg-black top-0 left-0 bottom-0 right-0 z-[99999] flex items-center justify-center"
