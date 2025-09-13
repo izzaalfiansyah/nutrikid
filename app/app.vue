@@ -41,26 +41,28 @@ onMounted(async () => {
     <Meta name="description" :content="app().description"></Meta>
   </Head>
 
-  <template v-if="!is_loaded">
-    <div
-      class="h-screen fixed bg-white top-0 left-0 bottom-0 right-0 z-[99999] flex items-center justify-center"
-    >
-      <div class="text-center animate-pulse">
-        <Logo class="size-14 inline"></Logo>
-        <div class="text-center text-primary font-semibold mt-2 text-xl">
-          {{ app().name }}
+  <Body class="dark">
+    <template v-if="!is_loaded">
+      <div
+        class="h-screen fixed bg-white dark:bg-black top-0 left-0 bottom-0 right-0 z-[99999] flex items-center justify-center"
+      >
+        <div class="text-center animate-pulse">
+          <Logo class="size-14 inline"></Logo>
+          <div class="text-center text-primary font-semibold mt-2 text-xl">
+            {{ app().name }}
+          </div>
         </div>
       </div>
-    </div>
-  </template>
+    </template>
 
-  <template v-else>
-    <NuxtLayout>
-      <NuxtPage></NuxtPage>
-    </NuxtLayout>
+    <template v-else>
+      <NuxtLayout>
+        <NuxtPage></NuxtPage>
+      </NuxtLayout>
 
-    <ClientOnly>
-      <Toaster position="bottom-right"></Toaster>
-    </ClientOnly>
-  </template>
+      <ClientOnly>
+        <Toaster position="bottom-right"></Toaster>
+      </ClientOnly>
+    </template>
+  </Body>
 </template>

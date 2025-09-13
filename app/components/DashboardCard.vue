@@ -18,7 +18,7 @@ defineProps<{
         </div>
 
         <div
-          class="size-18 flex items-center justify-center bg-gray-100 rounded-full"
+          class="size-18 flex items-center justify-center bg-gray-100 dark:bg-gray-800 rounded-full"
         >
           <component class="text-primary" :is="icon"></component>
         </div>
