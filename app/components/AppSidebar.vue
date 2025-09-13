@@ -17,22 +17,15 @@ import {
   ChevronUp,
   Fingerprint,
   Home,
-  LogOut,
   User2,
   Users,
   Users2,
-  LockKeyholeOpen,
   Building,
 } from "lucide-vue-next";
-import { AuthService } from "~/services/auth/auth.service";
-import UserStoreDialog from "./users/UserStoreDialog.vue";
-import UserResetPasswordDialog from "./users/UserResetPasswordDialog.vue";
 import { app } from "~/lib/app";
 
 const props = defineProps<SidebarProps>();
 const authStore = useAuthStore();
-
-// This is sample data.
 
 function isMenuActive(path: string) {
   const route = useRoute();
@@ -72,12 +65,14 @@ const data = {
           url: "/schools",
           icon: Building,
           roles: ["admin"],
+          hidden: !!authStore.user?.school_id,
         },
         {
           title: "Data Pengguna",
           url: "/users",
           icon: Users2,
           roles: ["admin"],
+          hidden: !!authStore.user?.school_id,
         },
         {
           title: `Data Siswa`,
@@ -138,8 +133,9 @@ const data = {
             <template v-for="childItem in item.items" :key="childItem.title">
               <SidebarMenuItem
                 v-if="
-                  !(childItem as any)?.roles ||
-                  (childItem as any)?.roles.includes(authStore.user?.role)
+                  (!(childItem as any)?.roles ||
+                    (childItem as any)?.roles.includes(authStore.user?.role)) &&
+                  !(childItem as any).hidden
                 "
               >
                 <SidebarMenuButton

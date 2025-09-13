@@ -6,6 +6,7 @@ const schools = ref<Array<School>>([]);
 const props = defineProps<{
   modelValue?: number;
   withAll?: boolean;
+  disabled?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -34,7 +35,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <Select v-model="value">
+  <Select v-model="value" :disabled="disabled">
     <SelectTrigger>
       <SelectValue placeholder="Pilih Sekolah"></SelectValue>
     </SelectTrigger>

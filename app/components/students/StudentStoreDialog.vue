@@ -14,6 +14,8 @@ const props = defineProps<{
   callback?: () => any;
 }>();
 
+const authStore = useAuthStore();
+
 const birth_date = ref<DateValue>();
 const open = ref(false);
 const is_submitted = ref(false);
@@ -27,6 +29,7 @@ const params = ref<Student>(
     gender: "l",
     age: 0,
     school_id: undefined,
+    age_month: 0,
   },
 );
 
@@ -76,7 +79,10 @@ function handleStudent() {
   params.value.gender = props.student?.gender || "l";
   params.value.birth_date = props.student?.birth_date || date();
   params.value.school_id =
-    props.student?.school?.id || props.student?.school_id || undefined;
+    props.student?.school?.id ||
+    props.student?.school_id ||
+    authStore.user?.school_id ||
+    undefined;
 }
 
 onMounted(() => {
@@ -152,27 +158,15 @@ async function submit() {
               </Popover>
             </div>
           </div>
-          <!-- <div class="grid grid-cols-4 items-center gap-4"> -->
-          <!--   <Label for=""> Umur </Label> -->
-          <!--   <div class="relative col-span-3"> -->
-          <!--     <Input -->
-          <!--       :model-value="calculateAge(params.birth_date)" -->
-          <!--       placeholder="Umur" -->
-          <!--       disabled -->
-          <!--     /> -->
-          <!--     <div -->
-          <!--       class="absolute top-0 bottom-0 right-0 flex items-center justify-center px-2 text-sm text-muted-foreground" -->
-          <!--     > -->
-          <!--       Tahun -->
-          <!--     </div> -->
-          <!--   </div> -->
-          <!-- </div> -->
           <div
             v-if="!props.student"
             class="grid grid-cols-4 items-center gap-4"
           >
             <Label for=""> Asal Sekolah </Label>
-            <SchoolSelect v-model="params.school_id"></SchoolSelect>
+            <SchoolSelect
+              :disabled="!!authStore.user?.school_id"
+              v-model="params.school_id"
+            ></SchoolSelect>
           </div>
         </div>
         <DialogFooter>
