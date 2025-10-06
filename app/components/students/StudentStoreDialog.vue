@@ -5,7 +5,7 @@ import { date, formatDate } from "~/lib/format-date";
 import { CalendarWithMonthYear } from "../ui/calendar";
 import { handleError } from "~/lib/handle-error";
 import { StudentService } from "~/services/student/student.service";
-import { parseDate } from "@internationalized/date";
+import { CalendarDate, parseDate } from "@internationalized/date";
 import { handleSuccess } from "~/lib/handle-success";
 import moment from "moment";
 
@@ -19,6 +19,10 @@ const authStore = useAuthStore();
 const birth_date = ref<DateValue>();
 const open = ref(false);
 const is_submitted = ref(false);
+
+const max_birth_date = parseDate(
+  moment().subtract(4, "years").format("YYYY-MM-DD"),
+);
 
 const params = ref<Student>(
   props.student || {
@@ -72,6 +76,8 @@ function handleStudent() {
     birth_date.value = parseDate(
       moment(props.student.birth_date).format("YYYY-MM-DD"),
     );
+  } else {
+    birth_date.value = max_birth_date;
   }
 
   params.value.id = props.student?.id || 0;
@@ -152,6 +158,7 @@ async function submit() {
                 </PopoverTrigger>
                 <PopoverContent class="w-auto p-0">
                   <CalendarWithMonthYear
+                    :max-value="max_birth_date"
                     v-model="birth_date"
                   ></CalendarWithMonthYear>
                 </PopoverContent>

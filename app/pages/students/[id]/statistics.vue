@@ -79,9 +79,6 @@ Status: ${mappedMeasurementStatus(measurement.status ?? "normal")}
         beginAtZero: false,
       },
       x: {
-        ticks: {
-          display: false,
-        },
         grid: {
           display: false,
         },
@@ -111,7 +108,7 @@ const chartData = computed((): ChartData => {
     ChartColors.red,
   ];
 
-  return {
+  const data = {
     labels: default_z_scores.value.map((z) => z.month),
     datasets: [
       {
@@ -119,6 +116,7 @@ const chartData = computed((): ChartData => {
         fill: false,
         data: default_z_scores.value.map((z) => {
           const measurement = measurements.value.find((m) => {
+            console.log(m.student_age_month_total, z.month);
             return m.student_age_month_total == z.month;
           });
 
@@ -156,6 +154,10 @@ const chartData = computed((): ChartData => {
       }),
     ],
   };
+
+  console.log(data);
+
+  return data;
 });
 
 async function getDefaultZScores() {

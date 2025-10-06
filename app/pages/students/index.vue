@@ -142,7 +142,9 @@ onMounted(async () => {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                       <NuxtLink :to="`/students/${student.id}/statistics`">
-                        <DropdownMenuItem @select="(e) => e.preventDefault()">
+                        <DropdownMenuItem
+                          @select="(e: any) => e.preventDefault()"
+                        >
                           Statistik
                         </DropdownMenuItem>
                       </NuxtLink>
@@ -151,7 +153,9 @@ onMounted(async () => {
                         :student="student"
                         v-if="authStore.isAdmin"
                       >
-                        <DropdownMenuItem @select="(e) => e.preventDefault()">
+                        <DropdownMenuItem
+                          @select="(e: any) => e.preventDefault()"
+                        >
                           Edit
                         </DropdownMenuItem>
                       </StudentStoreDialog>
@@ -163,7 +167,9 @@ onMounted(async () => {
                         :student="student"
                         v-if="authStore.isAdmin"
                       >
-                        <DropdownMenuItem @select="(e) => e.preventDefault()">
+                        <DropdownMenuItem
+                          @select="(e: any) => e.preventDefault()"
+                        >
                           Hapus
                         </DropdownMenuItem>
                       </DeleteDialog>
