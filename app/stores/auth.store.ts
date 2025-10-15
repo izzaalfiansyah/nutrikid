@@ -16,7 +16,7 @@ export const useAuthStore = defineStore("auth", {
   actions: {
     setUser(user: Profile | null) {
       this.user = user;
-      this.isAdmin = user?.role == "admin";
+      this.isAdmin = user?.role == "admin" || user?.role == "superadmin";
       this.isParent = user?.role == "parent";
     },
     async logout() {

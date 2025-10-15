@@ -37,6 +37,11 @@ function handleUser() {
   params.value.password = "12345678";
   params.value.school_id =
     props.user?.school?.id || props.user?.school_id || undefined;
+
+  if (authStore.user?.role != "superadmin") {
+    params.value.school_id =
+      authStore.user?.school?.id || authStore.user?.school_id || undefined;
+  }
 }
 
 watch(() => props.user, handleUser);
@@ -125,7 +130,10 @@ onMounted(() => {
             v-if="params.role != 'superadmin'"
           >
             <Label for="" class="text-right">Sekolah</Label>
-            <SchoolSelect v-model="params.school_id"></SchoolSelect>
+            <SchoolSelect
+              :disabled="authStore.user?.role != 'superadmin'"
+              v-model="params.school_id"
+            ></SchoolSelect>
           </div>
           <div class="grid grid-cols-4 items-center gap-4">
             <Label for="" class="text-right">Username</Label>
