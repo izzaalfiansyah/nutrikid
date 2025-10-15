@@ -71,8 +71,7 @@ const data = {
           title: "Data Pengguna",
           url: "/users",
           icon: Users2,
-          roles: ["admin"],
-          hidden: !!authStore.user?.school_id,
+          roles: ["admin", "superadmin"],
         },
         {
           title: `Data Siswa`,

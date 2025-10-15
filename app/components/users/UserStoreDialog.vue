@@ -45,6 +45,14 @@ watch(open, () => {
     handleUser();
   }
 });
+watch(
+  () => params.value.role,
+  (value) => {
+    if (value == "superadmin") {
+      params.value.school_id = undefined;
+    }
+  },
+);
 
 async function handleSubmit() {
   is_submitted.value = true;
@@ -112,9 +120,12 @@ onMounted(() => {
               v-model="params.phone"
             ></Input>
           </div>
-          <div class="grid grid-cols-4 items-center gap-4">
+          <div
+            class="grid grid-cols-4 items-center gap-4"
+            v-if="params.role != 'superadmin'"
+          >
             <Label for="" class="text-right">Sekolah</Label>
-            <SchoolSelect with-all v-model="params.school_id"></SchoolSelect>
+            <SchoolSelect v-model="params.school_id"></SchoolSelect>
           </div>
           <div class="grid grid-cols-4 items-center gap-4">
             <Label for="" class="text-right">Username</Label>

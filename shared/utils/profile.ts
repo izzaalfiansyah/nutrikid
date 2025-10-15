@@ -1,6 +1,6 @@
 import moment from "moment";
 
-export type ProfileRole = "admin" | "teacher" | "expert";
+export type ProfileRole = "admin" | "teacher" | "expert" | "superadmin";
 
 export interface Profile {
   id: number;
@@ -38,7 +38,9 @@ export function letterName(name?: string) {
 }
 
 export function mappedRole(role: ProfileRole) {
-  switch (role) {
+  switch (role as any) {
+    case "superadmin":
+      return "Superadmin";
     case "admin":
       return "Admin";
     case "teacher":

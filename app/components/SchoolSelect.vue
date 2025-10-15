@@ -47,7 +47,7 @@ onMounted(() => {
         disabled
       >
         <span :class="{ 'text-muted-foreground': !withAll }">{{
-          withAll ? "Semua" : "Data tidak ditemukan."
+          withAll ? "Semua Sekolah" : "Data tidak ditemukan."
         }}</span>
       </SelectItem>
       <SelectItem v-if="withAll" :value="null"> Semua </SelectItem>
