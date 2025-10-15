@@ -22,7 +22,7 @@ watch(value, () => {
     <SelectContent>
       <SelectGroup>
         <SelectItem v-if="withAll" :value="null">Semua</SelectItem>
-        <SelectItem value="superadmin">Superadmin</SelectItem>
+        <!-- <SelectItem value="superadmin">Superadmin</SelectItem> -->
         <SelectItem value="admin">Admin</SelectItem>
         <SelectItem value="teacher">Guru</SelectItem>
         <SelectItem value="expert">Ahli Gizi</SelectItem>
